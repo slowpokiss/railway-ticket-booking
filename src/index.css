@@ -1,3 +1,120 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+input:focus {
+  outline: none;
+}
+
+.remove-img {
+  width: 80px;
+  margin: 50px auto;
+}
+
+.review-body::before {
+  content: "“";
+  left: -15px;
+  top: -15px;
+  position: absolute;
+  font-size: 30px;
+  font-weight: 700;
+  color: #928f94;
+}
+
+.review-body::after {
+  content: "”";
+  right: 2px;
+  bottom: -15px;
+  position: absolute;
+  font-size: 30px;
+  font-weight: 700;
+  color: #928f94;
+}
+
+.contact-img:hover {
+  color: orange
+}
+
+
+/*  arrow-area  */
+.arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  width: 25%;
+  height: 56.64px;
+  background: #2D2B2F;
+  position: relative;
+}
+
+.arrow-active {
+  background: #FFA800;
+}
+
+.arrow:before,
+.arrow:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  border-style: solid;
+  border-width: 29px 0 29px 21px;
+}
+
+.arrow:before {
+  border-color: transparent transparent transparent white;
+  left: 1px;
+}
+
+.arrow:after {
+  border-color: transparent transparent transparent #2D2B2F;
+  left: 100%;
+  z-index: 10;
+}
+
+.arrow-active:after {
+  border-color: transparent transparent transparent #FFA800;
+  left: 100%;
+  z-index: 10;
+}
+
+.steps .arrow:nth-child(2)::before {
+  left: 0.5px;
+}
+
+.steps .arrow:first-child:before {
+  left: 0.1%;
+  border-color: transparent;
+}
+
+.steps .arrow:last-child:after {
+  border-color: transparent;
+}
+
+
+
+@layer components {
+  .title-25 {
+    @apply w-fit text-[1.562rem] mb-[15px] font-medium;
+  }
+
+  .input-template {
+    @apply px-4 py-3 bg-no-repeat bg-[right_10px_center] bg-[length:17px] rounded-[5px] text-black w-full ;
+  }
+
+  .contact-img {
+    @apply cursor-pointer w-[22px] h-[22px];
+  }
+
+  .btn-template {
+    @apply cursor-pointer font-bold text-[1rem] w-fit px-[40px] py-[10px] border border-solid rounded-[5px];
+  }
+
+  .btn-goldish {
+    @apply active:text-black active:bg-white hover:text-black hover:bg-goldenOrange hover:border-goldenOrange
+  }
+
+  .btn-orange {
+    @apply active:bg-transparent active:text-orange
+  }
+}

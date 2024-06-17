@@ -1,45 +1,43 @@
-.remove-img {
-  width: 80px;
-  margin: 50px auto;
-}
 
-.line-vert {
+
+/* .line-vert {
   width: 0.64em;
   background-color: #FFA800;
-}
+} */
 
-.btn-template {
+/* .btn-template {
   cursor: pointer;
   font-size: 16px;
   font-weight: 700;
   width: fit-content;
+  
+  
   color: white;
   border: 1px solid white;
   border-radius: 5px;
-  padding: 10px 10px;
-}
+} */
 
-.title-25 {
+/* .title-25 {
   width: fit-content;
   font-size: 1.562em;
   font-weight: 500;
   margin-bottom: 15px;
-}
+} */
 
 
-.input-template {
+/* .input-template {
   padding: 12px 15px;
   border-radius: 5px;
 
   background-repeat: no-repeat; 
   background-position: right 10px center;
   background-size: 17px;
-  background-image: url('../../public/vecs/geo_icon.svg');
-}
+} */
 
+/* .head {
 
+background-image: url('../../public/vecs/geo_icon.svg');
 
-.head {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -52,14 +50,12 @@
   background-position: center center;
   background-size: cover;
   background-image: url('../../public/img/train_main.png');
-}
+} */
 
-.order-form-title {
-  color: white;
-  font-size: 20px;
-}
 
-.header-main {
+
+
+/* .header-main {
   display: flex;
   min-height: 500px;
   flex-direction: row;
@@ -67,32 +63,33 @@
 
   align-items: end;
   justify-content: center;
-}
+} */
 
-.header-title {
+/* .header-title {
   width: fit-content;
   font-size: 3.125em;
   color: white;
-}
+} */
 
-.header-logic {
+/* .header-logic {
   display: flex;
   flex-direction: column;
   gap: 20px;
   background-color: rgba(0, 0, 0, 0.3);
   padding: 20px;
-}
+} */
 
+/* .order-form-title {
+  color: #ffffff;
+  font-size: 20px;
+} */
 
-.order-form {
-}
-
-.direction {
+/* .direction {
   display: flex;
   gap:  5px;
-}
+} */  
 
-
+/* 
 .logo {
   position: relative;
   width: 100%;
@@ -101,15 +98,15 @@
   padding: 6px 175px;
   font-size: 1.3125em;
   background-color: rgba(0, 0, 0, 0.5);
-}
+} */
 
-.nav {
+/* .nav {
   width: 100%;
   height: auto;
   background-color: rgba(41, 41, 41, 1);
-}
+} */
 
-.navbar {
+/* .navbar {
   display: flex;
   width: auto;
   height: fit-content;
@@ -117,14 +114,14 @@
   margin-left: 175px;
   flex-direction: row;
   gap: 65px;
-}
+} */
 
-.nav-item {
+/* .nav-item {
   color: white;
   font-size: 1.3125em;
-}
+} */
 
-.train {
+/* .train {
   width: 100%;
   background-color: rgba(41, 41, 41, 1);
   z-index: -1;
@@ -132,30 +129,31 @@
   position: absolute;
   top: 0;
   left: 0;
-}
+} */
 
 
-.about {
+
+/* .about {
   width: 70%;
   margin: 75px auto 0 auto;
-}
+} */
 
-.about-main {
+/* .about-main {
   display: flex;
   gap: 15px;
   flex-direction: row;
   align-items: stretch;
-}
+} */
 
-.about-text {
+/* .about-text {
   display: flex;
   flex-direction: column;
   gap: 12px;
-}
+} */
 
 
 
-.advantage {
+/* .advantage {
   margin-top: 75px;
   display: flex;
   flex-direction: column;
@@ -168,54 +166,72 @@
   background-position: center center;
   background-size: cover;
   background-image: url('../../public/img/road_main.png');
-}
+} */
 
-.advantage-steps {
+/* .advantage-steps {
   display: flex;
   gap: 65px;
   flex-direction: row;
   justify-content: space-between;
-}
+} */
 
-.advantage-step {
+/* .advantage-step {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
+} */
 
-.advantage-top {
+/* .advantage-top {
   width: 75%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin: 20px;
-}
+} */
 
 .advantage-title {
   color: white;
   font-size: 1.562em;
 }
 
-
-.advantage-img {
-  width: 100px;
-}
-
-.step-title {
+/* .step-title {
   font-size: 1em;
   color: white;
-}
+} */
 
+/* .review-img {
+  width: 160px;
+  height: 160px;
+} */
 
-.reviews-area {
+/* .advantage-img {
+  width: 100px;
+} */
+
+/* .reviews-area {
   width: 70%;
   display: flex;
   flex-direction: column;
   margin: 75px auto;
-}
+} */
 
-.reviews {
+/* .review-name {
+  font-weight: 500;
+  font-size: 1.25em;
+} */
+
+/* .review-body {
+  margin-top: 20px;
+  position: relative;
+  font-size: 1em;
+  color: #928F94;
+} */
+
+
+
+
+/* .reviews {
   display: flex;
   flex-direction: row;
   gap: 70px;
@@ -225,126 +241,95 @@
   display: flex;
   flex-direction: row;
   gap: 30px;
-}
+} */
 
 
-.review-name {
-  font-weight: 500;
-  font-size: 1.25em;
-}
-
-.review-body {
-  margin-top: 20px;
-  position: relative;
-  font-size: 1em;
-  color: #928F94;
-}
-
-.review-body::before {
-  content: '“';
-  left: -15px;
-  top: -15px;
-  position: absolute;
-  font-size: 30px;
-  font-weight: 700;
-  color: #928F94;
-}
-
-.review-body::after {
-  content: '”';
-  right: 2px;
-  bottom: -15px;
-  position: absolute;
-  font-size: 30px;
-  font-weight: 700;
-  color: #928F94;
-}
-
-.review-img {
-  width: 160px;
-  height: 160px;
-}
 
 
-footer {
+
+
+
+
+
+/* footer {
   background-color: #2D2B2F;
-}
+} */
 
-footer > * {
+/* footer > * {
   color: #E5E5E5;
-}
+} */
 
-.contacts {
+/* .contacts {
   margin: 0 auto;
   width: 60%;
   display: grid;
   grid-template-columns: 40% 60%;
   gap: 50px;
   padding: 30px;
-}
+} */
 
-.contats-ways {
+/* .contats-ways {
   width: 60%;
   display: flex;
   flex-direction: column;
   gap: 15px;
-}
+} */
 
-.contats-title {
+/* .contats-title {
   font-size: 20px;
   font-weight: 500;
   color: white;
-}
+} */
 
-.contact {
+/* .contact {
   display: flex;
   flex-direction: row;
   gap: 20px;
-}
+} */
 
-.sub-list {
+/* .sub-list {
   display: flex;
   flex-direction: row;
   gap: 30px;
-}
+} */
 
-.contact-img {
+/* .contact-img {
   cursor: pointer;
   width: 22px;
   height: 22px;
-}
+} */
 
-.info {
+/* .info {
   border-top: 1px solid white;
   display: flex;
   padding: 15px 120px 15px 120px;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-}
+} */
 
-.subscribe {
+/* .subscribe {
   display: flex;
   flex-direction: column;
   gap: 25px;
-}
+} */
 
-.subscribe-form-area {
+/* .subscribe-form-area {
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
+} */
 
-.form-input {
+/* .form-input {
   height: 45px;
   padding: 15px;
   color: black;
   min-width: 300px;
   border-radius: 5px;
-}
+} */
 
-.subscribe-form {
+/* .subscribe-form {
   display: flex;
   flex-direction: row;
   gap: 20px;
-}
+} */
