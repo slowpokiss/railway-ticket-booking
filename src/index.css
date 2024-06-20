@@ -1,10 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  @apply font-sans;
+}
 
 input:focus {
   outline: none;
 }
+
+input {
+  font-weight: normal;
+}
+
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+
 
 .remove-img {
   width: 80px;
@@ -92,7 +111,6 @@ input:focus {
 }
 
 
-
 @layer components {
   .title-25 {
     @apply w-fit text-[1.562rem] mb-[15px] font-medium;
@@ -115,6 +133,6 @@ input:focus {
   }
 
   .btn-orange {
-    @apply active:bg-transparent active:text-orange
+    @apply active:bg-transparent active:text-orange active:border-orange
   }
 }

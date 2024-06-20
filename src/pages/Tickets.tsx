@@ -17,29 +17,44 @@ export default function Tickets() {
             </ul>
           </nav>
         </div>
-
-        <div className="flex min-h-[330px] items-end justify-center ">
-          <div className="flex flex-roe h-auto justify-center items-center w-full gap-24">
-            <div className="flex flex-col gap-5 bg-[rgba(41,41,41,0.8)] p-6">
-              <form className="flex flex-col gap-6 items-end">
-                <div className="flex gap-5">
-                  <div className="flex flex-col gap-2">
+        <div className="flex w-full min-h-[330px] items-end justify-center ">
+          <div className="flex w-full h-auto justify-center items-center">
+            <div className="flex w-[80%] gap-5 bg-[rgba(41,41,41,0.8)] p-6">
+              <form className="flex w-full flex-col gap-6 items-end font-normal">
+                <div className="flex w-full gap-5">
+                  <div className="w-1/2 flex flex-col gap-2">
                     <p className="text-[20px] text-white">Направление</p>
                     <div className="flex gap-1">
-                      <input
-                        placeholder="Откуда"
-                        className="input-template bg-[url('../../public/vecs/geo_icon.svg')]"
-                        type="text"
+                      <div className="w-full ">
+                        <select
+                          id="country"
+                          name="country"
+                          className="input-template bg-[url('../../public/vecs/geo_icon.svg')] appearance-none"
+                        >
+                          <option>Москва</option>
+                          <option>Санкт-Петербург</option>
+                          <option>Казань</option>
+                        </select>
+                      </div>
+                      <img
+                        src="../vecs/switch_icon.svg"
+                        alt="switch"
+                        className="cursor-pointer"
                       />
-                      <img src="../vecs/switch_icon.svg" alt="switch" />
-                      <input
-                        placeholder="Куда"
-                        className="input-template bg-[url('../../public/vecs/geo_icon.svg')]"
-                        type="text"
-                      />
+                      <div className="w-full">
+                        <select
+                          id="country"
+                          name="country"
+                          className="input-template bg-[url('../../public/vecs/geo_icon.svg')] appearance-none"
+                        >
+                          <option>Москва</option>
+                          <option>Санкт-Петербург</option>
+                          <option>Казань</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex flex-col gap-2 ">
+                  <div className="w-1/2 grid gap-2 ">
                     <p className="text-[20px] text-white">Дата</p>
                     <div className="flex gap-[30px]">
                       <input
@@ -54,8 +69,8 @@ export default function Tickets() {
                       />
                     </div>
                   </div>
+                  
                 </div>
-
                 <input
                   type="submit"
                   value="НАЙТИ БИЛЕТЫ"
@@ -66,32 +81,7 @@ export default function Tickets() {
           </div>
         </div>
       </header>
-
       <Outlet />
-      {/* <main>
-        <div className="steps overflow-hidden flex w-full text-white ">
-          <div className="arrow arrow-active gap-2 ">
-            <div className="number border-2 w-fit rounded-[50%] text-[20px] px-[0.6rem] ">1</div>
-            Билеты
-          </div>
-          <div className="arrow gap-2 ">
-            <div className="number border-2 w-fit rounded-[50%] text-[20px] px-[0.6rem]">2</div>
-            Пассажиры
-          </div>
-          <div className="arrow gap-2 ">
-            <div className="number border-2 w-fit rounded-[50%] text-[20px] px-[0.6rem]">3</div>
-            Оплата
-          </div>
-          <div className="arrow gap-2 ">
-            <div className="number border-2 w-fit rounded-[50%] text-[20px] px-[0.6rem]">4</div>
-            Проверка
-          </div>
-        </div>
-        <div className="">
-          <div className="date"></div>
-          <div className="trains"></div>
-        </div>
-      </main> */}
     </>
   );
 }
