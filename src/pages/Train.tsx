@@ -50,8 +50,8 @@ export default function Train() {
   return (
     <>
       <main className="">
-        <div className="steps overflow-hidden flex w-full text-white ">
-          <div className="arrow arrow-active gap-2 ">
+        <div className="steps relative z-0 overflow-hidden flex w-full text-white">
+          <div className="arrow arrow-active gap-2">
             <div className="number border-2 w-fit rounded-[50%] text-[20px] px-[0.6rem] ">
               1
             </div>

@@ -1,4 +1,6 @@
 import { Outlet } from "react-router-dom";
+import Calendar from "../components/Calendar";
+
 
 export default function Tickets() {
   return (
@@ -57,16 +59,7 @@ export default function Tickets() {
                   <div className="w-1/2 grid gap-2 ">
                     <p className="text-[20px] text-white">Дата</p>
                     <div className="flex gap-[30px]">
-                      <input
-                        placeholder="ДД/ММ/ГГ"
-                        className="input-template bg-[url('../../public/vecs/calendar_logo.svg')]"
-                        type="text"
-                      />
-                      <input
-                        placeholder="ДД/ММ/ГГ"
-                        className="input-template bg-[url('../../public/vecs/calendar_logo.svg')]"
-                        type="text"
-                      />
+                      <Calendar />
                     </div>
                   </div>
                   

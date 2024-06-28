@@ -1,6 +1,5 @@
 
 
-
 export default function TrainsOptions() {
   return (
     <>

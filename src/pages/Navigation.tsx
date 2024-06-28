@@ -16,7 +16,7 @@ export default function Navigation() {
             <div className="text-white font-medium text-[20px]">
               Свяжитесь с нами
             </div>
-            <div className="flex gap-5">
+            <div className="flex gap-5"> 
               <img
                 src="../vecs/tel_icon.svg"
                 alt="tel"

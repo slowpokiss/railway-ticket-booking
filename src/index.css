@@ -10,9 +10,10 @@
   @apply font-sans;
 }
 
-input:focus {
+input:focus, select {
   outline: none;
 }
+
 
 input {
   font-weight: normal;
@@ -22,8 +23,6 @@ img {
   -webkit-user-drag: none;
   user-select: none;
 }
-
-
 
 .remove-img {
   width: 80px;
@@ -88,13 +87,12 @@ img {
 .arrow:after {
   border-color: transparent transparent transparent #2D2B2F;
   left: 100%;
-  z-index: 10;
+  z-index: 2;
 }
 
 .arrow-active:after {
   border-color: transparent transparent transparent #FFA800;
   left: 100%;
-  z-index: 10;
 }
 
 .steps .arrow:nth-child(2)::before {
@@ -125,7 +123,7 @@ img {
   }
 
   .btn-template {
-    @apply cursor-pointer font-bold text-[1rem] w-fit px-[40px] py-[10px] border border-solid rounded-[5px];
+    @apply cursor-pointer hover:shadow-lg font-bold text-[1rem] w-fit px-[40px] py-[10px] border border-solid rounded-[5px];
   }
 
   .btn-goldish {
@@ -136,3 +134,4 @@ img {
     @apply active:bg-transparent active:text-orange active:border-orange
   }
 }
+
