@@ -14,6 +14,9 @@ input:focus, select {
   outline: none;
 }
 
+datalist {
+  display: block;
+}
 
 input {
   font-weight: normal;
@@ -105,7 +108,7 @@ img {
 }
 
 .steps .arrow:last-child:after {
-  border-color: transparent;
+  display: none;
 }
 
 
