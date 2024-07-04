@@ -7,16 +7,16 @@ import {
 
 import Navigation from "./pages/Navigation";
 import MainPage from "./pages/MainPage";
-import Tickets from "./pages/Tickets";
-import Train from "./pages/Train";
+import HeaderSearch from "./pages/HeaderSearch";
+import Train from "./pages/Tickets";
 
 const routerProv = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<Navigation />}>
         <Route path="/" element={<MainPage />}></Route>
-        <Route path="/tickets" element={<Tickets />}>
-          <Route path="/tickets/train" element={<Train />}></Route>
+        <Route path="/booking" element={<HeaderSearch />}>
+          <Route path="/booking/tickets" element={<Train />}></Route>
         </Route>
       </Route>
     </>

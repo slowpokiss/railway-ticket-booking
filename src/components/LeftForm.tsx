@@ -22,6 +22,7 @@ function FilterTime({ direction, title }: filterTimeProps) {
             <img src={`../vecs/${direction}_icon.svg`} alt={direction} />
               <p className="font-semibold">{title}</p>
           </div>
+
           <img
             onClick={onExtendClick}
             className={`cursor-pointer`}

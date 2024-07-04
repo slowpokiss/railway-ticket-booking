@@ -52,11 +52,6 @@ img {
   color: #928f94;
 }
 
-.contact-img:hover {
-  color: orange
-}
-
-
 /*  arrow-area  */
 .arrow {
   display: flex;
@@ -125,6 +120,10 @@ img {
     @apply cursor-pointer w-[22px] h-[22px];
   }
 
+  .contact-img:hover > path  {
+    @apply fill-goldenOrange  
+  }
+
   .btn-template {
     @apply cursor-pointer hover:shadow-lg font-bold text-[1rem] w-fit px-[40px] py-[10px] border border-solid rounded-[5px];
   }
@@ -135,6 +134,10 @@ img {
 
   .btn-orange {
     @apply active:bg-transparent active:text-orange active:border-orange
+  }
+
+  .big-svg-template {
+    @apply cursor-pointer w-[45px] h-[45px]
   }
 }
 
