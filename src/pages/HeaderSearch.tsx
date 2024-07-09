@@ -33,8 +33,8 @@ export default function HeaderSearch() {
                   <div className="w-1/2 grid gap-2 ">
                     <p className="text-[20px] text-white">Дата</p>
                     <div className="flex gap-[30px]">
-                      <Calendar />
-                      <Calendar />
+                      <Calendar inputClass="input-template"/>
+                      <Calendar inputClass="input-template"/>
                     </div>
                   </div>
                 </div>

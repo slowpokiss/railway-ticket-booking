@@ -14,10 +14,6 @@ input:focus, select {
   outline: none;
 }
 
-datalist {
-  display: block;
-}
-
 input {
   font-weight: normal;
 }
@@ -25,6 +21,14 @@ input {
 img {
   -webkit-user-drag: none;
   user-select: none;
+}
+
+.big-checkbox {
+  transform: scale(1.7);
+  -webkit-transform: scale(1.7);
+  -moz-transform: scale(1.7);
+  -ms-transform: scale(1.7);
+  -o-transform: scale(1.7);
 }
 
 .remove-img {
@@ -116,6 +120,10 @@ img {
     @apply px-4 py-3 bg-no-repeat bg-[right_10px_center] bg-[length:17px] rounded-[5px] text-black w-full ;
   }
 
+  .passengers-input {
+    @apply px-[10px] py-[8px] border border-[#928F94] rounded-md
+  }
+
   .contact-img {
     @apply cursor-pointer w-[22px] h-[22px];
   }
@@ -138,6 +146,34 @@ img {
 
   .big-svg-template {
     @apply cursor-pointer w-[45px] h-[45px]
+  }
+
+  .carriage-type {
+    @apply flex flex-col gap-2 items-center cursor-pointer text-[#C4C4C4]
+  }
+
+  .carriage-type:hover > svg path {
+    @apply fill-[#FDB935]
+  }
+
+  .carriage-type:hover > p {
+    @apply text-[#FFA800]
+  }
+
+  .add-option {
+    @apply w-[30px] h-[30px] box-border bg-[#FDB935] p-[5px] hover:p-[4px] rounded-[5px] cursor-pointer hover:border-[2px] border-black
+  }
+
+  .add-option:hover > svg path {
+    @apply fill-black
+  }
+
+  .add-option_inactive {
+    @apply bg-white border-[2px] p-[4px] hover:bg-[#FDB935]
+  }
+
+  .add-option_inactive > svg path {
+    @apply fill-black
   }
 }
 

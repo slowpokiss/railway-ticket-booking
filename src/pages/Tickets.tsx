@@ -1,5 +1,7 @@
 import LeftForm from "../components/LeftForm";
 import Train from "../components/Train";
+import PassengersList from "../components/PassengersList";
+import Payment from "../components/Payment";
 
 function LastTickets() {
   return (
@@ -84,6 +86,8 @@ export default function Tickets() {
           </div>
           <div className="trains col-span-3">
             <Train />
+            {/* <PassengersList /> */}
+            {/* <Payment /> */}
           </div>
         </div>
       </main>

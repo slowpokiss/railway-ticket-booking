@@ -46,7 +46,11 @@ const config: IOptions = {
   },
 };
 
-export default function Calendar() {
+interface calendarProps {
+  inputClass: string;
+}
+
+export default function Calendar({ inputClass }: calendarProps) {
   const calendarRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -61,7 +65,7 @@ export default function Calendar() {
     <input
       ref={calendarRef}
       placeholder="ДД/ММ/ГГ"
-      className="input-template bg-[url('../../vecs/calendar_logo.svg')]"
+      className={`${inputClass} bg-[url('../../vecs/calendar_logo.svg')]`}
       type="text"
     />
     </>
