@@ -1,4 +1,4 @@
-import { useState, useCallback, ChangeEvent, useRef, forwardRef } from "react";
+import { useState, useCallback, ChangeEvent, useRef, forwardRef, useEffect } from "react";
 import { useLazyGetCitiesQuery } from "../redux/templateApi";
 import debounce from "lodash/debounce";
 import "../css/RotateSwitch.css";
@@ -18,6 +18,10 @@ const SearchInput = forwardRef<HTMLInputElement, searchInputProps>(
     const { currentCity, setCurrentCity } = props;
     let [trigger, { data = [], error, isLoading }] = useLazyGetCitiesQuery();
 
+    useEffect(() => {
+      debouncedSearch(currentCity);
+    }, [currentCity])
+
     const debouncedSearch = useCallback(
       debounce((searchTerm: string) => {
         if (searchTerm) {
@@ -35,12 +39,14 @@ const SearchInput = forwardRef<HTMLInputElement, searchInputProps>(
 
     const onCityClick = (ev: React.MouseEvent<HTMLLIElement>) => {
       const value = ev.currentTarget.textContent;
-
+      
       if (value) {
         setCurrentCity(value);
         debouncedSearch(value);
       }
     };
+
+    const [show, setShow] = useState(false)
 
     return (
       <>
@@ -51,20 +57,24 @@ const SearchInput = forwardRef<HTMLInputElement, searchInputProps>(
             ref={inputRef}
             className="input-template bg-[url('../../vecs/geo_icon.svg')] appearance-none"
             onChange={onCityInput}
+            onBlur={() => {
+              setTimeout(() => {
+                setShow(false)
+              }, 100);
+            }}
+            onFocus={() => setShow(true)}
+            // required
           />
           {/* {error && <p>Error occurred: {error.message}</p>} */}
           <ul
-            className={`absolute top-[55px] bg-white  w-full rounded-[5px] ${
-              inputRef.current && document.activeElement === inputRef.current
-                ? "block"
-                : "hidden"
-            }`}
+            className={`absolute top-[55px] bg-white  w-full rounded-[5px] 
+              ${ inputRef.current && show ? "block" : "hidden"}`}
           >
             {data.map((data: dataInterface, ind: number) => (
               <li
                 key={ind}
                 onClick={onCityClick}
-                className="cursor-pointer px-3 py-[2px] overflow-visible uppercase text-[14px]"
+                className="cursor-pointer px-3 py-[2px] overflow-visible z-10 uppercase text-[14px]"
               >
                 {data.name}
               </li>

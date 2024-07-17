@@ -67,6 +67,7 @@ export default function Calendar({ inputClass }: calendarProps) {
       placeholder="ДД/ММ/ГГ"
       className={`${inputClass} bg-[url('../../vecs/calendar_logo.svg')]`}
       type="text"
+      // required
     />
     </>
   );

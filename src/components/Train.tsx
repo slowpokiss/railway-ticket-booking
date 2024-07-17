@@ -1,8 +1,7 @@
 import { useState } from "react";
 
 interface trainsProps {
-  setPickTrain: React.Dispatch<React.SetStateAction<boolean>>,
-
+  setPickTrain: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 
