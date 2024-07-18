@@ -2,17 +2,21 @@ import { Outlet } from "react-router-dom";
 import Calendar from "../components/Calendar";
 import SearchCities from "../components/SearchCities";
 import { useLazyFindTicketsQuery } from "../redux/templateApi";
+import { useSelector } from "react-redux";
 
 export default function HeaderSearch() {
-  let [data = [], error, isLoading] = useLazyFindTicketsQuery();
+  let [trigger, { data = [], error, isLoading }] = useLazyFindTicketsQuery();
+  const inputsDate = useSelector((state: unknown) => state.main.firstStep.searchData);
 
-  const findTicketsCB = (ev: React.FormEvent) => {
+  const findTicketsCB = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
-    console.log(ev.target);
-    
-    //console.log(data, isLoading);
-  }
 
+    console.log(inputsDate);
+    const dates = inputsDate.dates
+    const cities = inputsDate.departureCities
+
+    trigger({ dates, cities });
+  };
 
   return (
     <>
@@ -33,7 +37,10 @@ export default function HeaderSearch() {
         <div className="flex w-full min-h-[330px] items-end justify-center ">
           <div className="flex w-full h-auto justify-center items-center">
             <div className="flex w-[80%] gap-5 bg-[rgba(41,41,41,0.8)] p-6">
-              <form onSubmit={findTicketsCB} className="flex w-full flex-col gap-6 items-end font-normal">
+              <form
+                onSubmit={findTicketsCB}
+                className="flex w-full flex-col gap-6 items-end font-normal"
+              >
                 <div className="flex w-full gap-5">
                   <div className="w-1/2 flex flex-col gap-2">
                     <p className="text-[20px] text-white">Направление</p>
@@ -44,8 +51,8 @@ export default function HeaderSearch() {
                   <div className="w-1/2 grid gap-2 ">
                     <p className="text-[20px] text-white">Дата</p>
                     <div className="flex gap-[30px]">
-                      <Calendar inputClass="input-template"/>
-                      <Calendar inputClass="input-template"/>
+                      <Calendar inputClass="input-template" dateInputDirection={'to'} />
+                      <Calendar inputClass="input-template" dateInputDirection={'from'} />
                     </div>
                   </div>
                 </div>

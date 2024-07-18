@@ -2,6 +2,9 @@ import { useState, useCallback, ChangeEvent, useRef, forwardRef, useEffect } fro
 import { useLazyGetCitiesQuery } from "../redux/templateApi";
 import debounce from "lodash/debounce";
 import "../css/RotateSwitch.css";
+import { useDispatch, useSelector } from "react-redux";
+import { setDepartureCity } from "../redux/mainSlice";
+import { changeDepartureCity } from "../redux/mainSlice";
 
 interface dataInterface {
   name: string;
@@ -9,18 +12,19 @@ interface dataInterface {
 }
 
 interface searchInputProps {
-  currentCity: string;
-  setCurrentCity: (value: string) => void;
+  cityInputDirection: string
 }
 
 const SearchInput = forwardRef<HTMLInputElement, searchInputProps>(
   (props, inputRef) => {
-    const { currentCity, setCurrentCity } = props;
+    const { cityInputDirection } = props;
     let [trigger, { data = [], error, isLoading }] = useLazyGetCitiesQuery();
+    const dispatch = useDispatch();
+    const inputData = useSelector((state: unknown) => state.main.firstStep.searchData.departureCities);
 
     useEffect(() => {
-      debouncedSearch(currentCity);
-    }, [currentCity])
+      debouncedSearch(inputData[String(cityInputDirection)].name);
+    }, [inputData[String(cityInputDirection)].name])
 
     const debouncedSearch = useCallback(
       debounce((searchTerm: string) => {
@@ -30,50 +34,50 @@ const SearchInput = forwardRef<HTMLInputElement, searchInputProps>(
       }, 100),
       [trigger]
     );
-
+    
     const onCityInput = (ev: ChangeEvent<HTMLInputElement>) => {
       const { value } = ev.target;
-      setCurrentCity(value);
+      dispatch(setDepartureCity({cityInputDirection, value, id: null}))
       debouncedSearch(value);
     };
 
-    const onCityClick = (ev: React.MouseEvent<HTMLLIElement>) => {
-      const value = ev.currentTarget.textContent;
-      
+    const onCityClick = (value: string, id: string) => {
       if (value) {
-        setCurrentCity(value);
+        dispatch(setDepartureCity({cityInputDirection, value, id}))
         debouncedSearch(value);
       }
     };
 
-    const [show, setShow] = useState(false)
-
+    const [citiesListState, setCitiesListState] = useState(false)
     return (
       <>
         <div className="w-full relative z-10">
           <input
-            value={currentCity}
+            value={inputData[String(cityInputDirection)].name}
             type="text"
+            name="cityInput"
             ref={inputRef}
             className="input-template bg-[url('../../vecs/geo_icon.svg')] appearance-none"
             onChange={onCityInput}
             onBlur={() => {
               setTimeout(() => {
-                setShow(false)
+                setCitiesListState(false)
               }, 100);
             }}
-            onFocus={() => setShow(true)}
+            onFocus={() => setCitiesListState(true)}
             // required
           />
+
           {/* {error && <p>Error occurred: {error.message}</p>} */}
+          
           <ul
             className={`absolute top-[55px] bg-white  w-full rounded-[5px] 
-              ${ inputRef.current && show ? "block" : "hidden"}`}
+              ${ inputRef.current && citiesListState ? "block" : "hidden"}`}
           >
             {data.map((data: dataInterface, ind: number) => (
               <li
                 key={ind}
-                onClick={onCityClick}
+                onClick={() => onCityClick(data.name, data._id)}
                 className="cursor-pointer px-3 py-[2px] overflow-visible z-10 uppercase text-[14px]"
               >
                 {data.name}
@@ -87,24 +91,22 @@ const SearchInput = forwardRef<HTMLInputElement, searchInputProps>(
 );
 
 export default function SearchCities() {
-  const [firstCurrentCity, setFirstCurrentCity] = useState("");
-  const [secondCurrentCity, setSecondCurrentCity] = useState("");
   const [rotate, setRotate] = useState(false);
+  const dispatch = useDispatch();
+
   let searchRef1 = useRef<HTMLInputElement>(null);
   let searchRef2 = useRef<HTMLInputElement>(null);
 
   const onSwitch = () => {
     setRotate(!rotate);
-    setFirstCurrentCity(secondCurrentCity);
-    setSecondCurrentCity(firstCurrentCity);
+    dispatch(changeDepartureCity())
   };
 
   return (
     <>
       <SearchInput
         ref={searchRef1}
-        currentCity={firstCurrentCity}
-        setCurrentCity={setFirstCurrentCity}
+        cityInputDirection={'fromCity'}
       />
       <img
         onClick={onSwitch}
@@ -114,8 +116,7 @@ export default function SearchCities() {
       />
       <SearchInput
         ref={searchRef2}
-        currentCity={secondCurrentCity}
-        setCurrentCity={setSecondCurrentCity}
+        cityInputDirection={'toCity'}
       />
     </>
   );

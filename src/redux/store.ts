@@ -4,8 +4,9 @@ import templateApi from "./templateApi";
 
 export default configureStore({
   reducer: {
-      [templateApi.reducerPath]: templateApi.reducer,
-      main: mainSlice,
+    [templateApi.reducerPath]: templateApi.reducer,
+    main: mainSlice,
   },
-  middleware: (getDefaultMiddleWare) => getDefaultMiddleWare().concat(templateApi.middleware)
-})
+  middleware: (getDefaultMiddleWare) =>
+    getDefaultMiddleWare().concat(templateApi.middleware),
+});
