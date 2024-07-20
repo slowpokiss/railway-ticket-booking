@@ -8,7 +8,9 @@ import {
 import Navigation from "./pages/Navigation";
 import MainPage from "./pages/MainPage";
 import HeaderSearch from "./pages/HeaderSearch";
-import Train from "./pages/Tickets";
+import TrainOptions from "./components/TrainOptions";
+import TrainsList from "./components/TrainsList";
+
 
 const routerProv = createBrowserRouter(
   createRoutesFromElements(
@@ -16,7 +18,8 @@ const routerProv = createBrowserRouter(
       <Route path="/" element={<Navigation />}>
         <Route path="/" element={<MainPage />}></Route>
         <Route path="/booking" element={<HeaderSearch />}>
-          <Route path="/booking/tickets" element={<Train />}></Route>
+          <Route path="/booking" element={<TrainsList />}></Route>
+          <Route path="/booking/:trainId" element={<TrainOptions />}></Route>
         </Route>
       </Route>
     </>

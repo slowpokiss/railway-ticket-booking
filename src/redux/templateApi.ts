@@ -10,7 +10,7 @@ export const templateApi = createApi({
       query: (searchItem) => `/cities?name=${searchItem}`,
     }),
     findTickets: build.query({
-      query: ({ dates, cities }) => `?from_city_id=${cities.fromCity.id}&to_city_id=${cities.toCity.id}`,
+      query: ({ dates, cities }) => `/?from_city_id=${cities.fromCity.id}&to_city_id=${cities.toCity.id}`,
     }),
   }),
 });

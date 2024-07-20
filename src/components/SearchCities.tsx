@@ -62,7 +62,7 @@ const SearchInput = forwardRef<HTMLInputElement, searchInputProps>(
             onBlur={() => {
               setTimeout(() => {
                 setCitiesListState(false)
-              }, 100);
+              }, 250);
             }}
             onFocus={() => setCitiesListState(true)}
             // required

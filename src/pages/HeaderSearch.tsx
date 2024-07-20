@@ -1,22 +1,42 @@
-import { Outlet } from "react-router-dom";
 import Calendar from "../components/Calendar";
 import SearchCities from "../components/SearchCities";
+import LeftForm from "../components/LeftForm";
+import LastTickets from "../components/LastTickets";
+import Steps from "../components/Steps";
+
 import { useLazyFindTicketsQuery } from "../redux/templateApi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { setMainData } from "../redux/mainSlice";
+import { Outlet } from "react-router-dom";
 
 export default function HeaderSearch() {
-  let [trigger, { data = [], error, isLoading }] = useLazyFindTicketsQuery();
-  const inputsDate = useSelector((state: unknown) => state.main.firstStep.searchData);
+  let [trigger, { data = [] }] = useLazyFindTicketsQuery();
+  const inputsDate = useSelector(
+    (state: unknown) => state.main.firstStep.searchData
+  );
+  const dispatch = useDispatch();
 
-  const findTicketsCB = (ev: React.FormEvent<HTMLFormElement>) => {
+  const [loading, setLoading] = useState(false);
+
+  const findTicketsCB = async (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
 
-    console.log(inputsDate);
-    const dates = inputsDate.dates
-    const cities = inputsDate.departureCities
-
-    trigger({ dates, cities });
+    const dates = inputsDate.dates;
+    const cities = inputsDate.departureCities;
+    setLoading(true);
+    await trigger({ dates, cities });
+    setLoading(false);
   };
+
+  useEffect(() => {
+    dispatch(setMainData(data));
+    // if (loading) {
+    //   console.log("loading");
+    // } else {
+    //   console.log("done");
+    // }
+  }, [loading]);
 
   return (
     <>
@@ -51,8 +71,14 @@ export default function HeaderSearch() {
                   <div className="w-1/2 grid gap-2 ">
                     <p className="text-[20px] text-white">Дата</p>
                     <div className="flex gap-[30px]">
-                      <Calendar inputClass="input-template" dateInputDirection={'to'} />
-                      <Calendar inputClass="input-template" dateInputDirection={'from'} />
+                      <Calendar
+                        inputClass="input-template"
+                        dateInputDirection={"to"}
+                      />
+                      <Calendar
+                        inputClass="input-template"
+                        dateInputDirection={"from"}
+                      />
                     </div>
                   </div>
                 </div>
@@ -66,7 +92,22 @@ export default function HeaderSearch() {
           </div>
         </div>
       </header>
-      <Outlet />
+      {loading && (
+        <p className="text-[20px] text-center bg-[#fff3d6]">Loading...</p>
+      )}
+      <Steps />
+
+      <main className="">
+        <div className="grid grid-cols-4 gap-4 bg-[#F7F5F9] pt-12 px-28">
+          <div className="col-span-1">
+            <LeftForm />
+            <LastTickets />
+          </div>
+          <div className="trains col-span-3">
+            <Outlet />
+          </div>
+        </div>
+      </main>
     </>
   );
 }

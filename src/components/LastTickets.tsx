@@ -1,9 +1,9 @@
-import LeftForm from "../components/LeftForm";
-import Train from "../components/Train";
-import PassengersList from "../components/PassengersList";
-import Payment from "../components/Payment";
 
-function LastTickets() {
+
+
+
+export default function LastTickets() {
+  
   return (
     <>
       <div className="lasts flex flex-col gap-5 text-[18px]">
@@ -44,53 +44,6 @@ function LastTickets() {
           </li>
         </ul>
       </div>
-    </>
-  );
-}
-
-export default function Tickets() {
-  return (
-    <>
-      <main className="">
-        <div className="steps relative z-0 flex w-full text-white">
-          <div className="arrow arrow-active gap-2">
-            <div className="number border-2 w-fit rounded-[50%] text-[20px] px-[0.6rem] ">
-              1
-            </div>
-            Билеты
-          </div>
-          <div className="arrow gap-2 ">
-            <div className="number border-2 w-fit rounded-[50%] text-[20px] px-[0.6rem]">
-              2
-            </div>
-            Пассажиры
-          </div>
-          <div className="arrow gap-2 ">
-            <div className="number border-2 w-fit rounded-[50%] text-[20px] px-[0.6rem]">
-              3
-            </div>
-            Оплата
-          </div>
-          <div className="arrow gap-2 ">
-            <div className="number border-2 w-fit rounded-[50%] text-[20px] px-[0.6rem]">
-              4
-            </div>
-            Проверка
-          </div>
-        </div>
-
-        <div className="grid grid-cols-4 gap-4 bg-[#F7F5F9] pt-12 px-28">
-          <div className="col-span-1">
-            <LeftForm />
-            <LastTickets />
-          </div>
-          <div className="trains col-span-3">
-            <Train />
-            {/* <PassengersList /> */}
-            {/* <Payment /> */}
-          </div>
-        </div>
-      </main>
     </>
   );
 }

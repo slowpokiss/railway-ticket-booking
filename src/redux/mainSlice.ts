@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { ResponseData } from "../intefaces/trainCardInterface";
+
 
 interface initialStateInterface {
+  mainData: ResponseData,
+  stepsIndex: number,
   firstStep: {
     searchData: {
       dates: {
@@ -18,12 +22,18 @@ interface initialStateInterface {
         };
       };
     };
+    trainListData?: ResponseData
   };
 }
 
 const mainSlice = createSlice({
   name: "mainSlice",
   initialState: {
+    mainData: {
+      total_count:0,
+      items: [],
+    },
+    stepsIndex: 1,
     firstStep: {
       searchData: {
         dates: {
@@ -32,11 +42,11 @@ const mainSlice = createSlice({
         },
         departureCities: {
           fromCity: {
-            name: "",
+            name: "москва",
             id: null,
           },
           toCity: {
-            name: "",
+            name: "санкт-петербург",
             id: null,
           },
         },
@@ -44,6 +54,11 @@ const mainSlice = createSlice({
     },
   } satisfies initialStateInterface as initialStateInterface,
   reducers: {
+    setMainData(state, action) {
+      //console.log(action.payload);
+      state.mainData = action.payload
+    },
+
     setDepartureCity(state, action) {
       const { cityInputDirection, value, id } = action.payload;
 
@@ -57,15 +72,25 @@ const mainSlice = createSlice({
     },
 
     changeDepartureCity(state) {
-      const prevStateToCity =
+      const prevStateToCityName =
         state.firstStep.searchData.departureCities.toCity.name;
-      const prevStateFromCity =
+      const prevStateFromCityName =
         state.firstStep.searchData.departureCities.fromCity.name;
 
+      const prevStateToCityId =
+        state.firstStep.searchData.departureCities.toCity.id;
+      const prevStateFromCityId =
+        state.firstStep.searchData.departureCities.fromCity.id;
+
       state.firstStep.searchData.departureCities.toCity.name =
-        prevStateFromCity;
+        prevStateFromCityName;
       state.firstStep.searchData.departureCities.fromCity.name =
-        prevStateToCity;
+        prevStateToCityName;
+
+      state.firstStep.searchData.departureCities.fromCity.id =
+        prevStateToCityId;
+      state.firstStep.searchData.departureCities.toCity.id =
+        prevStateFromCityId;
     },
 
     setDepartureDates(state, action) {
@@ -80,5 +105,5 @@ const mainSlice = createSlice({
   },
 });
 
-export const { setDepartureCity, changeDepartureCity, setDepartureDates } = mainSlice.actions;
+export const { setMainData, setDepartureCity, changeDepartureCity, setDepartureDates } = mainSlice.actions;
 export default mainSlice.reducer;
