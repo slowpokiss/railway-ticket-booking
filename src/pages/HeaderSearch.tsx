@@ -11,32 +11,24 @@ import { setMainData } from "../redux/mainSlice";
 import { Outlet } from "react-router-dom";
 
 export default function HeaderSearch() {
-  let [trigger, { data = [] }] = useLazyFindTicketsQuery();
+  let [trigger, { data = [], isFetching  }] = useLazyFindTicketsQuery();
   const inputsDate = useSelector(
     (state: unknown) => state.main.firstStep.searchData
   );
   const dispatch = useDispatch();
 
-  const [loading, setLoading] = useState(false);
 
-  const findTicketsCB = async (ev: React.FormEvent<HTMLFormElement>) => {
+  const findTicketsCB = async(ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
 
     const dates = inputsDate.dates;
     const cities = inputsDate.departureCities;
-    setLoading(true);
     await trigger({ dates, cities });
-    setLoading(false);
   };
 
   useEffect(() => {
-    dispatch(setMainData(data));
-    // if (loading) {
-    //   console.log("loading");
-    // } else {
-    //   console.log("done");
-    // }
-  }, [loading]);
+    dispatch(setMainData(data)); // че я блять написал, хуле это работает
+  }, [isFetching]);
 
   return (
     <>
@@ -92,7 +84,7 @@ export default function HeaderSearch() {
           </div>
         </div>
       </header>
-      {loading && (
+      {isFetching && (
         <p className="text-[20px] text-center bg-[#fff3d6]">Loading...</p>
       )}
       <Steps />

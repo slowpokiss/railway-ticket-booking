@@ -1,44 +1,44 @@
 
 
 
-export interface City {
+export interface cityInterface {
   _id: string;
   name: string;
 }
 
-export interface RailwayStation {
+export interface railwayStationInterface {
   railway_station_name: string;
-  city: City;
+  city: cityInterface;
   datetime: number;
 }
 
-export interface PriceInfo {
+export interface priceInfoInterface {
   top_price: number;
   bottom_price: number;
   side_price?: number;
   price?: number;
 }
 
-export interface ClassPriceInfo {
-  first?: PriceInfo;
-  second?: PriceInfo;
-  third?: PriceInfo;
-  fourth?: PriceInfo;
+export interface classPriceInterface {
+  first?: priceInfoInterface;
+  second?: priceInfoInterface;
+  third?: priceInfoInterface;
+  fourth?: priceInfoInterface;
 }
 
-export interface AvailableSeatsInfo {
+export interface availableSeatsInterface {
   first?: number,
   second?: number,
   third?: number,
   fourth?: number,
 }
 
-export interface Train {
+export interface trainInterface {
   _id: string;
   name: string;
 }
 
-export interface Departure {
+export interface departureInterface {
   _id: string;
   have_first_class: boolean;
   have_second_class: boolean;
@@ -50,14 +50,14 @@ export interface Departure {
   min_price: number;
   duration: number;
   available_seats: number;
-  available_seats_info: AvailableSeatsInfo;
-  train: Train;
-  from: RailwayStation;
-  to: RailwayStation;
-  price_info: ClassPriceInfo;
+  available_seats_info: availableSeatsInterface;
+  train: trainInterface;
+  from: railwayStationInterface;
+  to: railwayStationInterface;
+  price_info: classPriceInterface;
 }
 
-export interface Item {
+export interface itemsInterface {
   have_first_class: boolean;
   have_second_class: boolean;
   have_third_class: boolean;
@@ -67,11 +67,11 @@ export interface Item {
   is_express: boolean;
   min_price: number;
   available_seats: number;
-  available_seats_info: AvailableSeatsInfo;
-  departure: Departure;
+  available_seats_info: availableSeatsInterface;
+  departure: departureInterface;
 }
 
 export interface ResponseData {
   total_count: number;
-  items: Item[];
+  items: itemsInterface[];
 }

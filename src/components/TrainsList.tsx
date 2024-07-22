@@ -1,9 +1,10 @@
 import {
-  AvailableSeatsInfo
+  availableSeatsInterface
 } from "../intefaces/trainCardInterface";
 import { fromUnixTime, format } from "date-fns";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useLazyGetTrainOptionsQuery } from "../redux/templateApi";
 
 
 const availableSeatsObj = {
@@ -14,13 +15,16 @@ const availableSeatsObj = {
 };
 
 export default function TrainsList() {
-  const data = useSelector((state: unknown) => state.main.mainData)
+  const trainsListData = useSelector((state: unknown) => state.main.mainData)
+  // let [trigger, { data = [] }] = useLazyGetTrainOptionsQuery()
+  const dispatch = useDispatch();
+  
 
 
   return (
     <>
       <div className="filters flex justify-between items-center text-[#928F94]">
-        <div className="">Найдено: {data.total_count}</div>
+        <div className="">Найдено: {trainsListData.total_count}</div>
         <div className="flex gap-6 items-center">
           <form>
             <label htmlFor="city-select">сортировать по: </label>
@@ -42,13 +46,11 @@ export default function TrainsList() {
       </div>
 
       <div className="cards">
-        {data.total_count
-          ? data.items.map((item: any, ind: number) => {
+        {trainsListData.total_count
+          ? trainsListData.items.map((item: any, ind: number) => {
               const fromDatetime = fromUnixTime(item.departure.from.datetime);
               const toDatetime = fromUnixTime(item.departure.to.datetime);
               const travelTime = fromUnixTime(item.departure.duration);
-              //item.departure.duration
-              
 
               const formattedFromDatetime = format(fromDatetime, "HH:mm");
               const formattedToDatetime = format(toDatetime, "HH:mm");
@@ -116,7 +118,7 @@ export default function TrainsList() {
                           (el: [string, unknown | number], ind: number) => {
                             const seatType =
                               availableSeatsObj[
-                                el[0] as keyof AvailableSeatsInfo
+                                el[0] as keyof availableSeatsInterface
                               ];
                             return (
                               <div className="flex items-center w-full" key={ind}>
@@ -164,6 +166,17 @@ export default function TrainsList() {
 
                       </div>
                       <Link
+                        // onClick={ async () => {
+                        //   await trigger({
+                        //     trainId: item.departure._id,
+                        //     have_first_class: item.have_first_class,
+                        //     have_second_class: item.have_second_class,
+                        //     have_third_class: item.have_third_class,
+                        //     have_fourth_class: item.have_fourth_class,
+                        //     have_wifi: item.have_wifi,
+                        //     have_air_conditioning: item.have_air_conditioning,
+                        //   });
+                        // }}
                         to={`/booking/${item.departure._id}`}
                         className="btn-template btn-orange text-white border-orange bg-orange py-[2px] px-5"
                       >
