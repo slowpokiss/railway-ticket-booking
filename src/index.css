@@ -153,11 +153,11 @@ img {
     @apply flex flex-col gap-2 items-center cursor-pointer text-[#C4C4C4]
   }
 
-  .carriage-type:hover > svg path {
+  .carriage-type:hover, .carriage-type-active > svg path {
     @apply fill-[#FDB935]
   }
 
-  .carriage-type:hover > p {
+  .carriage-type:hover, .carriage-type-active > p {
     @apply text-[#FFA800]
   }
 

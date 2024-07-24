@@ -33,8 +33,13 @@ interface initialStateInterface {
         };
       };
     };
-    trainListData?: ResponseData;
-  };
+    trainOptions: {
+      currVagon: {
+        name: string;
+        vagonData: trainOptionsInterface;
+      }
+    };
+  }
 }
 
 const mainSlice = createSlice({
@@ -44,6 +49,7 @@ const mainSlice = createSlice({
       total_count: 0,
       items: [],
     },
+    stepsIndex: 1,
     filters: {
       have_first_class: false,
       have_second_class: false,
@@ -53,7 +59,6 @@ const mainSlice = createSlice({
       have_air_conditioning: false,
       have_express: false,
     },
-    stepsIndex: 1,
     firstStep: {
       searchData: {
         dates: {
@@ -71,11 +76,27 @@ const mainSlice = createSlice({
           },
         },
       },
+      trainOptions: {
+        currVagon: {
+          name: '',
+          vagonData: {
+            coach: {},
+            seats: [],
+          }
+        }
+      },
     },
   } satisfies initialStateInterface as initialStateInterface,
   reducers: {
     setMainData(state, action) {
       state.mainData = action.payload;
+    },
+
+    setCurrVagonData(state, action) {
+      const {name, data} = action.payload
+
+      state.firstStep.trainOptions.currVagon.name = name
+      state.firstStep.trainOptions.currVagon.vagonData = data
     },
 
     setDepartureCity(state, action) {
@@ -126,6 +147,7 @@ const mainSlice = createSlice({
 
 export const {
   setMainData,
+  setCurrVagonData,
   setDepartureCity,
   changeDepartureCity,
   setDepartureDates,
