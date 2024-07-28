@@ -112,6 +112,12 @@ img {
 }
 
 
+
+
+
+
+
+
 @layer components {
   .title-25 {
     @apply w-fit text-[1.562rem] mb-[15px] font-medium;
@@ -176,5 +182,12 @@ img {
   .add-option_inactive > svg path {
     @apply fill-black
   }
-}
 
+  .seat {
+    @apply absolute top-[15px] w-[31px] h-[67px] select-none
+  }
+
+  .seat__content {
+    @apply absolute top-1/2 left-0 w-full mt-[-10px] h-[20px] text-center text-[13px] font-normal text-[rgb(93,93,93)]
+  }
+}

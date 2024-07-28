@@ -10,7 +10,8 @@ import MainPage from "./pages/MainPage";
 import HeaderSearch from "./pages/HeaderSearch";
 import TrainOptions from "./components/TrainOptions";
 import TrainsList from "./components/TrainsList";
-
+import Seats from "./components/Seats";
+import PassengersList from "./components/PassengersList";
 
 const routerProv = createBrowserRouter(
   createRoutesFromElements(
@@ -27,9 +28,15 @@ const routerProv = createBrowserRouter(
 );
 
 function App() {
-  return <RouterProvider router={routerProv}></RouterProvider>;
+
+
+
+  return <div className="p-40">
+    <PassengersList />
+  </div>
+  
+  //<Seats />
+  //return <RouterProvider router={routerProv}></RouterProvider>;
 }
-
-
 
 export default App;

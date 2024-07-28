@@ -1,9 +1,62 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ResponseData } from "../intefaces/trainCardInterface";
 import { trainOptionsInterface } from "../intefaces/trainOptionsInterface";
-
+import { filtersInterface } from "../intefaces/filtersInterface";
 
 //   PayloadAction сделать типизацию
+//   сделать один Interface
+
+export interface mainDataInterface {
+  main: {
+    filters: filtersInterface;
+    mainData: ResponseData;
+    firstStep: {
+      searchData: {
+        dates: {
+          firstDate: string | null;
+          lastDate: string | null;
+        };
+        departureCities: {
+          fromCity: {
+            name: string;
+            id: string | null;
+          };
+          toCity: {
+            name: string;
+            id: string | null;
+          };
+        };
+      };
+      trainOptions: {
+        currVagon: {
+          name: string;
+          vagonData: trainOptionsInterface;
+        };
+      };
+      selectedPassengersCount: {
+        adult: number;
+        child: number;
+      };
+    };
+    secondStep: {
+      passengersData: {
+        age: string;
+        name: string;
+        familia: string;
+        surName: string;
+
+        gender: string;
+        birthday: string;
+        disabled: boolean;
+
+        document: string;
+        docSeria?: string;
+        docNumber: string;
+      }[];
+    };
+  };
+}
+
 interface initialStateInterface {
   mainData: ResponseData;
   stepsIndex: number;
@@ -15,7 +68,7 @@ interface initialStateInterface {
     have_wifi: boolean;
     have_air_conditioning: boolean;
     have_express: boolean;
-  }
+  };
   firstStep: {
     searchData: {
       dates: {
@@ -37,9 +90,29 @@ interface initialStateInterface {
       currVagon: {
         name: string;
         vagonData: trainOptionsInterface;
-      }
+      };
     };
-  }
+    selectedPassengersCount: {
+      adult: number;
+      child: number;
+    };
+  };
+  secondStep: {
+    passengersData: {
+      passId: number;
+      age: string;
+
+      name?: string;
+      familia?: string;
+      surName?: string;
+      gender?: string;
+      birthday?: string;
+      disabled?: boolean;
+      document?: string;
+      docSeria?: string;
+      docNumber?: string;
+    }[];
+  };
 }
 
 const mainSlice = createSlice({
@@ -78,13 +151,36 @@ const mainSlice = createSlice({
       },
       trainOptions: {
         currVagon: {
-          name: '',
+          name: "",
           vagonData: {
             coach: {},
             seats: [],
-          }
-        }
+          },
+        },
       },
+      selectedPassengersCount: {
+        adult: 0,
+        child: 0,
+      },
+    },
+    secondStep: {
+      passengersData: [
+        {
+          passId: 1,
+          age: "adult",
+          document: 'passport'
+        },
+        {
+          passId: 2,
+          age: "adult",
+          document: 'passport'
+        },
+        {
+          passId: 3,
+          age: "child",
+          document: 'childPassport'
+        },
+      ],
     },
   } satisfies initialStateInterface as initialStateInterface,
   reducers: {
@@ -93,10 +189,10 @@ const mainSlice = createSlice({
     },
 
     setCurrVagonData(state, action) {
-      const {name, data} = action.payload
+      const { name, data } = action.payload;
 
-      state.firstStep.trainOptions.currVagon.name = name
-      state.firstStep.trainOptions.currVagon.vagonData = data
+      state.firstStep.trainOptions.currVagon.name = name;
+      state.firstStep.trainOptions.currVagon.vagonData = data;
     },
 
     setDepartureCity(state, action) {
@@ -142,6 +238,71 @@ const mainSlice = createSlice({
         state.firstStep.searchData.dates.lastDate = date;
       }
     },
+
+    updatePassengersData(state, action) {
+      if (action.payload.actionType === "add") {
+        state.secondStep.passengersData.push({
+          age: "adult",
+          passId: state.secondStep.passengersData.length,
+        });
+      }
+      if (action.payload.actionType === "delete") {
+        const indexToDelete = action.payload.id;
+
+        state.secondStep.passengersData.splice(indexToDelete, 1);
+      }
+    },
+
+    setPassengersData(state, action) {
+      const { inputType, id, value } = action.payload;
+      const currItem = state.secondStep.passengersData[id];
+
+      // name?: string;
+      // familia?: string;
+      // surName?: string;
+      // gender?: string;
+      // birthday?: string;
+      // disabled?: boolean;
+      // document?: string;
+      // docSeria?: string;
+      // docNumber?: string;
+
+
+      switch (inputType) {
+        case "docSeria":
+          currItem.docSeria = value;
+          break;
+        case "docNumber":
+          currItem.docNumber = value;
+          break;
+        case "document":
+          currItem.document = value;
+          break;
+        case "birthday":
+          currItem.birthday = value;
+          break;
+        case "gender":
+          currItem.gender = value;
+          break;
+        case "surName":
+          currItem.surName = value;
+          break;
+        case "familia":
+          currItem.familia = value;
+          break;
+        case "name":
+          currItem.name = value;
+          break;
+        default:
+          break;
+      }
+
+      //inputType: "passport",
+      //id: elementId,
+      //value: ev.target.value,
+      //state.secondStep.passengersData[]
+      //console.log(action.payload)
+    },
   },
 });
 
@@ -151,5 +312,7 @@ export const {
   setDepartureCity,
   changeDepartureCity,
   setDepartureDates,
+  updatePassengersData,
+  setPassengersData,
 } = mainSlice.actions;
 export default mainSlice.reducer;

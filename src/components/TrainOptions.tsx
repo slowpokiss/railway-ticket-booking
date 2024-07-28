@@ -6,46 +6,19 @@ import { filtersInterface } from "../intefaces/filtersInterface";
 import { ResponseData } from "../intefaces/trainCardInterface";
 import { trainOptionsInterface } from "../intefaces/trainOptionsInterface";
 import { setCurrVagonData } from "../redux/mainSlice";
+import Seats from "./Seats";
+import { mainDataInterface } from "../redux/mainSlice";
 
-interface RootState {
-  main: {
-    filters: filtersInterface;
-    mainData: ResponseData;
-    firstStep: {
-      searchData: {
-        dates: {
-          firstDate: string | null;
-          lastDate: string | null;
-        };
-        departureCities: {
-          fromCity: {
-            name: string;
-            id: string | null;
-          };
-          toCity: {
-            name: string;
-            id: string | null;
-          };
-        };
-      };
-      trainOptions: {
-        currVagon: {
-          name: string;
-          vagonData: trainOptionsInterface;
-        }
-      };
-    }
-  };
-}
+
 
 interface seatsProps {
   data: trainOptionsInterface[];
 }
 
-function Seats({ data }: seatsProps) {
+function SeatsOptions({ data }: seatsProps) {
   type ClassType = "first" | "second" | "third" | "fourth";
   const currVagon = useSelector(
-    (state: RootState) => state.main.firstStep.trainOptions.currVagon
+    (state: mainDataInterface) => state.main.firstStep.trainOptions.currVagon
   );
   const dispatch = useDispatch();
 
@@ -72,6 +45,8 @@ function Seats({ data }: seatsProps) {
       allOptions[key].vagons.push(el);
     }
   });
+
+  
 
   const onTrainTypeClick = (type: ClassType) => {
     setTrainType(type);
@@ -315,7 +290,9 @@ function Seats({ data }: seatsProps) {
                 </ul>
               </div>
             </div>
+
           </div>
+          <Seats />
         </>
       ) : null}
     </div>
@@ -325,8 +302,11 @@ function Seats({ data }: seatsProps) {
 export default function TrainOptions() {
   const { trainId } = useParams();
   let [trigger, { data = [], isFetching }] = useLazyGetTrainOptionsQuery();
-  const filtersData = useSelector((state: RootState) => state.main.filters);
-  const mainData = useSelector((state: RootState) => state.main.mainData);
+  const filtersData = useSelector((state: mainDataInterface) => state.main.filters);
+  const mainData = useSelector((state: mainDataInterface) => state.main.mainData);
+  const currVagon = useSelector(
+    (state: mainDataInterface) => state.main.firstStep.trainOptions.currVagon
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -383,7 +363,7 @@ export default function TrainOptions() {
                 />
                 <div className="flex flex-col text-[14px] py-3">
                   <p className="text-[20px] font-semibold">
-                    {/* {option.coach.name} */}
+                    {currVagon.name}
                   </p>
                   {/* <p className="text-[#928F94]">Адлер →</p> */}
                   {/* {mainData.items.departure.from.city.name} → */}
@@ -451,7 +431,7 @@ export default function TrainOptions() {
                 </div>
               </div>
             </div>
-            <Seats data={data} />
+            <SeatsOptions data={data} />
           </div>
         </div>
       ) : (

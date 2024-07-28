@@ -8,43 +8,28 @@ import { setDepartureDates } from "../redux/mainSlice";
 
 interface calendarProps {
   inputClass: string;
-  dateInputDirection: string
+  dateInputDirection?: string
+  past?: boolean;
 }
 
-export default function Calendar({ inputClass, dateInputDirection }: calendarProps) {
+export default function Calendar({ inputClass, dateInputDirection, past = false }: calendarProps) {
   const calendarRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
 
-  const config: IOptions = {
+  const ticketsSearchConfig: IOptions = {
     input: true,
     type: "default",
     settings: {
       lang: "RU",
       range: {
-        disablePast: true,
+        disablePast: !past,
       },
-      // selection: {
-      //   day: "multiple-ranged",
-      // },
       visibility: {
         daysOutside: false,
         theme: "light",
       },
     },
     actions: {
-      // changeToInput(e, self) {
-      //   if (!self.HTMLInputElement) return;
-      //   if (self.selectedDates[1]) {
-      //     self.selectedDates.sort((a, b) => +new Date(a) - +new Date(b));
-      //     self.HTMLInputElement.value = `${self.selectedDates[0]} — ${
-      //       self.selectedDates[self.selectedDates.length - 1]
-      //     }`;
-      //   } else if (self.selectedDates[0]) {
-      //     self.HTMLInputElement.value = self.selectedDates[0];
-      //   } else {
-      //     self.HTMLInputElement.value = "";
-      //   }
-      // },
       changeToInput(e, self) {
         const date = self.selectedDates[0]
         dispatch(setDepartureDates({dateInputDirection, date}))
@@ -61,7 +46,7 @@ export default function Calendar({ inputClass, dateInputDirection }: calendarPro
 
   useEffect(() => {
     if (calendarRef.current) {
-      const calendar = new VanillaCalendar(calendarRef.current, config);
+      const calendar = new VanillaCalendar(calendarRef.current, ticketsSearchConfig);
       calendar.init();
     }
   }, []);
