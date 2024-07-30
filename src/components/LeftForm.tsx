@@ -1,11 +1,11 @@
 import { useState } from "react";
 import "../css/Switcher.css";
+import DoubleSlider from "./DoubleSlider";
 
 interface filterTimeProps {
   direction?: string;
-  title?: string
+  title?: string;
 }
-
 
 function FilterTime({ direction, title }: filterTimeProps) {
   const [extensionState, setExtensionState] = useState(false);
@@ -20,7 +20,7 @@ function FilterTime({ direction, title }: filterTimeProps) {
         <div className="flex p-5  justify-between">
           <div className="flex gap-2">
             <img src={`../vecs/${direction}_icon.svg`} alt={direction} />
-              <p className="font-semibold">{title}</p>
+            <p className="font-semibold">{title}</p>
           </div>
 
           <img
@@ -31,14 +31,14 @@ function FilterTime({ direction, title }: filterTimeProps) {
           />
         </div>
 
-        <div className={`${extensionState ? "block" : "hidden"}`}>
+        <div className={`${extensionState ? "" : "hidden"}`}>
           <div className="p-5 text-[16px]">
             <p>Время отбытия</p>
-            <input type="text" className="input-template text-[14px] p-2" />
+            <DoubleSlider type="time" minim={0} maxim={84600} />
           </div>
           <div className="p-5 text-[16px]">
             <p className="text-end">Время прибытия</p>
-            <input type="text" className="input-template text-[14px] p-2" />
+            <DoubleSlider type="time" minim={0} maxim={84600} />
           </div>
         </div>
       </div>
@@ -66,50 +66,72 @@ export default function LeftForm() {
             />
           </div>
         </div>
-        <ul className="flex justify-start flex-col text-[15px] gap-5 px-[17%] py-5 border-b border-white">
-          <li className="flex gap-7 justify-between">
-            <img src="../vecs/kype.svg" alt="kype" />
-            <p className="mr-auto">Купе</p>
+        <ul className="flex justify-start flex-col text-[15px] gap-5 px-[10%] py-5 border-b border-white">
+          <li className="flex justify-between">
+            <div className="w-1/2 flex justify-between">
+              <img src="../vecs/kype.svg" alt="kype" />
+              <p className="">Купе</p>
+            </div>
+
             <label className="switch">
               <input type="checkbox" />
               <span className="slider round"></span>
             </label>
           </li>
-          <li className="flex gap-7 justify-between">
-            <img src="../vecs/plazc.svg" alt="plazc" />
-            <p className="mr-auto">Плацкарт</p>
+
+          <li className="flex justify-between">
+            <div className="w-[60%] flex justify-between">
+              <img src="../vecs/plazc.svg" alt="plazc" />
+              <p className="">Плацкарт</p>
+            </div>
+
             <label className="switch">
               <input type="checkbox" />
               <span className="slider round"></span>
             </label>
           </li>
-          <li className="flex gap-7 justify-between">
-            <img src="../vecs/sitting.svg" alt="sitting" />
-            <p className="mr-auto">Сидячий</p>
+
+          <li className="flex justify-between">
+            <div className="w-1/2 flex justify-between">
+              <img src="../vecs/sitting.svg" alt="sitting" />
+              <p className="">Сидячий</p>
+            </div>
+
             <label className="switch">
               <input type="checkbox" />
               <span className="slider round"></span>
             </label>
           </li>
-          <li className="flex gap-7 justify-between">
-            <img src="../vecs/luxury.svg" alt="luxury" />
-            <p className="mr-auto">Люкс</p>
+
+          <li className="flex justify-between">
+            <div className="w-1/2 flex justify-between">
+              <img src="../vecs/luxury.svg" alt="luxury" />
+              <p className="">Люкс</p>
+            </div>
             <label className="switch">
               <input type="checkbox" />
               <span className="slider round"></span>
             </label>
           </li>
-          <li className="flex gap-7 justify-between">
-            <img src="../vecs/wifi.svg" alt="wifi" />
-            <p className="mr-auto">Wi-Fi</p>
+
+          <li className="flex justify-between">
+            <div className="w-1/2 flex justify-between">
+              <img src="../vecs/wifi.svg" alt="wifi" />
+              <p className="">Wi-Fi</p>
+            </div>
+
             <label className="switch">
               <input type="checkbox" />
               <span className="slider round"></span>
             </label>
           </li>
-          <li className="flex gap-7 justify-between">
-            <img src="../vecs/express.svg" alt="express" />
-            <p className="mr-auto">Экспресс</p>
+
+          <li className="flex justify-between">
+            <div className="w-1/2 flex justify-between">
+              <img src="../vecs/express.svg" alt="express" />
+              <p className="">Экспресс</p>
+            </div>
+
             <label className="switch">
               <input type="checkbox" />
               <span className="slider round"></span>
@@ -117,8 +139,8 @@ export default function LeftForm() {
           </li>
         </ul>
         <div className="flex flex-col border-b p-5 border-white">
-          <div className="">Стоимость</div>
-          <input type="text" className="input-template text-[14px] p-2" />
+          <div className="mb-3">Стоимость</div>
+          <DoubleSlider minim={1600} maxim={9900} />
         </div>
 
         <FilterTime direction="forward" title="Туда" />

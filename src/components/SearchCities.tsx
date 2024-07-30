@@ -3,16 +3,16 @@ import { useLazyGetCitiesQuery } from "../redux/templateApi";
 import debounce from "lodash/debounce";
 import "../css/RotateSwitch.css";
 import { useDispatch, useSelector } from "react-redux";
-import { setDepartureCity } from "../redux/mainSlice";
-import { changeDepartureCity } from "../redux/mainSlice";
+import { setDepartureCity, initialStateInterface, changeDepartureCity } from "../redux/mainSlice";
 
 interface dataInterface {
   name: string;
   _id: string;
 }
 
+type CityInputDirection = 'fromCity' | 'toCity';
 interface searchInputProps {
-  cityInputDirection: string
+  cityInputDirection: CityInputDirection
 }
 
 const SearchInput = forwardRef<HTMLInputElement, searchInputProps>(
@@ -20,11 +20,11 @@ const SearchInput = forwardRef<HTMLInputElement, searchInputProps>(
     const { cityInputDirection } = props;
     let [trigger, { data = [], error, isLoading }] = useLazyGetCitiesQuery();
     const dispatch = useDispatch();
-    const inputData = useSelector((state: unknown) => state.main.firstStep.searchData.departureCities);
+    const inputData = useSelector((state: {main: initialStateInterface}) => state.main.firstStep.searchData.departureCities);
 
     useEffect(() => {
-      debouncedSearch(inputData[String(cityInputDirection)].name);
-    }, [inputData[String(cityInputDirection)].name])
+      debouncedSearch(inputData[cityInputDirection].name);
+    }, [inputData[cityInputDirection].name])
 
     const debouncedSearch = useCallback(
       debounce((searchTerm: string) => {
@@ -53,7 +53,7 @@ const SearchInput = forwardRef<HTMLInputElement, searchInputProps>(
       <>
         <div className="w-full relative z-10">
           <input
-            value={inputData[String(cityInputDirection)].name}
+            value={inputData[cityInputDirection].name}
             type="text"
             name="cityInput"
             ref={inputRef}
@@ -65,7 +65,7 @@ const SearchInput = forwardRef<HTMLInputElement, searchInputProps>(
               }, 250);
             }}
             onFocus={() => setCitiesListState(true)}
-            // required
+            required
           />
 
           {/* {error && <p>Error occurred: {error.message}</p>} */}

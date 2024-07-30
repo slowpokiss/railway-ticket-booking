@@ -1,21 +1,32 @@
-
-
-
+import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function MainPage() {
+    const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const element = document.getElementById(location.hash.substring(1));
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [location]);
+
   return (
     <>
       <header className="flex flex-col justify-around overflow-hidden w-full h-full border-b-[7px] border-orange bg-no-repeat bg-center bg-cover bg-train-main bg-[rgba(0,0,0,0.7)]">
         <div className="head-first">
-          <div className="w-full text-[1.31rem] font-bold text-white py-[6px] px-44 bg-[rgba(0,0,0,0.5)] ">
-            Лого
+          <div  className="w-full text-[1.31rem] font-bold text-white py-[6px] px-44 bg-[rgba(0,0,0,0.5)] ">
+            <Link to={'/'}>Лого</Link> 
           </div>
           <nav className="w-full h-auto bg-[rgba(41,41,41,1)]">
             <ul className="flex gap-10 w-auto h-fit mx-44 py-4">
-              <li className="text-white text-[1.31rem]">О нас</li>
-              <li className="text-white text-[1.31rem]">Как это работает</li>
-              <li className="text-white text-[1.31rem]">Отзывы</li>
-              <li className="text-white text-[1.31rem]">Контакты</li>
+              <Link to={'/#about'} className="text-white text-[1.31rem]">О нас</Link>
+              <Link to={'/#how-it-works'} className="text-white text-[1.31rem]">Как это работает</Link>
+              <Link to={'/#reviews'} className="text-white text-[1.31rem]">Отзывы</Link>
+              <Link to={'/#contacts'} className="text-white text-[1.31rem]">Контакты</Link>
             </ul>
           </nav>
         </div>
@@ -71,7 +82,7 @@ export default function MainPage() {
       </header>
       <main>
         <div className="about w-[70%] mx-auto mt-[75px] mb-0">
-          <div className="title-25">О НАС</div>
+          <div id="about" className="title-25">О НАС</div>
           <div className="flex gap-[0.95rem] items-stretch">
             <div className="w-[0.64rem] bg-[#FFA800]"></div>
             <div className="flex flex-col gap-3">
@@ -97,7 +108,7 @@ export default function MainPage() {
         </div>
         <div className="advantage flex flex-col justify-between items-center w-full h-[400px] mt-[75px] pt-[45px] pb-[85px] bg-no-repeat bg-center bg-cover bg-road-main">
           <div className="w-[75%] flex flex-row justify-between m-5">
-            <div className="advantage-title">КАК ЭТО РАБОТАЕТ</div>
+            <div id="how-it-works" className="advantage-title">КАК ЭТО РАБОТАЕТ</div>
             <div className="btn-template text-white border-white btn-goldish">
               Узнать больше
             </div>
@@ -136,7 +147,7 @@ export default function MainPage() {
           </div>
         </div>
         <div className="reviews w-[70%] flex flex-col mx-auto my-[75px]">
-          <div className="title-25">ОТЗЫВЫ</div>
+          <div id="reviews" className="title-25">ОТЗЫВЫ</div>
           <div className="flex gap-[70px]">
             <div className="flex gap-[30px]">
               <img

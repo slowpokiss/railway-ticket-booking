@@ -2,9 +2,9 @@ import { useState } from "react";
 import Calendar from "./Calendar";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  mainDataInterface,
+  initialStateInterface,
   updatePassengersData,
-  setPassengersData,
+  setPassengersData
 } from "../redux/mainSlice";
 
 interface passengerProps {
@@ -13,13 +13,15 @@ interface passengerProps {
   elementId: number;
 }
 
+
 function Passenger({ passData, onDeletePassenger, elementId }: passengerProps) {
   const dispatch = useDispatch();
   const [openState, setOpenState] = useState(true);
 
   const passengersItem = useSelector(
-    (state: mainDataInterface) => state.main.secondStep.passengersData
+    (state: {main: initialStateInterface}) => state.main.secondStep.passengersData
   )[elementId];
+
 
   return (
     <div className="w-full border border-[#C4C4C4]">
@@ -153,6 +155,14 @@ function Passenger({ passData, onDeletePassenger, elementId }: passengerProps) {
             <div className="flex flex-col">
               <p className="text-[#928F94]">Дата рождения</p>
               <Calendar
+                onInput={(data: string | undefined) => 
+                  dispatch(
+                  setPassengersData({
+                    inputType: "birthday",
+                    id: elementId,
+                    value: data,
+                  }))
+                }
                 past={true}
                 inputClass={"passengers-input input-template"}
               />
@@ -168,7 +178,7 @@ function Passenger({ passData, onDeletePassenger, elementId }: passengerProps) {
             <div className="w-1/3 flex flex-col">
               <p className="text-[#928F94] leading-normal">Тип документа</p>
               <select
-                defaultValue={'passport'}
+                defaultValue={"passport"}
                 onChange={(ev: React.ChangeEvent<HTMLSelectElement>) =>
                   dispatch(
                     setPassengersData({
@@ -187,7 +197,7 @@ function Passenger({ passData, onDeletePassenger, elementId }: passengerProps) {
             </div>
             <div
               className={`${
-                passengersItem.document !== "passport" ? "hidden" : ''
+                passengersItem.document !== "passport" ? "hidden" : ""
               }  w-1/3 flex flex-col`}
             >
               <p className="text-[#928F94]">Серия</p>
@@ -224,9 +234,11 @@ function Passenger({ passData, onDeletePassenger, elementId }: passengerProps) {
                   )
                 }
                 type="tel"
-                placeholder={`${passengersItem.document !== "childPassport"
-                  ? "______"
-                  : "____________"}`}
+                placeholder={`${
+                  passengersItem.document !== "childPassport"
+                    ? "______"
+                    : "____________"
+                }`}
                 name="passport-number"
                 maxLength={passengersItem.document === "childPassport" ? 12 : 6}
                 className="passengers-input tracking-widest"
@@ -256,7 +268,7 @@ export default function PassengersList() {
   const dispatch = useDispatch();
 
   const passengersList = useSelector(
-    (state: mainDataInterface) => state.main.secondStep.passengersData
+    (state: {main: initialStateInterface}) => state.main.secondStep.passengersData
   );
 
   const onDeletePassenger = (id: number) => {

@@ -1,20 +1,19 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import VanillaCalendar from "vanilla-calendar-pro";
 import { IOptions } from "vanilla-calendar-pro/types";
 import "vanilla-calendar-pro/build/vanilla-calendar.min.css";
 import "../css/Calendar.css";
-import { useDispatch } from "react-redux";
-import { setDepartureDates } from "../redux/mainSlice";
 
 interface calendarProps {
   inputClass: string;
-  dateInputDirection?: string
   past?: boolean;
+  data?: string
+  dataId?: string;
+  onInput?: (data: string | undefined, dataId: string | undefined) => void;
 }
 
-export default function Calendar({ inputClass, dateInputDirection, past = false }: calendarProps) {
+export default function Calendar({ inputClass, past = false, onInput, dataId }: calendarProps) {
   const calendarRef = useRef<HTMLInputElement>(null);
-  const dispatch = useDispatch();
 
   const ticketsSearchConfig: IOptions = {
     input: true,
@@ -32,7 +31,9 @@ export default function Calendar({ inputClass, dateInputDirection, past = false 
     actions: {
       changeToInput(e, self) {
         const date = self.selectedDates[0]
-        dispatch(setDepartureDates({dateInputDirection, date}))
+        if (onInput && date) {
+          onInput(date, dataId);
+        } 
         if (!self.HTMLInputElement) return;
         if (date) {
           self.HTMLInputElement.value = date;
@@ -54,12 +55,12 @@ export default function Calendar({ inputClass, dateInputDirection, past = false 
   return (
     <>
       <input
+        required
         ref={calendarRef}
         placeholder="ДД/ММ/ГГ"
         name="dateInput"
         className={`${inputClass} bg-[url('../../vecs/calendar_logo.svg')]`}
         type="text"
-        // required
       />
     </>
   );

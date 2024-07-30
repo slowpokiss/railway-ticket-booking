@@ -2,16 +2,17 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const templateApi = createApi({
   reducerPath: "templateApi",
+  tagTypes: ['Tickets', 'Options'],
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://students.netoservices.ru/fe-diplom/routes",
+    baseUrl: "https://students.netoservices.ru/fe-diplom/",
   }),
   endpoints: (build) => ({
     getCities: build.query({
-      query: (searchItem) => `/cities?name=${searchItem}`,
+      query: (searchItem) => `routes/cities?name=${searchItem}`,
     }),
     findTickets: build.query({
       query: ({ dates, cities }) =>
-        `/?from_city_id=${cities.fromCity.id}&to_city_id=${cities.toCity.id}`,
+        `routes/?from_city_id=${cities.fromCity.id}&to_city_id=${cities.toCity.id}`,
     }),
     getTrainOptions: build.query({
       query: ({
@@ -23,7 +24,7 @@ export const templateApi = createApi({
         have_wifi = false,
         have_air_conditioning = false,
       }) =>
-        `${trainId}/seats?
+        `routes/${trainId}/seats?
           have_first_class=${have_first_class}&
           have_second_class=${have_second_class}&
           have_third_class=${have_third_class}&
@@ -32,6 +33,24 @@ export const templateApi = createApi({
           have_air_conditioning=${have_air_conditioning}
       `,
     }),
+    emailSubscription: build.mutation({
+      query: (body: any) => ({
+        url: 'subscribe',
+        method: 'POST',
+        body,
+      }),
+      
+      //invalidatesTags: [{ type: 'Tickets', id: 'LIST' }],
+      // providesTags: (result: any) =>
+      //   result
+      //     ? [
+      //         { type: 'Tickets', id: 'LIST' },
+      //         ...result.map(({ id }) => ({ type: 'Tickets' as const, id })),
+      //       ]
+      //     : [{ type: 'Tickets', id: 'LIST' }],
+        
+        //`/?from_city_id=${cities.fromCity.id}&to_city_id=${cities.toCity.id}`,
+    }),
   }),
 });
 
@@ -39,5 +58,6 @@ export const {
   useLazyGetCitiesQuery,
   useLazyFindTicketsQuery,
   useLazyGetTrainOptionsQuery,
+  useEmailSubscriptionMutation,
 } = templateApi;
 export default templateApi;

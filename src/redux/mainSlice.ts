@@ -4,71 +4,11 @@ import { trainOptionsInterface } from "../intefaces/trainOptionsInterface";
 import { filtersInterface } from "../intefaces/filtersInterface";
 
 //   PayloadAction сделать типизацию
-//   сделать один Interface
 
-export interface mainDataInterface {
-  main: {
-    filters: filtersInterface;
-    mainData: ResponseData;
-    firstStep: {
-      searchData: {
-        dates: {
-          firstDate: string | null;
-          lastDate: string | null;
-        };
-        departureCities: {
-          fromCity: {
-            name: string;
-            id: string | null;
-          };
-          toCity: {
-            name: string;
-            id: string | null;
-          };
-        };
-      };
-      trainOptions: {
-        currVagon: {
-          name: string;
-          vagonData: trainOptionsInterface;
-        };
-      };
-      selectedPassengersCount: {
-        adult: number;
-        child: number;
-      };
-    };
-    secondStep: {
-      passengersData: {
-        age: string;
-        name: string;
-        familia: string;
-        surName: string;
-
-        gender: string;
-        birthday: string;
-        disabled: boolean;
-
-        document: string;
-        docSeria?: string;
-        docNumber: string;
-      }[];
-    };
-  };
-}
-
-interface initialStateInterface {
+export interface initialStateInterface {
   mainData: ResponseData;
   stepsIndex: number;
-  filters: {
-    have_first_class: boolean;
-    have_second_class: boolean;
-    have_third_class: boolean;
-    have_fourth_class: boolean;
-    have_wifi: boolean;
-    have_air_conditioning: boolean;
-    have_express: boolean;
-  };
+  filters: filtersInterface
   firstStep: {
     searchData: {
       dates: {
@@ -196,7 +136,11 @@ const mainSlice = createSlice({
     },
 
     setDepartureCity(state, action) {
-      const { cityInputDirection, value, id } = action.payload;
+      let { cityInputDirection, value, id } = action.payload;
+      
+      if (value.length === 1) {
+        value = value.toUpperCase()
+      }
 
       if (cityInputDirection === "toCity") {
         state.firstStep.searchData.departureCities.toCity.name = value;
@@ -257,17 +201,6 @@ const mainSlice = createSlice({
       const { inputType, id, value } = action.payload;
       const currItem = state.secondStep.passengersData[id];
 
-      // name?: string;
-      // familia?: string;
-      // surName?: string;
-      // gender?: string;
-      // birthday?: string;
-      // disabled?: boolean;
-      // document?: string;
-      // docSeria?: string;
-      // docNumber?: string;
-
-
       switch (inputType) {
         case "docSeria":
           currItem.docSeria = value;
@@ -296,12 +229,6 @@ const mainSlice = createSlice({
         default:
           break;
       }
-
-      //inputType: "passport",
-      //id: elementId,
-      //value: ev.target.value,
-      //state.secondStep.passengersData[]
-      //console.log(action.payload)
     },
   },
 });

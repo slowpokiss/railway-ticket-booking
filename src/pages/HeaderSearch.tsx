@@ -3,17 +3,19 @@ import SearchCities from "../components/SearchCities";
 import LeftForm from "../components/LeftForm";
 import LastTickets from "../components/LastTickets";
 import Steps from "../components/Steps";
+import {  } from "../redux/mainSlice";
 
-import { useLazyFindTicketsQuery } from "../redux/templateApi";
+import { useLazyFindTicketsQuery,  } from "../redux/templateApi";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { setMainData } from "../redux/mainSlice";
-import { Outlet } from "react-router-dom";
+import { useEffect } from "react";
+import { setMainData, setDepartureDates, initialStateInterface } from "../redux/mainSlice";
+import { Link, Outlet } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export default function HeaderSearch() {
   let [trigger, { data = [], isFetching  }] = useLazyFindTicketsQuery();
   const inputsDate = useSelector(
-    (state: unknown) => state.main.firstStep.searchData
+    (state: {main: initialStateInterface}) => state.main.firstStep.searchData
   );
   const dispatch = useDispatch();
 
@@ -27,8 +29,19 @@ export default function HeaderSearch() {
   };
 
   useEffect(() => {
-    dispatch(setMainData(data)); // че я блять написал, хуле это работает
+    dispatch(setMainData(data));
   }, [isFetching]);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const element = document.getElementById(location.hash.substring(1));
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [location]);
 
   return (
     <>
@@ -39,11 +52,11 @@ export default function HeaderSearch() {
           </div>
           <nav className="w-full h-auto bg-[rgba(41,41,41,1)]">
             <ul className="flex gap-10 w-auto h-fit mx-44 py-4">
-              <li className="text-white text-[1.31rem]">О нас</li>
-              <li className="text-white text-[1.31rem]">Как это работает</li>
-              <li className="text-white text-[1.31rem]">Отзывы</li>
-              <li className="text-white text-[1.31rem]">Контакты</li>
-            </ul>
+              <Link to={'/#about'} className="text-white text-[1.31rem]">О нас</Link>
+              <Link to={'/#how-it-works'} className="text-white text-[1.31rem]">Как это работает</Link>
+              <Link to={'/#reviews'} className="text-white text-[1.31rem]">Отзывы</Link>
+              <Link to={'/#contacts'} className="text-white text-[1.31rem]">Контакты</Link>
+            </ul> 
           </nav>
         </div>
         <div className="flex w-full min-h-[330px] items-end justify-center ">
@@ -65,11 +78,15 @@ export default function HeaderSearch() {
                     <div className="flex gap-[30px]">
                       <Calendar
                         inputClass="input-template"
-                        dateInputDirection={"to"}
+                        onInput={(data: string | undefined) => 
+                          dispatch(setDepartureDates({date: data, dateInputDirection: 'from' }))
+                        }
                       />
                       <Calendar
                         inputClass="input-template"
-                        dateInputDirection={"from"}
+                        onInput={(data: string | undefined) => 
+                          dispatch(setDepartureDates({date: data, dateInputDirection: 'from' }))
+                        }
                       />
                     </div>
                   </div>
@@ -90,7 +107,7 @@ export default function HeaderSearch() {
       <Steps />
 
       <main className="">
-        <div className="grid grid-cols-4 gap-4 bg-[#F7F5F9] pt-12 px-28">
+        <div className="grid grid-cols-4 gap-4 bg-[#F7F5F9] pt-12 px-[48px]">
           <div className="col-span-1">
             <LeftForm />
             <LastTickets />
