@@ -1,8 +1,12 @@
-
+import { useDispatch, useSelector } from "react-redux";
+import { setPaymentData, initialStateInterface } from "../redux/mainSlice";
 
 export default function Payment() {
+  const dispatch = useDispatch();
+  const paymentData = useSelector((state: {main: initialStateInterface}) => state.main.thirdStep)
+
   return (
-    <>
+    <form className="flex flex-col">
       <div className="w-full border border-[#C4C4C4]">
         <div className="">
           <div className="flex justify-between items-center text-[20px] py-5 px-6 bg-[#F9F9F9]">
@@ -15,15 +19,54 @@ export default function Payment() {
               <div className="grid grid-cols-3 gap-[22px]">
                 <div className="flex flex-col">
                   <p className="text-[#928F94]">Фамилия</p>
-                  <input type="text" className="passengers-input" />
+                  <input
+                    onInput={(ev: React.ChangeEvent<HTMLInputElement>) =>
+                      dispatch(
+                        setPaymentData({
+                          inputType: "familia",
+                          value: ev.target.value,
+                        })
+                      )
+                    }
+                    value={paymentData.familia}
+                    required
+                    type="text"
+                    className="passengers-input"
+                  />
                 </div>
                 <div className="flex flex-col">
                   <p className="text-[#928F94]">Имя</p>
-                  <input type="text" className="passengers-input" />
+                  <input
+                    onInput={(ev: React.ChangeEvent<HTMLInputElement>) =>
+                      dispatch(
+                        setPaymentData({
+                          inputType: "name",
+                          value: ev.target.value,
+                        })
+                      )
+                    }
+                    value={paymentData.name}
+                    required
+                    type="text"
+                    className="passengers-input"
+                  />
                 </div>
                 <div className="flex flex-col">
                   <p className="text-[#928F94]">Отчество</p>
-                  <input type="text" className="passengers-input" />
+                  <input
+                    onInput={(ev: React.ChangeEvent<HTMLInputElement>) =>
+                      dispatch(
+                        setPaymentData({
+                          inputType: "surName",
+                          value: ev.target.value,
+                        })
+                      )
+                    }
+                    value={paymentData.surName}
+                    required
+                    type="text"
+                    className="passengers-input"
+                  />
                 </div>
               </div>
             </div>
@@ -31,6 +74,16 @@ export default function Payment() {
               <div className="flex flex-col">
                 <p className="text-[#928F94]">Контактный телефон</p>
                 <input
+                  required
+                  onInput={(ev: React.ChangeEvent<HTMLInputElement>) =>
+                    dispatch(
+                      setPaymentData({
+                        inputType: "tel",
+                        value: ev.target.value,
+                      })
+                    )
+                  }
+                  value={paymentData.tel}
                   type="tel"
                   name="phone_number"
                   className="passengers-input"
@@ -42,12 +95,21 @@ export default function Payment() {
               <div className="flex flex-col">
                 <p className="text-[#928F94]">E-mail</p>
                 <input
+                  required
+                  onInput={(ev: React.ChangeEvent<HTMLInputElement>) =>
+                    dispatch(
+                      setPaymentData({
+                        inputType: "email",
+                        value: ev.target.value,
+                      })
+                    )
+                  }
+                  value={paymentData.email}
                   type="tel"
                   placeholder="example@gmail.com"
                   name=""
-                  maxLength={6}
                   className="passengers-input"
-                  pattern="\d{6}"
+                  pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
                 />
               </div>
             </div>
@@ -63,7 +125,20 @@ export default function Payment() {
             <div className="border-b-2 border-dotted p-6">
               <div className="">
                 <label className="ml-2 w-fit flex gap-4 container select-none">
-                  <input type="checkbox" className="big-checkbox" />
+                  <input
+                    required
+                    onChange={() =>
+                      dispatch(
+                        setPaymentData({
+                          inputType: "method",
+                          value: "online",
+                        })
+                      )
+                    }
+                    type="radio"
+                    name="payment-method"
+                    className="big-checkbox"
+                  />
                   <p className="text-[#928F94]">Онлайн</p>
                 </label>
               </div>
@@ -78,14 +153,32 @@ export default function Payment() {
             </div>
             <div className="p-6">
               <label className="ml-2 w-fit flex gap-4 container select-none">
-                <input type="checkbox" className="big-checkbox" />
+                <input
+                  required
+                  type="radio"
+                  name="payment-method"
+                  className="big-checkbox"
+                  onChange={() =>
+                    dispatch(
+                      setPaymentData({
+                        inputType: "method",
+                        value: "cash",
+                      })
+                    )
+                  }
+                />
                 <p className="text-[#928F94]">Наличными</p>
               </label>
             </div>
           </div>
         </div>
       </div>
-      <div className="ml-auto mt-14 btn-template btn-orange bg-orange border-orange text-white ">Купить билеты</div>
-    </>
+
+      <input
+        value={"Купить билеты"}
+        type="submit"
+        className=" mt-14 btn-template btn-orange bg-orange border-orange ml-auto text-white "
+      />
+    </form>
   );
 }

@@ -306,7 +306,8 @@ export default function PassengersList() {
         </div>
         <input
           type="submit"
-          className="btn-template  border-black py-2 px-4 text-black "
+          className=" ml-[auto] btn-template bg-orange text-white btn-orange py-2 px-10  "
+          value='Далее'
         />
       </form>
     </>

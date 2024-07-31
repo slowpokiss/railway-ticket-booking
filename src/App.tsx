@@ -12,8 +12,10 @@ import TrainOptions from "./components/TrainOptions";
 import TrainsList from "./components/TrainsList";
 import Seats from "./components/Seats";
 import PassengersList from "./components/PassengersList";
-import DoubleSlider from "./components/DoubleSlider";
+import Payment from "./components/Payment";
+import Review from "./components/Review";
 import Final from "./pages/Final";
+
 
 const routerProv = createBrowserRouter(
   createRoutesFromElements(
@@ -23,6 +25,9 @@ const routerProv = createBrowserRouter(
         <Route path="/booking" element={<HeaderSearch />}>
           <Route path="/booking" element={<TrainsList />}></Route>
           <Route path="/booking/:trainId" element={<TrainOptions />}></Route>
+          <Route path="/booking/passengers" element={<PassengersList />}></Route>
+          <Route path="/booking/payment" element={<Payment />}></Route>
+          <Route path="/booking/review" element={<Review />}></Route>
         </Route>
         <Route path="/final" element={<Final />}></Route>
       </Route>
@@ -31,11 +36,11 @@ const routerProv = createBrowserRouter(
 );
 
 function App() {
-  // return <div className="p-40">
-  //   <PassengersList />
-  // </div>
+  return <div className="p-40">
+    <Seats />
+  </div>
 
-  return <RouterProvider router={routerProv}></RouterProvider>;
+  //return <RouterProvider router={routerProv}></RouterProvider>;
 }
 
 export default App;

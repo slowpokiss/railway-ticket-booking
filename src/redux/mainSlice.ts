@@ -8,7 +8,7 @@ import { filtersInterface } from "../intefaces/filtersInterface";
 export interface initialStateInterface {
   mainData: ResponseData;
   stepsIndex: number;
-  filters: filtersInterface
+  filters: filtersInterface;
   firstStep: {
     searchData: {
       dates: {
@@ -52,6 +52,14 @@ export interface initialStateInterface {
       docSeria?: string;
       docNumber?: string;
     }[];
+  };
+  thirdStep: {
+    name: string | undefined;
+    familia: string | undefined;
+    surName: string | undefined;
+    tel: string | undefined;
+    method: string | undefined;
+    email: string | undefined;
   };
 }
 
@@ -108,19 +116,27 @@ const mainSlice = createSlice({
         {
           passId: 1,
           age: "adult",
-          document: 'passport'
+          document: "passport",
         },
         {
           passId: 2,
           age: "adult",
-          document: 'passport'
+          document: "passport",
         },
         {
           passId: 3,
           age: "child",
-          document: 'childPassport'
+          document: "childPassport",
         },
       ],
+    },
+    thirdStep: {
+      name: undefined,
+      familia: undefined,
+      surName: undefined,
+      tel: undefined,
+      method: undefined,
+      email: undefined,
     },
   } satisfies initialStateInterface as initialStateInterface,
   reducers: {
@@ -128,6 +144,12 @@ const mainSlice = createSlice({
       state.mainData = action.payload;
     },
 
+    setStepsIndex(state, action) {
+      const { index } = action.payload;
+      state.stepsIndex = index;
+    },
+
+    // first step reducers
     setCurrVagonData(state, action) {
       const { name, data } = action.payload;
 
@@ -137,9 +159,9 @@ const mainSlice = createSlice({
 
     setDepartureCity(state, action) {
       let { cityInputDirection, value, id } = action.payload;
-      
+
       if (value.length === 1) {
-        value = value.toUpperCase()
+        value = value.toUpperCase();
       }
 
       if (cityInputDirection === "toCity") {
@@ -183,6 +205,7 @@ const mainSlice = createSlice({
       }
     },
 
+    // second step reducers
     updatePassengersData(state, action) {
       if (action.payload.actionType === "add") {
         state.secondStep.passengersData.push({
@@ -230,6 +253,34 @@ const mainSlice = createSlice({
           break;
       }
     },
+
+    // third step reducers
+    setPaymentData(state, action) {
+      const { inputType, value } = action.payload;
+
+      switch (inputType) {
+        case "name":
+          state.thirdStep.name = value;
+          break;
+        case "familia":
+          state.thirdStep.familia = value;
+          break;
+        case "surName":
+          state.thirdStep.surName = value;
+          break;
+        case "tel":
+          state.thirdStep.tel = value;
+          break;
+        case "method":
+          state.thirdStep.method = value;
+          break;
+        case "email":
+          state.thirdStep.email = value;
+          break;
+        default:
+          break;
+      }
+    },
   },
 });
 
@@ -241,5 +292,7 @@ export const {
   setDepartureDates,
   updatePassengersData,
   setPassengersData,
+  setStepsIndex,
+  setPaymentData,
 } = mainSlice.actions;
 export default mainSlice.reducer;

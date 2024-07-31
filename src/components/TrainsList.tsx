@@ -3,9 +3,9 @@ import {
 } from "../intefaces/trainCardInterface";
 import { fromUnixTime, format } from "date-fns";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, } from "react-redux";
 import { useLazyGetTrainOptionsQuery } from "../redux/templateApi";
-
+import { initialStateInterface } from "../redux/mainSlice";
 
 const availableSeatsObj = {
   first: "Люкс",
@@ -14,8 +14,9 @@ const availableSeatsObj = {
   fourth: "Сидячий",
 };
 
+
 export default function TrainsList() {
-  const trainsListData = useSelector((state: unknown) => state.main.mainData)
+  const trainsListData = useSelector((state: {main: initialStateInterface}) => state.main.mainData)
   // let [trigger, { data = [] }] = useLazyGetTrainOptionsQuery()
   const dispatch = useDispatch();
   

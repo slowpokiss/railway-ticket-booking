@@ -3,7 +3,6 @@ import SearchCities from "../components/SearchCities";
 import LeftForm from "../components/LeftForm";
 import LastTickets from "../components/LastTickets";
 import Steps from "../components/Steps";
-import {  } from "../redux/mainSlice";
 
 import { useLazyFindTicketsQuery,  } from "../redux/templateApi";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,7 +32,6 @@ export default function HeaderSearch() {
   }, [isFetching]);
 
   const location = useLocation();
-
   useEffect(() => {
     if (location.hash) {
       const element = document.getElementById(location.hash.substring(1));
