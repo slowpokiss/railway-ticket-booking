@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "../css/Switcher.css";
 import DoubleSlider from "./DoubleSlider";
+import { useSelector } from "react-redux";
+import { initialStateInterface } from "../redux/mainSlice";
 
 interface filterTimeProps {
   direction?: string;
@@ -47,6 +49,10 @@ function FilterTime({ direction, title }: filterTimeProps) {
 }
 
 export default function LeftForm() {
+  const firstStep = useSelector(
+    (state: { main: initialStateInterface }) => state.main.firstStep
+  );
+
   return (
     <>
       <div className="form flex flex-col  bg-[#3E3C41] mb-20 text-white text-[22px]">
@@ -54,15 +60,27 @@ export default function LeftForm() {
           <div className="">
             <div>Дата поездки</div>
             <input
+              disabled
               type="text"
-              className="input-template py-1 px-3 bg-[url('../../vecs/calendar_logo.svg')]"
+              value={
+                firstStep.searchData.dates.firstDate
+                  ? firstStep.searchData.dates.firstDate
+                  : ""
+              }
+              className="text-white input-template py-1 px-3 bg-[url('../../vecs/calendar_logo.svg')]"
             />
           </div>
           <div className="">
             <div>Дата возвращения</div>
             <input
               type="text"
-              className="input-template py-1 px-3 bg-[url('../../vecs/calendar_logo.svg')]"
+              disabled
+              value={
+                firstStep.searchData.dates.lastDate
+                  ? firstStep.searchData.dates.lastDate
+                  : ""
+              }
+              className="text-white input-template py-1 px-3 bg-[url('../../vecs/calendar_logo.svg')]"
             />
           </div>
         </div>
@@ -86,7 +104,12 @@ export default function LeftForm() {
             </div>
 
             <label className="switch">
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
+                  console.log(ev.target.checked);
+                }}
+              />
               <span className="slider round"></span>
             </label>
           </li>

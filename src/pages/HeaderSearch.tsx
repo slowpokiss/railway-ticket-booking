@@ -83,7 +83,7 @@ export default function HeaderSearch() {
                       <Calendar
                         inputClass="input-template"
                         onInput={(data: string | undefined) => 
-                          dispatch(setDepartureDates({date: data, dateInputDirection: 'from' }))
+                          dispatch(setDepartureDates({date: data, dateInputDirection: 'to' }))
                         }
                       />
                     </div>

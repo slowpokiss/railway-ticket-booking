@@ -55,7 +55,7 @@ export default function Calendar({ inputClass, past = false, onInput, dataId }: 
   return (
     <>
       <input
-        required
+        //required
         ref={calendarRef}
         placeholder="ДД/ММ/ГГ"
         name="dateInput"

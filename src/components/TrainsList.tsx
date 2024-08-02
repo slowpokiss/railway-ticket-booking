@@ -57,6 +57,8 @@ export default function TrainsList() {
               const formattedToDatetime = format(toDatetime, "HH:mm");
               const formattedTravelTime = format(travelTime, "HH : mm");
 
+              
+
               return (
                 <div key={item.departure._id} className="train-card grid grid-cols-[20%_50%_30%] bg-white border border-[#928F94] shadow-lg">
                   <div className="flex flex-col gap-2 items-center justify-center bg-[#E4E0E9] p-2">

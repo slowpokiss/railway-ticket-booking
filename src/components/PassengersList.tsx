@@ -22,7 +22,6 @@ function Passenger({ passData, onDeletePassenger, elementId }: passengerProps) {
     (state: {main: initialStateInterface}) => state.main.secondStep.passengersData
   )[elementId];
 
-
   return (
     <div className="w-full border border-[#C4C4C4]">
       <div className="flex justify-between items-center py-4 px-5 bg-[#F9F9F9] text-[18px]">
@@ -114,7 +113,7 @@ function Passenger({ passData, onDeletePassenger, elementId }: passengerProps) {
               />
             </div>
           </div>
-          <div className="flex gap-5">
+          <div className="gender flex gap-5">
             <div className="flex flex-col">
               <p className="text-[#928F94]">Пол</p>
               <div className="flex font-bold cursor-pointer">
@@ -213,7 +212,7 @@ function Passenger({ passData, onDeletePassenger, elementId }: passengerProps) {
                     })
                   )
                 }
-                type="tel"
+                type="text"
                 placeholder="____"
                 maxLength={4}
                 className={`passengers-input tracking-widest`}
@@ -233,7 +232,7 @@ function Passenger({ passData, onDeletePassenger, elementId }: passengerProps) {
                     })
                   )
                 }
-                type="tel"
+                type="text"
                 placeholder={`${
                   passengersItem.document !== "childPassport"
                     ? "______"
@@ -244,8 +243,8 @@ function Passenger({ passData, onDeletePassenger, elementId }: passengerProps) {
                 className="passengers-input tracking-widest"
                 pattern={
                   passengersItem.document === "childPassport"
-                    ? "d{1,12}"
-                    : "d{6}"
+                    ? "\\d{1,12}"
+                    : "\\d{6}"
                 }
               />
             </div>
@@ -267,16 +266,30 @@ function Passenger({ passData, onDeletePassenger, elementId }: passengerProps) {
 export default function PassengersList() {
   const dispatch = useDispatch();
 
+  // const selectedPassengersCount = useSelector(
+  //   (state: {main: initialStateInterface}) => state.main.firstStep.selectedPassengersCount
+  // );
+
+  // for (let i = 0; i < selectedPassengersCount.adult; i++) {
+  //   dispatch(updatePassengersData({ actionType: "add", passengersAge: 'adult' }));
+  // }
+
+  // for (let i = 0; i < selectedPassengersCount.child; i++) {
+  //   dispatch(updatePassengersData({ actionType: "add", passengersAge: 'child' }));
+  // }
+
   const passengersList = useSelector(
     (state: {main: initialStateInterface}) => state.main.secondStep.passengersData
   );
+
+  
 
   const onDeletePassenger = (id: number) => {
     dispatch(updatePassengersData({ id, actionType: "delete" }));
   };
 
   const onAddPassenger = () => {
-    dispatch(updatePassengersData({ actionType: "add" }));
+    dispatch(updatePassengersData({ actionType: "add", passengersAge: 'adult' }));
   };
 
   return (

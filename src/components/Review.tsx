@@ -1,18 +1,23 @@
-
 import { initialStateInterface, setStepsIndex } from "../redux/mainSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-
 export default function Review() {
-  const firstStepData = useSelector((state: {main: initialStateInterface}) => state.main.secondStep)
-  const secondStepData = useSelector((state: {main: initialStateInterface}) => state.main.secondStep)
-  const thirdStepData = useSelector((state: {main: initialStateInterface}) => state.main.secondStep)
+  const firstStepData = useSelector(
+    (state: { main: initialStateInterface }) => state.main.firstStep
+  );
+  const secondStepData = useSelector(
+    (state: { main: initialStateInterface }) =>
+      state.main.secondStep.passengersData
+  );
+  const thirdStepData = useSelector(
+    (state: { main: initialStateInterface }) => state.main.thirdStep
+  );
   const dispatch = useDispatch();
 
   const onStepClick = (stepIndex: number) => {
-    dispatch(setStepsIndex({ index: stepIndex }))
-  }
+    dispatch(setStepsIndex({ index: stepIndex }));
+  };
 
   return (
     <div className="flex flex-col gap-8">
@@ -125,7 +130,13 @@ export default function Review() {
                   <img src="../vecs/cup.svg" className={`h-[20px]`} alt="cup" />
                 </div>
               </div>
-              <Link onClick={() => onStepClick(1)} to={'/booking'} className="btn-template border-black px-9 py-1 m-auto">Изменить</Link>
+              <Link
+                onClick={() => onStepClick(1)}
+                to={"/booking"}
+                className="btn-template border-black px-9 py-1 m-auto"
+              >
+                Изменить
+              </Link>
             </div>
           </div>
         </div>
@@ -138,39 +149,76 @@ export default function Review() {
         <div className="">
           <div className="flex items-end">
             <div className="w-[70%] ">
-              <div className="flex gap-7 p-10 border-r border-b border-dotted">
-                <div className="flex flex-col gap-2 justify-center items-center">
-                  <img
-                    className="w-[50px]"
-                    src="../../vecs/passenger_icon.svg"
-                    alt=""
-                  />
-                  <p>Взрослый</p>
-                </div>
-                <div className="flex flex-col  text-[#928F94]">
-                  <div className="text-black mb-2">Мартынюк Ирина Эдуардовна</div>
-                  <p>Пол: женский</p>
-                  <p>Дата рождения: 17.02.1985</p>
-                  {/* <p>Паспорт РФ 4204 380694</p> */}
-                  <p>Свидетельство о рождении: VIII УН 256319</p>
-                </div>
-              </div>
-              <div className="flex gap-7 p-10 last:border-b-0 border-r border-b border-dotted">
-                <div className="flex flex-col gap-2 justify-center items-center">
-                  <img
-                    className="w-[50px]"
-                    src="../../vecs/passenger_icon.svg"
-                    alt=""
-                  />
-                  <p>Взрослый</p>
-                </div>
-                <div className="flex flex-col  text-[#928F94]">
-                  <div className="text-black mb-2">Мартынюк Ирина Эдуардовна</div>
-                  <p>Пол: женский</p>
-                  <p>Дата рождения: 17.02.1985</p>
-                  <p>Паспорт РФ 4204 380694</p>
-                </div>
-              </div>
+              {secondStepData.map((el, ind: number) => {
+                let documentTemplate;
+                if (el.document === "passport") {
+                  documentTemplate = 
+                    <div className="flex gap-2">
+                    {el.docSeria && el.docSeria !== "" ? (
+                      <p>Паспорт РФ: {el.docSeria}</p>
+                    ) : (
+                      <p className="text-[#ff0f0f]">введите серию</p>
+                    )}
+
+                    {el.docNumber && el.docNumber !== "" ? (
+                      <p>{el.docNumber}</p>
+                    ) : (
+                      <p className="text-[#ff0f0f]">введите номер</p>
+                    )}
+                    </div>
+                  ;
+                } else {
+                  documentTemplate = el.docNumber && el.docNumber !== "" ? (
+                    <p>Свидетельство о рождении: {el.docNumber}</p>
+                  ) : (
+                    <p className="text-[#ff0f0f]">введите номер</p>
+                  )
+                }
+
+                return (
+                  <div key={ind} className="flex gap-7 p-10 border-r border-b border-dotted">
+                    <div className="flex flex-col gap-2 justify-center items-center">
+                      <img
+                        className="w-[50px]"
+                        src="../../vecs/passenger_icon.svg"
+                        alt=""
+                      />
+                      <p>{el.age === "adult" ? "Взрослый" : "Ребенок"}</p>
+                    </div>
+                    <div className="flex flex-col  text-[#928F94]">
+                      <div className="flex gap-1">
+                        {el.familia && el.familia !== "" ? (
+                          <div className="text-black mb-2">{el.familia}</div>
+                        ) : (
+                          <div className="text-[#ff0f0f] mb-2">—</div>
+                        )}
+                        {el.name && el.name !== "" ? (
+                          <div className="text-black mb-2">{el.name}</div>
+                        ) : (
+                          <div className="text-[#ff0f0f] mb-2">—</div>
+                        )}
+                        {el.surName && el.surName !== "" ? (
+                          <div className="text-black mb-2">{el.surName}</div>
+                        ) : (
+                          <div className="text-[#ff0f0f] mb-2">—</div>
+                        )}
+                      </div>
+                      <p>{el.gender}</p>
+                      {el.birthday && el.birthday !== "" ? (
+                        <p>Дата рождения: {el.birthday}</p>
+                      ) : (
+                        <p className="text-[#ff0f0f]">
+                          Введите дату рождения пассажира!
+                        </p>
+                      )}
+                      {documentTemplate}
+
+                      {/* <p>Паспорт РФ 4204 380694</p> */}
+                      {/* <p>Свидетельство о рождении: VIII УН 256319</p> */}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
 
             <div className="flex flex-col w-[30%] mb-4">
@@ -178,7 +226,13 @@ export default function Review() {
                 <p className="">Всего</p>
                 <p className="font-semibold">7760 ₽</p>
               </div>
-              <Link onClick={() => onStepClick(2)} to={'/booking/passengers'} className="btn-template border-black px-9 py-1 m-auto">Изменить</Link>
+              <Link
+                onClick={() => onStepClick(2)}
+                to={"/booking/passengers"}
+                className="btn-template border-black px-9 py-1 m-auto"
+              >
+                Изменить
+              </Link>
             </div>
           </div>
         </div>
@@ -190,12 +244,17 @@ export default function Review() {
         </div>
 
         <div className="flex items-end">
-          <div className="w-[70%] border-r border-dotted p-5">Наличными</div>
+          <div className="w-[70%] border-r border-dotted p-5">{thirdStepData.method ? thirdStepData.method === 'online' ? 'Онлайн': 'Наличными' : 'Укажите способ оплаты'} </div>
           <div className="w-[30%] mb-4 flex ">
-            <Link onClick={() => onStepClick(3)} to={'/booking/payment'} className="btn-template border-black px-9 py-1 m-auto">Изменить</Link>
+            <Link
+              onClick={() => onStepClick(3)}
+              to={"/booking/payment"}
+              className="btn-template border-black px-9 py-1 m-auto"
+            >
+              Изменить
+            </Link>
           </div>
         </div>
-        
       </div>
     </div>
   );

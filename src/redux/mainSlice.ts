@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { ResponseData } from "../intefaces/trainCardInterface";
 import { trainOptionsInterface } from "../intefaces/trainOptionsInterface";
 import { filtersInterface } from "../intefaces/filtersInterface";
+import { PayloadAction } from "@reduxjs/toolkit";
 
 //   PayloadAction сделать типизацию
 
@@ -31,10 +32,12 @@ export interface initialStateInterface {
         name: string;
         vagonData: trainOptionsInterface;
       };
+      // selectedVagons: {}
     };
     selectedPassengersCount: {
       adult: number;
       child: number;
+      baby: number;
     };
   };
   secondStep: {
@@ -61,6 +64,11 @@ export interface initialStateInterface {
     method: string | undefined;
     email: string | undefined;
   };
+}
+
+interface SetSelectedPassengersCountPayload {
+  type: "adult" | "child" | "baby";
+  value: number;
 }
 
 const mainSlice = createSlice({
@@ -109,6 +117,7 @@ const mainSlice = createSlice({
       selectedPassengersCount: {
         adult: 0,
         child: 0,
+        baby: 0,
       },
     },
     secondStep: {
@@ -117,16 +126,7 @@ const mainSlice = createSlice({
           passId: 1,
           age: "adult",
           document: "passport",
-        },
-        {
-          passId: 2,
-          age: "adult",
-          document: "passport",
-        },
-        {
-          passId: 3,
-          age: "child",
-          document: "childPassport",
+          gender: "male",
         },
       ],
     },
@@ -205,19 +205,35 @@ const mainSlice = createSlice({
       }
     },
 
+    setSelectedPassengersCount(
+      state,
+      action: PayloadAction<SetSelectedPassengersCountPayload>
+    ) {
+      const { type, value } = action.payload;
+      state.firstStep.selectedPassengersCount[type] = value;
+    },
+
     // second step reducers
     updatePassengersData(state, action) {
-      if (action.payload.actionType === "add") {
+      const { actionType, passengersAge } = action.payload;
+
+      if (actionType === "add") {
         state.secondStep.passengersData.push({
-          age: "adult",
+          age: passengersAge,
           passId: state.secondStep.passengersData.length,
+          document: passengersAge === "adult" ? "passport" : "childPassport",
         });
       }
-      if (action.payload.actionType === "delete") {
+      if (actionType === "delete") {
         const indexToDelete = action.payload.id;
 
-        state.secondStep.passengersData.splice(indexToDelete, 1);
+        if (state.secondStep.passengersData.length > 1) {
+          state.secondStep.passengersData.splice(indexToDelete, 1);
+        }
       }
+      // if (actionType === "remove") {
+      //   state.secondStep.passengersData = state.secondStep.passengersData.filter(el => el.age === passengersAge)
+      // }
     },
 
     setPassengersData(state, action) {
@@ -290,6 +306,7 @@ export const {
   setDepartureCity,
   changeDepartureCity,
   setDepartureDates,
+  setSelectedPassengersCount,
   updatePassengersData,
   setPassengersData,
   setStepsIndex,

@@ -2,24 +2,63 @@ import { Link, useParams } from "react-router-dom";
 import { useLazyGetTrainOptionsQuery } from "../redux/templateApi";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { filtersInterface } from "../intefaces/filtersInterface";
-import { ResponseData } from "../intefaces/trainCardInterface";
 import { trainOptionsInterface } from "../intefaces/trainOptionsInterface";
-import { setCurrVagonData } from "../redux/mainSlice";
+import {
+  setCurrVagonData,
+  initialStateInterface,
+  setSelectedPassengersCount,
+} from "../redux/mainSlice";
+import { InputNumber, Space, ConfigProvider } from "antd";
 import Seats from "./Seats";
-import { mainDataInterface } from "../redux/mainSlice";
-
-
 
 interface seatsProps {
   data: trainOptionsInterface[];
 }
 
+interface SeatsCounterProps {
+  type: "adult" | "child" | "baby";
+}
+
+export const SeatsCounter = ({ type }: SeatsCounterProps) => {
+  const dispatch = useDispatch();
+  const seatCounterValue = useSelector(
+    (state: { main: initialStateInterface }) =>
+      state.main.firstStep.selectedPassengersCount
+  )[type];
+
+  return (
+    <ConfigProvider
+      theme={{
+        components: {
+          InputNumber: {
+            handleHoverColor: "#FFA800",
+            hoverBorderColor: "#FFA800",
+            activeBorderColor: "#FFA800",
+          },
+        },
+      }}
+    >
+      <Space>
+        <InputNumber
+          min={0}
+          max={10}
+          value={seatCounterValue}
+          onChange={(ev) => {
+            dispatch(setSelectedPassengersCount({ type: type, value: ev }));
+          }}
+        />
+      </Space>
+    </ConfigProvider>
+  );
+};
+
 function SeatsOptions({ data }: seatsProps) {
   type ClassType = "first" | "second" | "third" | "fourth";
   const currVagon = useSelector(
-    (state: mainDataInterface) => state.main.firstStep.trainOptions.currVagon
+    (state: { main: initialStateInterface }) =>
+      state.main.firstStep.trainOptions.currVagon
   );
+  
   const dispatch = useDispatch();
 
   const [trainType, setTrainType] = useState<ClassType | "">("");
@@ -45,8 +84,6 @@ function SeatsOptions({ data }: seatsProps) {
       allOptions[key].vagons.push(el);
     }
   });
-
-  
 
   const onTrainTypeClick = (type: ClassType) => {
     setTrainType(type);
@@ -183,7 +220,9 @@ function SeatsOptions({ data }: seatsProps) {
           </div>
           <div className="flex">
             <div className="w-fit flex-col pl-7 pr-10 pt-7 pb-5 bg-[rgba(255,168,0,0.44)] leading-[35px]">
-              <p className="text-[50px] font-semibold ">{currVagon.name.split("-")[1]}</p>
+              <p className="text-[50px] font-semibold ">
+                {currVagon.name.split("-")[1]}
+              </p>
               <p className="text-[18px] ">вагон</p>
             </div>
             <div className="w-full grid grid-cols-3">
@@ -290,9 +329,8 @@ function SeatsOptions({ data }: seatsProps) {
                 </ul>
               </div>
             </div>
-
           </div>
-          <Seats />
+          <Seats data={currVagon.vagonData} />
         </>
       ) : null}
     </div>
@@ -302,12 +340,24 @@ function SeatsOptions({ data }: seatsProps) {
 export default function TrainOptions() {
   const { trainId } = useParams();
   let [trigger, { data = [], isFetching }] = useLazyGetTrainOptionsQuery();
-  const filtersData = useSelector((state: mainDataInterface) => state.main.filters);
-  const mainData = useSelector((state: mainDataInterface) => state.main.mainData);
+  const mainData = useSelector(
+    (state: { main: initialStateInterface }) => state.main.mainData
+  );
+  const filtersData = useSelector(
+    (state: { main: initialStateInterface }) => state.main.filters
+  );
   const currVagon = useSelector(
-    (state: mainDataInterface) => state.main.firstStep.trainOptions.currVagon
+    (state: { main: initialStateInterface }) =>
+      state.main.firstStep.trainOptions.currVagon
   );
 
+  let currTrainData = null;
+  if (mainData.items) {
+    currTrainData = mainData.items.find((el: any) => el.departure._id === trainId)
+  }
+  //const currTrainData = 
+
+  // data.coach._id 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -331,7 +381,7 @@ export default function TrainOptions() {
 
   useEffect(() => {
     if (!isFetching && data) {
-      //console.log("Fetched data:", data);
+      console.log(currTrainData);
     }
   }, [data, isFetching]);
 
@@ -362,21 +412,18 @@ export default function TrainOptions() {
                   alt="train"
                 />
                 <div className="flex flex-col text-[14px] py-3">
-                  <p className="text-[20px] font-semibold">
-                    {currVagon.name}
-                  </p>
-                  {/* <p className="text-[#928F94]">Адлер →</p> */}
-                  {/* {mainData.items.departure.from.city.name} → */}
+                  <p className="text-[20px] font-semibold">{currVagon.name}</p>
+                  {currTrainData.departure.from.city.name} →
                   <br />
-                  Санкт-Петербург
+                  {currTrainData.departure.to.city.name}
                 </div>
               </div>
               <div className="flex w-1/2 justify-between items-center px-8  bg-[#F7F6F6]">
                 <div className="from w-fit text-[16px]">
                   <div className="time text-[20px] font-bold">00:10</div>
                   <div className="leading-none">
-                    <div className="">Москва</div>
-                    <div className="text-[#928F94]">Курский вокзал</div>
+                    <div className="">{currTrainData.departure.from.railway_station_name}</div>
+                    <div className="text-[#928F94]">{currTrainData.departure.from.railway_station_name}</div>
                   </div>
                 </div>
                 <div className="">
@@ -389,8 +436,8 @@ export default function TrainOptions() {
                 <div className="to w-fit text-[16px]">
                   <div className="time text-[20px] font-bold">09:52</div>
                   <div className="leading-none">
-                    <div className="">Санкт-петербург</div>
-                    <div className="text-[#928F94]">Ладожский вокзал</div>
+                    <div className="">{currTrainData.departure.to.city.name}</div>
+                    <div className="text-[#928F94]">{currTrainData.departure.to.railway_station_name}</div>
                   </div>
                 </div>
               </div>
@@ -404,20 +451,27 @@ export default function TrainOptions() {
                 </div>
               </div>
             </div>
+
             <div className="mb-[30px] ">
               <p className="font-semibold text-[22px] ml-[15px]">
                 Количество билетов
               </p>
               <div className="grid grid-cols-3">
                 <div className="bg-[#F7F6F6] px-[15%] py-4 flex flex-col gap-5">
-                  <div className="px-4 py-2 border border-[#928F94] rounded">
-                    Взрослых — 2
+                  <div className="flex flex-col items-center justify-center px-4 py-2 border border-[#928F94] rounded">
+                    Взрослых —
+                    <div className="">
+                      <SeatsCounter type="adult" />
+                    </div>
                   </div>
                   <p className="text-[14px]">Можно добавить еще 3 пассажиров</p>
                 </div>
-                <div className="px-[15%] py-4 border border-orange flex flex-col gap-5">
+                <div className="items-center justify-center px-[15%] py-4 border border-orange flex flex-col gap-5">
                   <div className="px-4 py-2 border border-[#928F94] rounded">
-                    Детских — 1
+                    Детских — 
+                    <div className="">
+                      <SeatsCounter type="child" />
+                    </div>
                   </div>
                   <p className="text-[14px]">
                     Можно добавить еще 3 детей до 10 лет.Свое место в вагоне,
@@ -425,12 +479,16 @@ export default function TrainOptions() {
                   </p>
                 </div>
                 <div className="px-[15%] py-4 flex flex-col gap-5">
-                  <div className="px-4 py-2 border border-[#928F94] rounded">
-                    Детских «без места» — 0
+                  <div className="flex flex-col items-center justify-center px-4 py-2 border border-[#928F94] rounded">
+                    Детских «без места» —
+                    <div className="">
+                      <SeatsCounter type="baby" />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+
             <SeatsOptions data={data} />
           </div>
         </div>

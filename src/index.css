@@ -114,10 +114,6 @@ img {
 
 
 
-
-
-
-
 @layer components {
   .title-25 {
     @apply w-fit text-[1.562rem] mb-[15px] font-medium;
