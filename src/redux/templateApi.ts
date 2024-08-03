@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const templateApi = createApi({
   reducerPath: "templateApi",
-  tagTypes: ['Tickets', 'Options'],
+  tagTypes: ["Tickets", "Options"],
   baseQuery: fetchBaseQuery({
     baseUrl: "https://students.netoservices.ru/fe-diplom/",
   }),
@@ -10,9 +10,16 @@ export const templateApi = createApi({
     getCities: build.query({
       query: (searchItem) => `routes/cities?name=${searchItem}`,
     }),
-    findTickets: build.query({
-      query: ({ dates, cities }) =>
-        `routes/?from_city_id=${cities.fromCity.id}&to_city_id=${cities.toCity.id}`,
+    findTicketsWithOptions: build.query({
+      query: ({ urlQuery, dates, cities }) =>
+        `routes/?from_city_id=${cities.fromCity.id}&to_city_id=${
+          cities.toCity.id
+        }&${
+          dates
+            ? `${dates.firstDate !== undefined ? `date_start=${dates.firstDate}` : ""}
+              ${dates.lastDate !== undefined ? `&date_end=${dates.lastDate}` : ""}`
+            : ""
+        }&${urlQuery}`,
     }),
     getTrainOptions: build.query({
       query: ({
@@ -38,15 +45,15 @@ export const templateApi = createApi({
     }),
     emailSubscription: build.mutation({
       query: (body: any) => ({
-        url: 'subscribe',
-        method: 'POST',
+        url: "subscribe",
+        method: "POST",
         body,
-    }),
+      }),
 
-    // getLastRoutes: build.query({
-    //   query: (searchItem) => `routes/cities?name=${searchItem}`
-    // }),
-    
+      // getLastRoutes: build.query({
+      //   query: (searchItem) => `routes/cities?name=${searchItem}`
+      // }),
+
       //invalidatesTags: [{ type: 'Tickets', id: 'LIST' }],
       // providesTags: (result: any) =>
       //   result
@@ -55,15 +62,15 @@ export const templateApi = createApi({
       //         ...result.map(({ id }) => ({ type: 'Tickets' as const, id })),
       //       ]
       //     : [{ type: 'Tickets', id: 'LIST' }],
-        
-        //`/?from_city_id=${cities.fromCity.id}&to_city_id=${cities.toCity.id}`,
+
+      //`/?from_city_id=${cities.fromCity.id}&to_city_id=${cities.toCity.id}`,
     }),
   }),
 });
 
 export const {
   useLazyGetCitiesQuery,
-  useLazyFindTicketsQuery,
+  useLazyFindTicketsWithOptionsQuery,
   useLazyGetTrainOptionsQuery,
   useGetLastRoutesQuery,
   useEmailSubscriptionMutation,

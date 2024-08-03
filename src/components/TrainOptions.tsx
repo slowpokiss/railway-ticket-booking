@@ -58,7 +58,7 @@ function SeatsOptions({ data }: seatsProps) {
     (state: { main: initialStateInterface }) =>
       state.main.firstStep.trainOptions.currVagon
   );
-  
+
   const dispatch = useDispatch();
 
   const [trainType, setTrainType] = useState<ClassType | "">("");
@@ -351,39 +351,36 @@ export default function TrainOptions() {
       state.main.firstStep.trainOptions.currVagon
   );
 
-  let currTrainData = null;
-  if (mainData.items) {
-    currTrainData = mainData.items.find((el: any) => el.departure._id === trainId)
-  }
-  //const currTrainData = 
+  const currTrainData = useSelector(
+    (state: { main: initialStateInterface }) => state.main.currTrainCardData
+  );
 
-  // data.coach._id 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await trigger({
-          trainId,
-          have_first_class: filtersData.have_first_class,
-          have_second_class: filtersData.have_second_class,
-          have_third_class: filtersData.have_third_class,
-          have_fourth_class: filtersData.have_fourth_class,
-          have_wifi: filtersData.have_wifi,
-          have_air_conditioning: filtersData.have_air_conditioning,
-        });
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       await trigger({
+  //         trainId,
+  //         have_first_class: filtersData.have_first_class,
+  //         have_second_class: filtersData.have_second_class,
+  //         have_third_class: filtersData.have_third_class,
+  //         have_fourth_class: filtersData.have_fourth_class,
+  //         have_wifi: filtersData.have_wifi,
+  //         have_air_conditioning: filtersData.have_air_conditioning,
+  //       });
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
 
-    fetchData();
-    //console.log(data);
-  }, [trainId]);
+  //   fetchData();
+  //   //console.log(data);
+  // }, [trainId]);
 
-  useEffect(() => {
-    if (!isFetching && data) {
-      console.log(currTrainData);
-    }
-  }, [data, isFetching]);
+  // useEffect(() => {
+  //   if (!isFetching && data) {
+  //     //console.log(currTrainData);
+  //   }
+  // }, [data, isFetching]);
 
   return (
     <>
@@ -422,8 +419,12 @@ export default function TrainOptions() {
                 <div className="from w-fit text-[16px]">
                   <div className="time text-[20px] font-bold">00:10</div>
                   <div className="leading-none">
-                    <div className="">{currTrainData.departure.from.railway_station_name}</div>
-                    <div className="text-[#928F94]">{currTrainData.departure.from.railway_station_name}</div>
+                    <div className="">
+                      {currTrainData.departure.from.railway_station_name}
+                    </div>
+                    <div className="text-[#928F94]">
+                      {currTrainData.departure.from.railway_station_name}
+                    </div>
                   </div>
                 </div>
                 <div className="">
@@ -436,8 +437,12 @@ export default function TrainOptions() {
                 <div className="to w-fit text-[16px]">
                   <div className="time text-[20px] font-bold">09:52</div>
                   <div className="leading-none">
-                    <div className="">{currTrainData.departure.to.city.name}</div>
-                    <div className="text-[#928F94]">{currTrainData.departure.to.railway_station_name}</div>
+                    <div className="">
+                      {currTrainData.departure.to.city.name}
+                    </div>
+                    <div className="text-[#928F94]">
+                      {currTrainData.departure.to.railway_station_name}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -468,7 +473,7 @@ export default function TrainOptions() {
                 </div>
                 <div className="items-center justify-center px-[15%] py-4 border border-orange flex flex-col gap-5">
                   <div className="px-4 py-2 border border-[#928F94] rounded">
-                    Детских — 
+                    Детских —
                     <div className="">
                       <SeatsCounter type="child" />
                     </div>

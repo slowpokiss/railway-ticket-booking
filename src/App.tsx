@@ -40,7 +40,6 @@ const routerProv = createBrowserRouter(
 function App() {
   //return <Seats />
 
-
   return <RouterProvider router={routerProv}></RouterProvider>;
 }
 

@@ -282,7 +282,6 @@ export default function PassengersList() {
     (state: {main: initialStateInterface}) => state.main.secondStep.passengersData
   );
 
-  
 
   const onDeletePassenger = (id: number) => {
     dispatch(updatePassengersData({ id, actionType: "delete" }));

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import "../css/Switcher.css";
 import DoubleSlider from "./DoubleSlider";
-import { useSelector } from "react-redux";
-import { initialStateInterface } from "../redux/mainSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { initialStateInterface, setParamsToUrlQuery } from "../redux/mainSlice";
 
 interface filterTimeProps {
   direction?: string;
@@ -12,7 +12,7 @@ interface filterTimeProps {
 function FilterTime({ direction, title }: filterTimeProps) {
   const [extensionState, setExtensionState] = useState(false);
 
-  const onExtendClick = (ev: React.MouseEvent<HTMLImageElement>) => {
+  const onExtendClick = () => {
     setExtensionState(!extensionState);
   };
 
@@ -53,6 +53,8 @@ export default function LeftForm() {
     (state: { main: initialStateInterface }) => state.main.firstStep
   );
 
+  const dispatch = useDispatch();
+
   return (
     <>
       <div className="form flex flex-col  bg-[#3E3C41] mb-20 text-white text-[22px]">
@@ -90,9 +92,15 @@ export default function LeftForm() {
               <img src="../vecs/kype.svg" alt="kype" />
               <p className="">Купе</p>
             </div>
-
             <label className="switch">
-              <input type="checkbox" />
+              <input
+                onChange={(ev: React.ChangeEvent<HTMLInputElement>) =>
+                  dispatch(
+                    setParamsToUrlQuery({ have_second_class: ev.target.checked })
+                  )
+                }
+                type="checkbox"
+              />
               <span className="slider round"></span>
             </label>
           </li>
@@ -102,13 +110,14 @@ export default function LeftForm() {
               <img src="../vecs/plazc.svg" alt="plazc" />
               <p className="">Плацкарт</p>
             </div>
-
             <label className="switch">
               <input
                 type="checkbox"
-                onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
-                  console.log(ev.target.checked);
-                }}
+                onChange={(ev: React.ChangeEvent<HTMLInputElement>) =>
+                  dispatch(
+                    setParamsToUrlQuery({ have_third_class: ev.target.checked })
+                  )
+                }
               />
               <span className="slider round"></span>
             </label>
@@ -121,7 +130,14 @@ export default function LeftForm() {
             </div>
 
             <label className="switch">
-              <input type="checkbox" />
+              <input
+                onChange={(ev: React.ChangeEvent<HTMLInputElement>) =>
+                  dispatch(
+                    setParamsToUrlQuery({ have_fourth_class : ev.target.checked })
+                  )
+                }
+                type="checkbox"
+              />
               <span className="slider round"></span>
             </label>
           </li>
@@ -132,7 +148,14 @@ export default function LeftForm() {
               <p className="">Люкс</p>
             </div>
             <label className="switch">
-              <input type="checkbox" />
+              <input
+                onChange={(ev: React.ChangeEvent<HTMLInputElement>) =>
+                  dispatch(
+                    setParamsToUrlQuery({ have_first_class : ev.target.checked })
+                  )
+                }
+                type="checkbox"
+              />
               <span className="slider round"></span>
             </label>
           </li>
@@ -144,7 +167,14 @@ export default function LeftForm() {
             </div>
 
             <label className="switch">
-              <input type="checkbox" />
+              <input
+                onChange={(ev: React.ChangeEvent<HTMLInputElement>) =>
+                  dispatch(
+                    setParamsToUrlQuery({ have_wifi : ev.target.checked })
+                  )
+                }
+                type="checkbox"
+              />
               <span className="slider round"></span>
             </label>
           </li>
@@ -156,14 +186,24 @@ export default function LeftForm() {
             </div>
 
             <label className="switch">
-              <input type="checkbox" />
+              <input
+                onChange={(ev: React.ChangeEvent<HTMLInputElement>) =>
+                  dispatch(
+                    setParamsToUrlQuery({ have_express : ev.target.checked })
+                  )
+                }
+                type="checkbox"
+              />
               <span className="slider round"></span>
             </label>
           </li>
         </ul>
         <div className="flex flex-col border-b p-5 border-white">
           <div className="mb-3">Стоимость</div>
-          <DoubleSlider minim={1600} maxim={9900} />
+          <div className="mt-5">
+            <DoubleSlider minim={1600} maxim={9900} />
+          </div>
+          
         </div>
 
         <FilterTime direction="forward" title="Туда" />

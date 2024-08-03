@@ -1,17 +1,19 @@
 import { Slider, ConfigProvider } from "antd";
 import { format, addSeconds } from "date-fns";
+import { useDispatch } from "react-redux";
 
-const onChangeComplete = (value: number | number[]) => {
+const onChangeComplete = (value: number | number[], ) => {
   console.log(value);
 };
 
-interface props {
+interface sliderPropsSlider {
   minim: number;
   maxim: number;
   type?: string;
 }
 
-function RangeSliderTemplate({ minim, maxim }: props) {
+function RangeSliderTemplate({ minim, maxim }: sliderPropsSlider) {
+
   return (
     <Slider
       range
@@ -20,19 +22,18 @@ function RangeSliderTemplate({ minim, maxim }: props) {
       max={maxim}
       tooltip={{
         open: true,
-        placement: 'bottom'
       }}
       marks={{
         [minim]: {
           style: {
-            bottom: '25px',
+            bottom: '-25px',
             color: "#f50",
           },
           label: <strong>{minim}</strong>,
         },
         [maxim]: {
           style: {
-            bottom: '25px',
+            bottom: '-25px',
             color: "#f50",
           },
           label: <strong>{maxim}</strong>,
@@ -44,13 +45,14 @@ function RangeSliderTemplate({ minim, maxim }: props) {
 }
 
 function TimeRangeSliderTemplate() {
+  const dispatch = useDispatch();
+
   const formatTooltip = (value: any) => {
     if (value) {
       const date = new Date(0, 0);
       const formattedDate = addSeconds(date, value);
       return format(formattedDate, "HH:mm");
     }
-    
   };
 
   return (
@@ -63,7 +65,6 @@ function TimeRangeSliderTemplate() {
       
       tooltip={{
         formatter: formatTooltip,
-        //open: true,
       }}
       marks={{
         0: {
@@ -84,9 +85,7 @@ function TimeRangeSliderTemplate() {
   );
 }
 
-export default function DoubleSlider({ type, minim, maxim }: props) {
-
-
+export default function DoubleSlider({ type, minim, maxim }: sliderPropsSlider) {
   return (
     <ConfigProvider
       theme={{

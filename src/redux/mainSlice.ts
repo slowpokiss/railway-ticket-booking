@@ -1,20 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ResponseData } from "../intefaces/trainCardInterface";
+import { ResponseData, itemsInterface } from "../intefaces/trainCardInterface";
 import { trainOptionsInterface } from "../intefaces/trainOptionsInterface";
 import { filtersInterface } from "../intefaces/filtersInterface";
 import { PayloadAction } from "@reduxjs/toolkit";
-
-//   PayloadAction сделать типизацию
+import queryString from "query-string";
 
 export interface initialStateInterface {
   mainData: ResponseData;
+  currTrainCardData: itemsInterface | undefined,
+  urlQuery: string;
   stepsIndex: number;
   filters: filtersInterface;
   firstStep: {
     searchData: {
       dates: {
-        firstDate: string | null;
-        lastDate: string | null;
+        firstDate: string | undefined;
+        lastDate: string | undefined;
       };
       departureCities: {
         fromCity: {
@@ -78,6 +79,8 @@ const mainSlice = createSlice({
       total_count: 0,
       items: [],
     },
+    currTrainCardData: undefined,
+    urlQuery: "",
     stepsIndex: 1,
     filters: {
       have_first_class: false,
@@ -91,8 +94,8 @@ const mainSlice = createSlice({
     firstStep: {
       searchData: {
         dates: {
-          firstDate: null,
-          lastDate: null,
+          firstDate: undefined,
+          lastDate: undefined,
         },
         departureCities: {
           fromCity: {
@@ -140,8 +143,45 @@ const mainSlice = createSlice({
     },
   } satisfies initialStateInterface as initialStateInterface,
   reducers: {
+    setParamsToUrlQuery(state, action) {
+      const currentParams = queryString.parse(state.urlQuery);
+      const updatedParams = { ...currentParams, ...action.payload };
+      state.urlQuery = queryString.stringify(updatedParams);
+    },
+
+    // from_city_id
+    // to_city_id
+    // date_start
+    // date_end
+    // date_start_arrival
+    // date_end_arrival
+    // have_first_class
+    // have_second_class
+    // have_third_class
+    // have_fourth_class
+    // have_wifi
+    // have_air_conditioning
+    // have_express
+    // price_from
+    // price_to
+    // start_departure_hour_from
+    // start_departure_hour_to
+    // start_arrival_hour_from
+    // start_arrival_hour_to
+    // end_departure_hour_from
+    // end_departure_hour_to
+    // end_arrival_hour_from
+    // end_arrival_hour_to
+    // limit
+    // offset
+    // sort
+
     setMainData(state, action) {
       state.mainData = action.payload;
+    },
+
+    setCurrTrainCardData(state, action) {
+      state.currTrainCardData = action.payload;
     },
 
     setStepsIndex(state, action) {
@@ -231,76 +271,57 @@ const mainSlice = createSlice({
           state.secondStep.passengersData.splice(indexToDelete, 1);
         }
       }
-      // if (actionType === "remove") {
-      //   state.secondStep.passengersData = state.secondStep.passengersData.filter(el => el.age === passengersAge)
-      // }
     },
 
-    setPassengersData(state, action) {
+    setPassengersData(
+      state,
+      action: {
+        payload: {
+          inputType:
+            | "docSeria"
+            | "docNumber"
+            | "document"
+            | "birthday"
+            | "gender"
+            | "surName"
+            | "familia"
+            | "name";
+          id: number;
+          value: string;
+        };
+      }
+    ) {
       const { inputType, id, value } = action.payload;
       const currItem = state.secondStep.passengersData[id];
-
-      switch (inputType) {
-        case "docSeria":
-          currItem.docSeria = value;
-          break;
-        case "docNumber":
-          currItem.docNumber = value;
-          break;
-        case "document":
-          currItem.document = value;
-          break;
-        case "birthday":
-          currItem.birthday = value;
-          break;
-        case "gender":
-          currItem.gender = value;
-          break;
-        case "surName":
-          currItem.surName = value;
-          break;
-        case "familia":
-          currItem.familia = value;
-          break;
-        case "name":
-          currItem.name = value;
-          break;
-        default:
-          break;
+      
+      if (inputType && currItem) {
+        currItem[inputType] = value;
       }
     },
 
     // third step reducers
-    setPaymentData(state, action) {
+    setPaymentData(state, action: {
+      payload: {
+        inputType:
+          | "method"
+          | "tel"
+          | "email"
+          | "surName"
+          | "familia"
+          | "name";
+        value: string;
+      };
+    }) {
       const { inputType, value } = action.payload;
 
-      switch (inputType) {
-        case "name":
-          state.thirdStep.name = value;
-          break;
-        case "familia":
-          state.thirdStep.familia = value;
-          break;
-        case "surName":
-          state.thirdStep.surName = value;
-          break;
-        case "tel":
-          state.thirdStep.tel = value;
-          break;
-        case "method":
-          state.thirdStep.method = value;
-          break;
-        case "email":
-          state.thirdStep.email = value;
-          break;
-        default:
-          break;
-      }
+      state.thirdStep[inputType] = value;
     },
   },
 });
 
 export const {
+  setParamsToUrlQuery,
+  setCurrTrainCardData,
   setMainData,
   setCurrVagonData,
   setDepartureCity,

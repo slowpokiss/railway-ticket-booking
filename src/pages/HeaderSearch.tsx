@@ -4,42 +4,63 @@ import LeftForm from "../components/LeftForm";
 import LastTickets from "../components/LastTickets";
 import Steps from "../components/Steps";
 
-import { useLazyFindTicketsQuery,  } from "../redux/templateApi";
+import {
+  useLazyFindTicketsWithOptionsQuery
+} from "../redux/templateApi";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { setMainData, setDepartureDates, initialStateInterface } from "../redux/mainSlice";
+import {
+  setMainData,
+  setDepartureDates,
+  initialStateInterface,
+} from "../redux/mainSlice";
 import { Link, Outlet } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 export default function HeaderSearch() {
-  let [trigger, { data = [], isFetching  }] = useLazyFindTicketsQuery();
-  const inputsDate = useSelector(
-    (state: {main: initialStateInterface}) => state.main.firstStep.searchData
-  );
-  const dispatch = useDispatch();
-
-
-  const findTicketsCB = async(ev: React.FormEvent<HTMLFormElement>) => {
-    ev.preventDefault();
-
-    const dates = inputsDate.dates;
-    const cities = inputsDate.departureCities;
-    await trigger({ dates, cities });
-  };
-
-  useEffect(() => {
-    dispatch(setMainData(data));
-  }, [isFetching]);
-
   const location = useLocation();
   useEffect(() => {
     if (location.hash) {
       const element = document.getElementById(location.hash.substring(1));
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+        element.scrollIntoView({ behavior: "smooth" });
       }
     }
   }, [location]);
+
+  let [trigger, { data = [], isFetching }] = useLazyFindTicketsWithOptionsQuery();
+  const dispatch = useDispatch();
+
+  const urlQuery = useSelector(
+    (state: { main: initialStateInterface }) => state.main.urlQuery
+  );
+
+  const inputsDate = useSelector(
+    (state: { main: initialStateInterface }) => state.main.firstStep.searchData
+  );
+
+  const findTicketsCB = async (ev: React.FormEvent<HTMLFormElement>) => {
+    ev.preventDefault();
+    
+    if (!inputsDate.departureCities.fromCity.id ||!inputsDate.departureCities.fromCity.id) {
+      return
+    }
+
+    await trigger({ dates: inputsDate.dates, cities: inputsDate.departureCities, urlQuery });
+  };
+
+  useEffect(() => {
+    trigger({
+      dates: inputsDate.dates,
+      cities: inputsDate.departureCities,
+      urlQuery,
+    });
+  }, [urlQuery]);
+
+  useEffect(() => {
+    dispatch(setMainData(data));
+  }, [isFetching]);
+
 
   return (
     <>
@@ -50,11 +71,19 @@ export default function HeaderSearch() {
           </div>
           <nav className="w-full h-auto bg-[rgba(41,41,41,1)]">
             <ul className="flex gap-10 w-auto h-fit mx-44 py-4">
-              <Link to={'/#about'} className="text-white text-[1.31rem]">О нас</Link>
-              <Link to={'/#how-it-works'} className="text-white text-[1.31rem]">Как это работает</Link>
-              <Link to={'/#reviews'} className="text-white text-[1.31rem]">Отзывы</Link>
-              <Link to={'/#contacts'} className="text-white text-[1.31rem]">Контакты</Link>
-            </ul> 
+              <Link to={"/#about"} className="text-white text-[1.31rem]">
+                О нас
+              </Link>
+              <Link to={"/#how-it-works"} className="text-white text-[1.31rem]">
+                Как это работает
+              </Link>
+              <Link to={"/#reviews"} className="text-white text-[1.31rem]">
+                Отзывы
+              </Link>
+              <Link to={"/#contacts"} className="text-white text-[1.31rem]">
+                Контакты
+              </Link>
+            </ul>
           </nav>
         </div>
         <div className="flex w-full min-h-[330px] items-end justify-center ">
@@ -76,14 +105,24 @@ export default function HeaderSearch() {
                     <div className="flex gap-[30px]">
                       <Calendar
                         inputClass="input-template"
-                        onInput={(data: string | undefined) => 
-                          dispatch(setDepartureDates({date: data, dateInputDirection: 'from' }))
+                        onInput={(data: string | undefined) =>
+                          dispatch(
+                            setDepartureDates({
+                              date: data,
+                              dateInputDirection: "from",
+                            })
+                          )
                         }
                       />
                       <Calendar
                         inputClass="input-template"
-                        onInput={(data: string | undefined) => 
-                          dispatch(setDepartureDates({date: data, dateInputDirection: 'to' }))
+                        onInput={(data: string | undefined) =>
+                          dispatch(
+                            setDepartureDates({
+                              date: data,
+                              dateInputDirection: "to",
+                            })
+                          )
                         }
                       />
                     </div>
