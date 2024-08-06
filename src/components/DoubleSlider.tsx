@@ -1,52 +1,70 @@
 import { Slider, ConfigProvider } from "antd";
 import { format, addSeconds } from "date-fns";
-import { useDispatch } from "react-redux";
-
-const onChangeComplete = (value: number | number[], ) => {
-  console.log(value);
-};
 
 interface sliderPropsSlider {
   minim: number;
   maxim: number;
-  type?: string;
+  onChangeComplete: (timeData: number[]) => void;
 }
 
-function RangeSliderTemplate({ minim, maxim }: sliderPropsSlider) {
-
+export function RangeSliderTemplate({
+  minim,
+  maxim,
+  onChangeComplete,
+}: sliderPropsSlider) {
   return (
-    <Slider
-      range
-      defaultValue={[3000, 7000]}
-      min={minim}
-      max={maxim}
-      tooltip={{
-        open: true,
-      }}
-      marks={{
-        [minim]: {
-          style: {
-            bottom: '-25px',
-            color: "#f50",
+    <ConfigProvider
+      theme={{
+        components: {
+          Slider: {
+            dotSize: 10,
+            dotBorderColor: "white",
+            handleActiveColor: "#FFA800",
+            handleActiveOutlineColor: "transparent",
+            handleColor: "#dcdcdc",
+            handleLineWidth: 1,
+            handleSize: 14,
+            railSize: 10,
+            railBg: "white",
+            trackBg: "#FFA800",
+            trackHoverBg: "#ffbd39",
           },
-          label: <strong>{minim}</strong>,
-        },
-        [maxim]: {
-          style: {
-            bottom: '-25px',
-            color: "#f50",
-          },
-          label: <strong>{maxim}</strong>,
         },
       }}
-      onChangeComplete={onChangeComplete}
-    />
+    >
+      <Slider
+        range
+        defaultValue={[3000, 7000]}
+        min={minim}
+        max={maxim}
+        tooltip={{
+          open: true,
+        }}
+        marks={{
+          [minim]: {
+            style: {
+              bottom: "-25px",
+              color: "#f50",
+            },
+            label: <strong>{minim}</strong>,
+          },
+          [maxim]: {
+            style: {
+              bottom: "-25px",
+              color: "#f50",
+            },
+            label: <strong>{maxim}</strong>,
+          },
+        }}
+        onChangeComplete={(value: number[]) => onChangeComplete(value)}
+      />
+    </ConfigProvider>
   );
 }
 
-function TimeRangeSliderTemplate() {
-  const dispatch = useDispatch();
-
+export function TimeRangeSliderTemplate({
+  onChangeComplete,
+}: sliderPropsSlider) {
   const formatTooltip = (value: any) => {
     if (value) {
       const date = new Date(0, 0);
@@ -56,61 +74,50 @@ function TimeRangeSliderTemplate() {
   };
 
   return (
-    <Slider
-      range
-      defaultValue={[14400, 72000]}
-      min={0}
-      max={84600}
-      step={1800}
-      
-      tooltip={{
-        formatter: formatTooltip,
-      }}
-      marks={{
-        0: {
-          style: {
-            color: "#f50",
-          },
-          label: <strong>0:00</strong>,
-        },
-        84600: {
-          style: {
-            color: "#f50",
-          },
-          label: <strong>23:30</strong>,
-        },
-      }}
-      onChangeComplete={onChangeComplete}
-    />
-  );
-}
-
-export default function DoubleSlider({ type, minim, maxim }: sliderPropsSlider) {
-  return (
     <ConfigProvider
       theme={{
         components: {
           Slider: {
             dotSize: 10,
-            dotBorderColor: 'white',
+            dotBorderColor: "white",
             handleActiveColor: "#FFA800",
             handleActiveOutlineColor: "transparent",
             handleColor: "#dcdcdc",
             handleLineWidth: 1,
             handleSize: 14,
             railSize: 10,
-            railBg: 'white',
+            railBg: "white",
             trackBg: "#FFA800",
             trackHoverBg: "#ffbd39",
           },
         },
       }}
     >
-      {type === "time" ? (
-        <TimeRangeSliderTemplate />
-      ) : (
-        <RangeSliderTemplate minim={minim} maxim={maxim} />
-      )}
+      <Slider
+        range
+        defaultValue={[14400, 72000]}
+        min={0}
+        max={82800}
+        step={3600}
+        tooltip={{
+          formatter: formatTooltip,
+        }}
+        marks={{
+          0: {
+            style: {
+              color: "#f50",
+            },
+            label: <strong>0:00</strong>,
+          },
+          82800: {
+            style: {
+              color: "#f50",
+            },
+            label: <strong>23:00</strong>,
+          },
+        }}
+        onChangeComplete={(value: number[]) => onChangeComplete(value)}
+      />
     </ConfigProvider>
   );
 }

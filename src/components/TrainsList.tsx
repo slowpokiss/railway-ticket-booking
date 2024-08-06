@@ -66,7 +66,7 @@ export default function TrainsList() {
         </div>
       </div>
 
-      <div className="cards">
+      <div className="cards flex flex-col gap-5">
         {trainsListData.total_count
           ? trainsListData.items.map((item: itemsInterface) => {
               const fromDatetime = fromUnixTime(item.departure.from.datetime);
@@ -172,14 +172,14 @@ export default function TrainsList() {
                           <img
                             src="../vecs/wifi.svg"
                             className={`h-[20px] ${
-                              item.have_wifi ? "block" : "hidden"
+                              item.departure.have_wifi ? "block" : "hidden"
                             }`}
                             alt="wifi"
                           />
                           <img
                             src="../vecs/express.svg"
                             className={`h-[20px] ${
-                              item.is_express ? "block" : "hidden"
+                              item.departure.is_express ? "block" : "hidden"
                             }`}
                             alt="express"
                           />

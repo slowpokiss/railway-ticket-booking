@@ -1,8 +1,8 @@
 import { useState } from "react";
 import "../css/Switcher.css";
-import DoubleSlider from "./DoubleSlider";
 import { useDispatch, useSelector } from "react-redux";
 import { initialStateInterface, setParamsToUrlQuery } from "../redux/mainSlice";
+import { RangeSliderTemplate, TimeRangeSliderTemplate } from "./DoubleSlider";
 
 interface filterTimeProps {
   direction?: string;
@@ -11,6 +11,7 @@ interface filterTimeProps {
 
 function FilterTime({ direction, title }: filterTimeProps) {
   const [extensionState, setExtensionState] = useState(false);
+  const dispatch = useDispatch();
 
   const onExtendClick = () => {
     setExtensionState(!extensionState);
@@ -36,11 +37,25 @@ function FilterTime({ direction, title }: filterTimeProps) {
         <div className={`${extensionState ? "" : "hidden"}`}>
           <div className="p-5 text-[16px]">
             <p>Время отбытия</p>
-            <DoubleSlider type="time" minim={0} maxim={84600} />
+            <TimeRangeSliderTemplate onChangeComplete={(timeData: number[]) => {
+              dispatch(
+                setParamsToUrlQuery({ [`start_${direction}_hour_to`]: timeData[0] / 3600})
+              )
+              dispatch(
+                setParamsToUrlQuery({ [`start_${direction}_hour_from`]: timeData[1] / 3600})
+              )
+            }} minim={0} maxim={84600} />
           </div>
           <div className="p-5 text-[16px]">
             <p className="text-end">Время прибытия</p>
-            <DoubleSlider type="time" minim={0} maxim={84600} />
+            <TimeRangeSliderTemplate onChangeComplete={(timeData: number[]) => {
+              dispatch(
+                setParamsToUrlQuery({ [`end_${direction}_hour_to`]: timeData[0] / 3600})
+              )
+              dispatch(
+                setParamsToUrlQuery({ [`end_${direction}_hour_from`]: timeData[1] / 3600})
+              )
+            }} minim={0} maxim={84600} />
           </div>
         </div>
       </div>
@@ -201,13 +216,21 @@ export default function LeftForm() {
         <div className="flex flex-col border-b p-5 border-white">
           <div className="mb-3">Стоимость</div>
           <div className="mt-5">
-            <DoubleSlider minim={1600} maxim={9900} />
+            <RangeSliderTemplate onChangeComplete={(moneyData: number[]) => {
+                dispatch(
+                  setParamsToUrlQuery({ price_from : moneyData[0]})
+                )
+                dispatch(
+                  setParamsToUrlQuery({ price_to : moneyData[1]})
+                )
+              }
+            } minim={1600} maxim={9900} />
           </div>
           
         </div>
 
-        <FilterTime direction="forward" title="Туда" />
-        <FilterTime direction="backward" title="Обратно" />
+        <FilterTime direction="departure" title="Туда" />
+        <FilterTime direction="arrival" title="Обратно" />
       </div>
     </>
   );
