@@ -183,7 +183,23 @@ img {
     @apply absolute top-[15px] w-[31px] h-[67px] select-none
   }
 
+  .seat-sm {
+    @apply select-none cursor-pointer absolute w-[31px] h-[31px]
+  }
+
+  .seat-sm:hover .hoverPrice {
+    @apply block
+  }
+
+  .seat:hover .hoverPrice {
+    @apply block
+  }
+
   .seat__content {
     @apply absolute top-1/2 left-0 w-full mt-[-10px] h-[20px] text-center text-[13px] font-normal text-[rgb(93,93,93)]
+  }
+
+  .offset-item {
+    @apply w-[50px] cursor-pointer h-[50px] border-2 border-[#928F94] text-[20px] rounded-md text-[#928F94] flex items-center justify-center hover:border-orange hover:text-orange
   }
 }

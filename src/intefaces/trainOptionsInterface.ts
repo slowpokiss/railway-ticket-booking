@@ -21,7 +21,7 @@ export interface Seats {
 }
 
 export interface trainOptionsInterface {
-  coach: Coach | {};
+  coach: Partial<Coach>;
   seats: Seats[];
 }
 

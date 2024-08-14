@@ -1,5 +1,8 @@
-import { availableSeatsInterface, itemsInterface } from "../intefaces/trainCardInterface";
-import { fromUnixTime, format } from "date-fns";
+import {
+  availableSeatsInterface,
+  itemsInterface,
+} from "../intefaces/trainCardInterface";
+import { fromUnixTime, format, addSeconds } from "date-fns";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { initialStateInterface } from "../redux/mainSlice";
@@ -18,9 +21,15 @@ export default function TrainsList() {
     (state: { main: initialStateInterface }) => state.main.mainData
   );
 
-
   const dispatch = useDispatch();
   const [limit, setLimit] = useState(5);
+  const [offset, setOffset] = useState(1);
+  const [currPage, setCurrPage] = useState(1)
+
+  const onPageClick = (offset: number) => {
+    setCurrPage(offset)
+    dispatch(setParamsToUrlQuery({ offset: offset * limit }))
+  }
 
   return (
     <>
@@ -28,7 +37,12 @@ export default function TrainsList() {
         <div className="">Найдено: {trainsListData.total_count}</div>
         <div className="flex gap-6 items-center">
           <label htmlFor="city-select">сортировать по: </label>
-          <select onChange={(ev: React.ChangeEvent<HTMLSelectElement>) => dispatch(setParamsToUrlQuery({ sort : ev.target.value }))} className="text-black bg-transparent">
+          <select
+            onChange={(ev: React.ChangeEvent<HTMLSelectElement>) =>
+              dispatch(setParamsToUrlQuery({ sort: ev.target.value }))
+            }
+            className="text-black bg-transparent"
+          >
             <option value="time">времени</option>
             <option value="value">стоимости</option>
             <option value="duration">длительности</option>
@@ -40,7 +54,9 @@ export default function TrainsList() {
                 dispatch(setParamsToUrlQuery({ limit: 5 }));
                 setLimit(5);
               }}
-              className={`py-1 px-2 cursor-pointer ${limit === 5? 'text-black  font-bold': ''} `}
+              className={`py-1 px-2 cursor-pointer ${
+                limit === 5 ? "text-black  font-bold" : ""
+              } `}
             >
               5
             </div>
@@ -49,7 +65,9 @@ export default function TrainsList() {
                 dispatch(setParamsToUrlQuery({ limit: 10 }));
                 setLimit(10);
               }}
-              className={`py-1 px-2 cursor-pointer ${limit === 10 ? 'text-black  font-bold': ''} `}
+              className={`py-1 px-2 cursor-pointer ${
+                limit === 10 ? "text-black  font-bold" : ""
+              } `}
             >
               10
             </div>
@@ -58,7 +76,9 @@ export default function TrainsList() {
                 dispatch(setParamsToUrlQuery({ limit: 20 }));
                 setLimit(20);
               }}
-              className={`py-1 px-2 cursor-pointer ${limit === 20 ? 'text-black  font-bold': ''} `}
+              className={`py-1 px-2 cursor-pointer ${
+                limit === 20 ? "text-black  font-bold" : ""
+              } `}
             >
               20
             </div>
@@ -71,7 +91,7 @@ export default function TrainsList() {
           ? trainsListData.items.map((item: itemsInterface) => {
               const fromDatetime = fromUnixTime(item.departure.from.datetime);
               const toDatetime = fromUnixTime(item.departure.to.datetime);
-              const travelTime = fromUnixTime(item.departure.duration);
+              const travelTime = addSeconds(new Date(0, 0, 0), item.departure.duration);
 
               const formattedFromDatetime = format(fromDatetime, "HH:mm");
               const formattedToDatetime = format(toDatetime, "HH:mm");
@@ -192,7 +212,7 @@ export default function TrainsList() {
                       </div>
                       <Link
                         onClick={() => {
-                          dispatch(setCurrTrainCardData(item))
+                          dispatch(setCurrTrainCardData(item));
                         }}
                         to={`/booking/${item.departure._id}`}
                         className="btn-template btn-orange text-white border-orange bg-orange py-[2px] px-5"
@@ -205,6 +225,18 @@ export default function TrainsList() {
               );
             })
           : null}
+      </div>
+
+      <div className="flex w-fit ml-auto gap-7 mt-10 mb-10">
+        {trainsListData.total_count ? (
+          <>  
+            <div onClick={() => setOffset(offset > 1 ? offset - 3 : 1)} className={`offset-item text-[30px]`}>&lt;</div>
+            <div onClick={() => onPageClick(offset)} className={`offset-item ${currPage === offset ? 'bg-orange text-white border-none hover:text-white': ''}`}>{offset}</div>
+            <div onClick={() => onPageClick(offset + 1)} className={`offset-item ${currPage === offset + 1 ? 'bg-orange text-white border-none hover:text-white': ''}`}>{offset + 1}</div>
+            <div onClick={() => onPageClick(offset + 2)} className={`offset-item ${currPage === offset + 2 ? 'bg-orange text-white border-none hover:text-white': ''}`}>{offset + 2}</div>
+            <div onClick={() => setOffset(offset + 3)} className={`offset-item text-[30px]`}>&gt;</div>
+          </>
+        ) : null}
       </div>
     </>
   );

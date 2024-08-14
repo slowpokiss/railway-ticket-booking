@@ -7,7 +7,7 @@ import queryString from "query-string";
 
 export interface initialStateInterface {
   mainData: ResponseData;
-  currTrainCardData: itemsInterface | undefined,
+  currTrainCardData: itemsInterface | undefined;
   urlQuery: string;
   stepsIndex: number;
   filters: filtersInterface;
@@ -30,10 +30,16 @@ export interface initialStateInterface {
     };
     trainOptions: {
       currVagon: {
+        vacantSeats: {
+          total: number,
+          top: number,
+          bottom: number,
+          side: number,
+        },
         name: string;
         vagonData: trainOptionsInterface;
+        selectedSeats: {seat: number,price: number}[] | []
       };
-      // selectedVagons: {}
     };
     selectedPassengersCount: {
       adult: number;
@@ -111,10 +117,17 @@ const mainSlice = createSlice({
       trainOptions: {
         currVagon: {
           name: "",
+          vacantSeats: {
+            total: 0,
+            top: 0,
+            bottom: 0,
+            side: 0
+          },
           vagonData: {
             coach: {},
             seats: [],
           },
+          selectedSeats: [] as { seat: any, price: any }[]
         },
       },
       selectedPassengersCount: {
@@ -149,33 +162,6 @@ const mainSlice = createSlice({
       state.urlQuery = queryString.stringify(updatedParams);
     },
 
-    // from_city_id
-    // to_city_id
-    // date_start
-    // date_end
-    // date_start_arrival
-    // date_end_arrival
-    // have_first_class
-    // have_second_class
-    // have_third_class
-    // have_fourth_class
-    // have_wifi
-    // have_air_conditioning
-    // have_express
-    // price_from
-    // price_to
-    // start_departure_hour_from
-    // start_departure_hour_to
-    // start_arrival_hour_from
-    // start_arrival_hour_to
-    // end_departure_hour_from
-    // end_departure_hour_to
-    // end_arrival_hour_from
-    // end_arrival_hour_to
-    // limit
-    // offset
-    // sort
-
     setMainData(state, action) {
       state.mainData = action.payload;
     },
@@ -195,6 +181,39 @@ const mainSlice = createSlice({
 
       state.firstStep.trainOptions.currVagon.name = name;
       state.firstStep.trainOptions.currVagon.vagonData = data;
+
+      const counts = data.seats.reduce(
+        (
+          acc: { freeCount: number; occupiedCount: number, topCount: number, bottomCount: number, sideCount: number},
+          item: { index: number; available: boolean }
+        ) => {
+          if (item.available) {
+            acc.freeCount++;
+
+            if (data.coach.class_type === 'second') {
+              item.index % 2 === 1 ? acc.bottomCount++ : acc.topCount++
+            }
+
+            if (data.coach.class_type === 'third') {
+              if (item.index <= 32) {
+                item.index % 2 === 1 ? acc.bottomCount++ : acc.topCount++
+              } else {
+                acc.sideCount++
+              }
+            }
+          } else {
+            acc.occupiedCount++;
+          }
+          return acc;
+        },
+        { freeCount: 0, occupiedCount: 0, topCount: 0, bottomCount: 0, sideCount: 0}
+      );
+
+      state.firstStep.trainOptions.currVagon.vacantSeats.total = counts.freeCount;
+      state.firstStep.trainOptions.currVagon.vacantSeats.top = counts.topCount
+      state.firstStep.trainOptions.currVagon.vacantSeats.bottom = counts.bottomCount
+      state.firstStep.trainOptions.currVagon.vacantSeats.side = counts.sideCount
+      state.firstStep.trainOptions.currVagon.selectedSeats = [];
     },
 
     setDepartureCity(state, action) {
@@ -253,6 +272,16 @@ const mainSlice = createSlice({
       state.firstStep.selectedPassengersCount[type] = value;
     },
 
+    setSelectedSeats(state, action) {
+      const { seat, price, type } = action.payload;
+
+      if (type === 'put') {
+        (state.firstStep.trainOptions.currVagon.selectedSeats as { seat: any; price: any }[]).push({ seat, price })
+      } else {
+        state.firstStep.trainOptions.currVagon.selectedSeats.splice(seat, 1);
+      }
+    },
+
     // second step reducers
     updatePassengersData(state, action) {
       const { actionType, passengersAge } = action.payload;
@@ -293,25 +322,28 @@ const mainSlice = createSlice({
     ) {
       const { inputType, id, value } = action.payload;
       const currItem = state.secondStep.passengersData[id];
-      
+
       if (inputType && currItem) {
         currItem[inputType] = value;
       }
     },
 
     // third step reducers
-    setPaymentData(state, action: {
-      payload: {
-        inputType:
-          | "method"
-          | "tel"
-          | "email"
-          | "surName"
-          | "familia"
-          | "name";
-        value: string;
-      };
-    }) {
+    setPaymentData(
+      state,
+      action: {
+        payload: {
+          inputType:
+            | "method"
+            | "tel"
+            | "email"
+            | "surName"
+            | "familia"
+            | "name";
+          value: string;
+        };
+      }
+    ) {
       const { inputType, value } = action.payload;
 
       state.thirdStep[inputType] = value;
@@ -327,6 +359,7 @@ export const {
   setDepartureCity,
   changeDepartureCity,
   setDepartureDates,
+  setSelectedSeats,
   setSelectedPassengersCount,
   updatePassengersData,
   setPassengersData,
