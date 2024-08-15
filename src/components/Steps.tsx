@@ -9,7 +9,8 @@ export default function Steps() {
 
   const onStepClick = (stepIndex: number) => {
     dispatch(setStepsIndex({ index: stepIndex }))
-  }
+  };
+
 
   return (
     <div className="steps relative z-0 flex w-full text-white">

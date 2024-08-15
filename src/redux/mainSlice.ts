@@ -31,14 +31,16 @@ export interface initialStateInterface {
     trainOptions: {
       currVagon: {
         vacantSeats: {
-          total: number,
-          top: number,
-          bottom: number,
-          side: number,
-        },
+          total: number;
+          top: number;
+          bottom: number;
+          side: number;
+        };
         name: string;
         vagonData: trainOptionsInterface;
-        selectedSeats: {seat: number,price: number}[] | []
+        selectedSeats: { seat: number; price: number }[] | [];
+        selectedOptions: { optionType: string; price: number }[] | [];
+        totalPrice: number;
       };
     };
     selectedPassengersCount: {
@@ -105,11 +107,11 @@ const mainSlice = createSlice({
         },
         departureCities: {
           fromCity: {
-            name: "москва",
+            name: "",
             id: null,
           },
           toCity: {
-            name: "санкт-петербург",
+            name: "",
             id: null,
           },
         },
@@ -121,13 +123,15 @@ const mainSlice = createSlice({
             total: 0,
             top: 0,
             bottom: 0,
-            side: 0
+            side: 0,
           },
           vagonData: {
             coach: {},
             seats: [],
           },
-          selectedSeats: [] as { seat: any, price: any }[]
+          selectedSeats: [] as { seat: number; price: number }[],
+          selectedOptions: [] as { optionType: string; price: number }[],
+          totalPrice: 0,
         },
       },
       selectedPassengersCount: {
@@ -168,6 +172,9 @@ const mainSlice = createSlice({
 
     setCurrTrainCardData(state, action) {
       state.currTrainCardData = action.payload;
+      state.firstStep.trainOptions.currVagon.totalPrice = 0;
+      state.firstStep.trainOptions.currVagon.selectedOptions = [];
+      state.firstStep.trainOptions.currVagon.selectedSeats = [];
     },
 
     setStepsIndex(state, action) {
@@ -184,21 +191,27 @@ const mainSlice = createSlice({
 
       const counts = data.seats.reduce(
         (
-          acc: { freeCount: number; occupiedCount: number, topCount: number, bottomCount: number, sideCount: number},
+          acc: {
+            freeCount: number;
+            occupiedCount: number;
+            topCount: number;
+            bottomCount: number;
+            sideCount: number;
+          },
           item: { index: number; available: boolean }
         ) => {
           if (item.available) {
             acc.freeCount++;
 
-            if (data.coach.class_type === 'second') {
-              item.index % 2 === 1 ? acc.bottomCount++ : acc.topCount++
+            if (data.coach.class_type === "second") {
+              item.index % 2 === 1 ? acc.bottomCount++ : acc.topCount++;
             }
 
-            if (data.coach.class_type === 'third') {
+            if (data.coach.class_type === "third") {
               if (item.index <= 32) {
-                item.index % 2 === 1 ? acc.bottomCount++ : acc.topCount++
+                item.index % 2 === 1 ? acc.bottomCount++ : acc.topCount++;
               } else {
-                acc.sideCount++
+                acc.sideCount++;
               }
             }
           } else {
@@ -206,14 +219,25 @@ const mainSlice = createSlice({
           }
           return acc;
         },
-        { freeCount: 0, occupiedCount: 0, topCount: 0, bottomCount: 0, sideCount: 0}
+        {
+          freeCount: 0,
+          occupiedCount: 0,
+          topCount: 0,
+          bottomCount: 0,
+          sideCount: 0,
+        }
       );
 
-      state.firstStep.trainOptions.currVagon.vacantSeats.total = counts.freeCount;
-      state.firstStep.trainOptions.currVagon.vacantSeats.top = counts.topCount
-      state.firstStep.trainOptions.currVagon.vacantSeats.bottom = counts.bottomCount
-      state.firstStep.trainOptions.currVagon.vacantSeats.side = counts.sideCount
+      state.firstStep.trainOptions.currVagon.vacantSeats.total =
+        counts.freeCount;
+      state.firstStep.trainOptions.currVagon.vacantSeats.top = counts.topCount;
+      state.firstStep.trainOptions.currVagon.vacantSeats.bottom =
+        counts.bottomCount;
+      state.firstStep.trainOptions.currVagon.vacantSeats.side =
+        counts.sideCount;
       state.firstStep.trainOptions.currVagon.selectedSeats = [];
+      state.firstStep.trainOptions.currVagon.selectedOptions = [];
+      state.firstStep.trainOptions.currVagon.totalPrice = 0;
     },
 
     setDepartureCity(state, action) {
@@ -275,10 +299,38 @@ const mainSlice = createSlice({
     setSelectedSeats(state, action) {
       const { seat, price, type } = action.payload;
 
-      if (type === 'put') {
-        (state.firstStep.trainOptions.currVagon.selectedSeats as { seat: any; price: any }[]).push({ seat, price })
+      if (type === "put") {
+        (
+          state.firstStep.trainOptions.currVagon.selectedSeats as {
+            seat: any;
+            price: any;
+          }[]
+        ).push({ seat, price });
+        state.firstStep.trainOptions.currVagon.totalPrice += price;
       } else {
         state.firstStep.trainOptions.currVagon.selectedSeats.splice(seat, 1);
+        state.firstStep.trainOptions.currVagon.totalPrice -= price;
+      }
+    },
+
+    setSelectedOptions(state, action) {
+      const { optionType, price } = action.payload;
+      const ind =
+        state.firstStep.trainOptions.currVagon.selectedOptions.findIndex(
+          (el) => el.optionType === optionType
+        );
+
+      if (ind === -1) {
+        (
+          state.firstStep.trainOptions.currVagon.selectedOptions as {
+            optionType: string;
+            price: number;
+          }[]
+        ).push({ optionType, price });
+        state.firstStep.trainOptions.currVagon.totalPrice += price;
+      } else {
+        state.firstStep.trainOptions.currVagon.selectedOptions.splice(ind, 1);
+        state.firstStep.trainOptions.currVagon.totalPrice -= price;
       }
     },
 
@@ -357,6 +409,7 @@ export const {
   setMainData,
   setCurrVagonData,
   setDepartureCity,
+  setSelectedOptions,
   changeDepartureCity,
   setDepartureDates,
   setSelectedSeats,

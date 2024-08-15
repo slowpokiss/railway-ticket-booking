@@ -114,7 +114,6 @@ export default function TrainsList() {
                       </div>
                     </div>
                     <div className="flex flex-col text-[14px]">
-                      {/* <p className="text-[#928F94]">Адлер →</p> */}
                       {item.departure.from.city.name} →
                       <br />
                       {item.departure.to.city.name}
@@ -158,7 +157,7 @@ export default function TrainsList() {
                       </div>
                     </div>
                   </div>
-                  <div className="flex flex-col gap-5 p-4 justify-between">
+                  <div className="flex flex-col gap-5 p-2 justify-between">
                     <div className="comfort-options">
                       {Object.entries(item.available_seats_info).map(
                         (el: [string, unknown | number], ind: number) => {
@@ -192,14 +191,14 @@ export default function TrainsList() {
                           <img
                             src="../vecs/wifi.svg"
                             className={`h-[20px] ${
-                              item.departure.have_wifi ? "block" : "hidden"
+                              item.departure.have_wifi === true ? "block" : "hidden"
                             }`}
                             alt="wifi"
                           />
                           <img
                             src="../vecs/express.svg"
                             className={`h-[20px] ${
-                              item.departure.is_express ? "block" : "hidden"
+                              item.departure.is_express === true ? "block" : "hidden"
                             }`}
                             alt="express"
                           />

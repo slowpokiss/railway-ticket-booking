@@ -4,8 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   initialStateInterface,
   updatePassengersData,
-  setPassengersData
+  setPassengersData,
+  setStepsIndex
 } from "../redux/mainSlice";
+import { useNavigate } from "react-router-dom";
 
 interface passengerProps {
   passData: any;
@@ -159,7 +161,7 @@ function Passenger({ passData, onDeletePassenger, elementId }: passengerProps) {
                   setPassengersData({
                     inputType: "birthday",
                     id: elementId,
-                    value: data,
+                    value: data?? '',
                   }))
                 }
                 past={true}
@@ -265,23 +267,11 @@ function Passenger({ passData, onDeletePassenger, elementId }: passengerProps) {
 
 export default function PassengersList() {
   const dispatch = useDispatch();
-
-  // const selectedPassengersCount = useSelector(
-  //   (state: {main: initialStateInterface}) => state.main.firstStep.selectedPassengersCount
-  // );
-
-  // for (let i = 0; i < selectedPassengersCount.adult; i++) {
-  //   dispatch(updatePassengersData({ actionType: "add", passengersAge: 'adult' }));
-  // }
-
-  // for (let i = 0; i < selectedPassengersCount.child; i++) {
-  //   dispatch(updatePassengersData({ actionType: "add", passengersAge: 'child' }));
-  // }
+  const navigate = useNavigate();
 
   const passengersList = useSelector(
     (state: {main: initialStateInterface}) => state.main.secondStep.passengersData
   );
-
 
   const onDeletePassenger = (id: number) => {
     dispatch(updatePassengersData({ id, actionType: "delete" }));
@@ -290,10 +280,17 @@ export default function PassengersList() {
   const onAddPassenger = () => {
     dispatch(updatePassengersData({ actionType: "add", passengersAge: 'adult' }));
   };
+  
+  const onFormSubmit = (ev: React.FormEvent) => {
+    ev.preventDefault()
+
+    dispatch(setStepsIndex({ index: 3 }))
+    return navigate('/booking/payment');
+  }
 
   return (
     <>
-      <form className="flex flex-col gap-5">
+      <form onSubmit={onFormSubmit} className="flex flex-col gap-5">
         {passengersList.map((el, ind) => {
           return (
             <Passenger

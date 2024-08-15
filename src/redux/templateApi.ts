@@ -49,21 +49,13 @@ export const templateApi = createApi({
         method: "POST",
         body,
       }),
-
-      // getLastRoutes: build.query({
-      //   query: (searchItem) => `routes/cities?name=${searchItem}`
-      // }),
-
-      //invalidatesTags: [{ type: 'Tickets', id: 'LIST' }],
-      // providesTags: (result: any) =>
-      //   result
-      //     ? [
-      //         { type: 'Tickets', id: 'LIST' },
-      //         ...result.map(({ id }) => ({ type: 'Tickets' as const, id })),
-      //       ]
-      //     : [{ type: 'Tickets', id: 'LIST' }],
-
-      //`/?from_city_id=${cities.fromCity.id}&to_city_id=${cities.toCity.id}`,
+    }),
+    finalOrder: build.mutation({
+      query: (body: any) => ({
+        url: "order",
+        method: "POST",
+        body,
+      }),
     }),
   }),
 });
@@ -74,5 +66,6 @@ export const {
   useLazyGetTrainOptionsQuery,
   useGetLastRoutesQuery,
   useEmailSubscriptionMutation,
+  useFinalOrderMutation,
 } = templateApi;
 export default templateApi;

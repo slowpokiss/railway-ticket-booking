@@ -18,11 +18,13 @@ interface TemplateInterface {
 function LuxuryTemplate({ seatsData, setCurrSeatsCB }: TemplateInterface) {
   const [currentseats, setCurrentSeats] = useState<number[]>([]);
 
-  const onSeatClick = (el: { available: boolean; index: number }) => {
+  const onSeatClick = (el: Seats, seatPrice: number) => {
     if (el.available) {
       if (currentseats.includes(el.index)) {
+        setCurrSeatsCB(el.index, seatPrice, "delete");
         setCurrentSeats(currentseats.filter((seat) => seat !== el.index));
       } else {
+        setCurrSeatsCB(el.index, seatPrice, "put");
         setCurrentSeats([...currentseats, el.index]);
       }
     }
@@ -35,7 +37,7 @@ function LuxuryTemplate({ seatsData, setCurrSeatsCB }: TemplateInterface) {
       ></div>
 
       {seatsData.seats.map((el: Seats) => {
-        const hoverPrice = seatsData.coach.price;
+        const hoverPrice = seatsData.coach.price ?? 0;
 
         const left =
           el.index % 2 !== 0
@@ -45,7 +47,7 @@ function LuxuryTemplate({ seatsData, setCurrSeatsCB }: TemplateInterface) {
         return (
           <div
             key={el.index}
-            onClick={() => onSeatClick(el)}
+            onClick={() => onSeatClick(el, hoverPrice)}
             className={`seat cursor-pointer`}
             style={{ left: `${left}px` }}
           >
@@ -190,11 +192,13 @@ function LuxuryTemplate({ seatsData, setCurrSeatsCB }: TemplateInterface) {
 function KypeTemplate({ seatsData, setCurrSeatsCB }: TemplateInterface) {
   const [currentseats, setCurrentSeats] = useState<number[]>([]);
 
-  const onSeatClick = (el: { available: boolean; index: number }) => {
+  const onSeatClick = (el: Seats, seatPrice: number) => {
     if (el.available) {
       if (currentseats.includes(el.index)) {
+        setCurrSeatsCB(el.index, seatPrice, "delete");
         setCurrentSeats(currentseats.filter((seat) => seat !== el.index));
       } else {
+        setCurrSeatsCB(el.index, seatPrice, "put");
         setCurrentSeats([...currentseats, el.index]);
       }
     }
@@ -217,15 +221,15 @@ function KypeTemplate({ seatsData, setCurrSeatsCB }: TemplateInterface) {
 
         if (el.index % 2 === 0) {
           top = 15;
-          hoverPrice = seatsData.coach.top_price;
+          hoverPrice = seatsData.coach.top_price ?? 0;
         } else {
           top = 51;
-          hoverPrice = seatsData.coach.bottom_price;
+          hoverPrice = seatsData.coach.bottom_price ?? 0
         }
 
         return (
           <div
-            onClick={() => onSeatClick(el)}
+            onClick={() => onSeatClick(el, hoverPrice)}
             key={el.index}
             style={{ left: `${left}px`, top: `${top}px` }}
             className="seat-sm"
@@ -605,11 +609,13 @@ function PlazCartTemplate({ seatsData, setCurrSeatsCB }: TemplateInterface) {
 function SeatTemplate({ seatsData, setCurrSeatsCB }: TemplateInterface) {
   const [currentseats, setCurrentSeats] = useState<number[]>([]);
 
-  const onSeatClick = (el: Seats) => {
+  const onSeatClick = (el: Seats, seatPrice: number) => {
     if (el.available) {
       if (currentseats.includes(el.index)) {
+        setCurrSeatsCB(el.index, seatPrice, "delete");
         setCurrentSeats(currentseats.filter((seat) => seat !== el.index));
       } else {
+        setCurrSeatsCB(el.index, seatPrice, "put");
         setCurrentSeats([...currentseats, el.index]);
       }
     }
@@ -625,7 +631,7 @@ function SeatTemplate({ seatsData, setCurrSeatsCB }: TemplateInterface) {
         {seatsData.seats.map((el: Seats) => {
           let left;
           let top;
-          const hoverPrice = seatsData.coach.top_price;
+          const hoverPrice = seatsData.coach.top_price ?? 0;
 
           const lineBreakIndex = 32;
           const relativeIndex =
@@ -656,7 +662,7 @@ function SeatTemplate({ seatsData, setCurrSeatsCB }: TemplateInterface) {
           }
           return (
             <div
-              onClick={() => onSeatClick(el)}
+              onClick={() => onSeatClick(el, hoverPrice)}
               key={el.index}
               style={{ left: `${left}px`, top: `${top}px` }}
               className="seat-sm "
@@ -821,7 +827,7 @@ export default function seats({ data }: seatsProps) {
   let template;
   const dispatch = useDispatch();
 
-  const setCurrSeatsCB = (seat: number, price: number, type: string) =>
+  const setCurrSeatsCB = (seat: number, price: number, type: string) => {
     dispatch(
       setSelectedSeats({
         seat,
@@ -829,6 +835,8 @@ export default function seats({ data }: seatsProps) {
         type
       })
     )
+  }
+    
 
   switch (data.coach.class_type) {
     case "first":

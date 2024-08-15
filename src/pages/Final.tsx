@@ -1,8 +1,14 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { initialStateInterface } from "../redux/mainSlice";
 
 export default function Final() {
   const [star, setStars] = useState(0);
+  const main = useSelector(
+    (state: { main: initialStateInterface }) =>
+      state.main
+  );
 
   const starsArray = [];
   for (let i = 1; i < 6; i++) {
@@ -63,9 +69,9 @@ export default function Final() {
           <p className="text-[50px] text-white font-semibold">Благодарим Вас за заказ!</p>
           <div className="bg-white">
             <div className="flex justify-between text-[25px] border-b p-10 border-[#928F94]">
-              <p className="font-semibold text-[#3E3C41]">№Заказа 285АА</p>
+              <p className="font-semibold text-[#3E3C41]">№ Заказа 285АА</p>
               <div className="flex gap-4">
-                сумма <p> 7 777</p> ₽
+                сумма <p> {main.firstStep.trainOptions.currVagon.totalPrice ?? 0}</p> ₽
               </div>
             </div>
             <div className="bg-[#F4F3F6]">
@@ -109,7 +115,7 @@ export default function Final() {
             </div>
             <div className="flex flex-col gap-5 p-28">
               <p className="text-[25px] font-semibold text-[#292929]">
-                Ирина Эдуардовна!
+                {main.thirdStep.name ?? ''} {main.thirdStep.surName?? ''} !
               </p>
               <p>
                 Ваш заказ успешно оформлен.

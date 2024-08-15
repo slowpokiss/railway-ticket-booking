@@ -2,12 +2,14 @@ import { Link, useParams } from "react-router-dom";
 import { useLazyGetTrainOptionsQuery } from "../redux/templateApi";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { trainOptionsInterface } from "../intefaces/trainOptionsInterface";
+import { trainOptionsInterface, } from "../intefaces/trainOptionsInterface";
 import { fromUnixTime, format, addSeconds } from "date-fns";
 import {
   setCurrVagonData,
   initialStateInterface,
   setSelectedPassengersCount,
+  setSelectedOptions,
+  setStepsIndex,
 } from "../redux/mainSlice";
 import { InputNumber, Space, ConfigProvider } from "antd";
 import Seats from "./Seats";
@@ -61,7 +63,6 @@ function SeatsOptions({ data, currTrainData }: seatsProps) {
     (state: { main: initialStateInterface }) =>
       state.main.firstStep.trainOptions.currVagon
   );
-
   const dispatch = useDispatch();
   const [trainType, setTrainType] = useState<ClassType | "">("");
 
@@ -80,7 +81,7 @@ function SeatsOptions({ data, currTrainData }: seatsProps) {
     },
   };
 
-  data.forEach((el: any) => {
+  data.forEach((el: trainOptionsInterface) => {
     const key = el.coach.class_type as ClassType;
     if (allOptions[key]) {
       allOptions[key].vagons.push(el);
@@ -138,10 +139,12 @@ function SeatsOptions({ data, currTrainData }: seatsProps) {
           seats = (
             <>
               <div className="flex gap-2 text-[16px]">
-                Верхние <p className="font-semibold">{currVagon.vacantSeats.top}</p>
+                Верхние{" "}
+                <p className="font-semibold">{currVagon.vacantSeats.top}</p>
               </div>
               <div className="flex gap-2 text-[16px]">
-                Нижние <p className="font-semibold">{currVagon.vacantSeats.bottom}</p>
+                Нижние{" "}
+                <p className="font-semibold">{currVagon.vacantSeats.bottom}</p>
               </div>
             </>
           );
@@ -172,13 +175,16 @@ function SeatsOptions({ data, currTrainData }: seatsProps) {
           seats = (
             <>
               <div className="flex gap-2 text-[16px]">
-                Верхние <p className="font-semibold">{currVagon.vacantSeats.top}</p>
+                Верхние{" "}
+                <p className="font-semibold">{currVagon.vacantSeats.top}</p>
               </div>
               <div className="flex gap-2 text-[16px]">
-                Нижние <p className="font-semibold">{currVagon.vacantSeats.bottom}</p>
+                Нижние{" "}
+                <p className="font-semibold">{currVagon.vacantSeats.bottom}</p>
               </div>
               <div className="flex gap-2 text-[16px]">
-                Боковые <p className="font-semibold">{currVagon.vacantSeats.side}</p>
+                Боковые{" "}
+                <p className="font-semibold">{currVagon.vacantSeats.side}</p>
               </div>
             </>
           );
@@ -198,6 +204,31 @@ function SeatsOptions({ data, currTrainData }: seatsProps) {
           break;
       }
 
+      const onOptionClick = (ev: React.MouseEvent<HTMLLIElement>) => {
+        const target = ev.currentTarget as HTMLElement;
+        const optionType = target.getAttribute("data-name");
+
+        if (optionType === "wifi" && currVagon.vagonData.coach.have_wifi) {
+          dispatch(
+            setSelectedOptions({
+              optionType,
+              price: currVagon.vagonData.coach.wifi_price,
+            })
+          );
+        }
+        if (
+          optionType === "linens" &&
+          !currVagon.vagonData.coach.is_linens_included
+        ) {
+          dispatch(
+            setSelectedOptions({
+              optionType,
+              price: currVagon.vagonData.coach.linens_price,
+            })
+          );
+        }
+      };
+
       return (
         <div className="w-full grid grid-cols-3">
           <div className="flex flex-col">
@@ -213,12 +244,20 @@ function SeatsOptions({ data, currTrainData }: seatsProps) {
             </div>
             {prices}
           </div>
+
           <div className="">
             <div className="flex gap-2 text-[13px] text-[#928F94]">
               Обслуживание ФПК
             </div>
             <ul className="flex gap-2">
-              <li className="add-option">
+              <li
+                data-name={"air_conditioning"}
+                className={`air_conditioning add-option ${
+                  currVagon.vagonData.coach.have_air_conditioning
+                    ? ""
+                    : "add-option_inactive opacity-50 hover:bg-white"
+                }`}
+              >
                 <svg
                   viewBox="0 0 21 21"
                   fill="none"
@@ -238,7 +277,21 @@ function SeatsOptions({ data, currTrainData }: seatsProps) {
                   />
                 </svg>
               </li>
-              <li className="add-option add-option_inactive">
+              <li
+                data-name={"wifi"}
+                onClick={onOptionClick}
+                className={`wifi add-option ${
+                  currVagon.selectedOptions.some(
+                    (obj) => obj.optionType === "wifi"
+                  )
+                    ? ""
+                    : "add-option_inactive"
+                } ${
+                  currVagon.vagonData.coach.have_wifi
+                    ? ""
+                    : "add-option_inactive opacity-50 hover:bg-white"
+                } `}
+              >
                 <svg
                   viewBox="0 0 24 19"
                   fill="none"
@@ -262,7 +315,20 @@ function SeatsOptions({ data, currTrainData }: seatsProps) {
                   />
                 </svg>
               </li>
-              <li className="add-option opacity-50">
+              <li
+                data-name={"linens"}
+                onClick={onOptionClick}
+                className={`linens add-option 
+                ${
+                  currVagon.vagonData.coach.is_linens_included
+                    ? ""
+                    : currVagon.selectedOptions.some(
+                        (obj) => obj.optionType === "linens"
+                      )
+                    ? ""
+                    : "add-option_inactive"
+                }`}
+              >
                 <svg
                   viewBox="0 0 22 16"
                   fill="none"
@@ -274,7 +340,13 @@ function SeatsOptions({ data, currTrainData }: seatsProps) {
                   />
                 </svg>
               </li>
-              <li className="add-option">
+              <li
+                className={`add-option ${
+                  currVagon.vagonData.coach
+                    ? ""
+                    : "add-option_inactive opacity-50 hover:bg-white"
+                }`}
+              >
                 <svg
                   viewBox="0 0 20 18"
                   fill="none"
@@ -397,25 +469,27 @@ function SeatsOptions({ data, currTrainData }: seatsProps) {
           <div className="flex justify-between items-center pl-6 pr-4 text-[12px] bg-[rgba(255,168,0,0.44)]">
             <div className="flex items-center gap-2">
               Вагоны
-              {allOptions[trainType].vagons.map((el: trainOptionsInterface, ind: number) => {
-                const vagon = el.coach.name.split("-")[1];
+              {allOptions[trainType].vagons.map(
+                (el: trainOptionsInterface, ind: number) => {
+                  const vagon = el.coach.name.split("-")[1];
 
-                return (
-                  <p
-                    key={ind}
-                    onClick={() =>
-                      dispatch(
-                        setCurrVagonData({ name: el.coach.name, data: el })
-                      )
-                    }
-                    className={`cursor-pointer text-[16px] font-semibold ${
-                      currVagon.name === el.coach.name ? "text-white" : ""
-                    }`}
-                  >
-                    {vagon}
-                  </p>
-                );
-              })}
+                  return (
+                    <p
+                      key={ind}
+                      onClick={() =>
+                        dispatch(
+                          setCurrVagonData({ name: el.coach.name, data: el })
+                        )
+                      }
+                      className={`cursor-pointer text-[16px] font-semibold ${
+                        currVagon.name === el.coach.name ? "text-white" : ""
+                      }`}
+                    >
+                      {vagon}
+                    </p>
+                  );
+                }
+              )}
             </div>
             <div className="">Нумерация вагонов начинается с головы поезда</div>
           </div>
@@ -437,7 +511,8 @@ function SeatsOptions({ data, currTrainData }: seatsProps) {
 
 export default function TrainOptions() {
   const { trainId } = useParams();
-  let [trigger, { data = [], isFetching }] = useLazyGetTrainOptionsQuery();
+  const dispatch = useDispatch();
+  const [trigger, { data = [], isFetching }] = useLazyGetTrainOptionsQuery();
   const filtersData = useSelector(
     (state: { main: initialStateInterface }) => state.main.filters
   );
@@ -475,12 +550,9 @@ export default function TrainOptions() {
     ];
   };
 
-  const fromDatetime = fromUnixTime(currTrainData.departure.from.datetime);
-  const toDatetime = fromUnixTime(currTrainData.departure.to.datetime);
-  const travelTime = addSeconds(
-    new Date(0, 0, 0),
-    currTrainData.departure.duration
-  );
+  const fromDatetime = currTrainData ? fromUnixTime(currTrainData.departure.from.datetime) : 0;
+  const toDatetime = currTrainData ? fromUnixTime(currTrainData.departure.to.datetime): 0
+  const travelTime = currTrainData ? addSeconds(new Date(0, 0, 0), currTrainData.departure.duration) : new Date(0);
 
   const formattedFromDatetime = format(fromDatetime, "HH:mm");
   const formattedToDatetime = format(toDatetime, "HH:mm");
@@ -500,6 +572,7 @@ export default function TrainOptions() {
           have_fourth_class: filtersData.have_fourth_class,
           have_wifi: filtersData.have_wifi,
           have_air_conditioning: filtersData.have_air_conditioning,
+          have_express: filtersData.have_express,
         });
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -509,11 +582,14 @@ export default function TrainOptions() {
     fetchData();
   }, [trainId]);
 
-  const onSubmitTick = () => {
+  const onSubmitTick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     if (currVagon.selectedSeats.length === 0) {
-      return 
+      event.preventDefault();
+      return;
     }
-  }
+
+    dispatch(setStepsIndex({ index: 2 }));
+  };
 
   return (
     <>
@@ -535,63 +611,71 @@ export default function TrainOptions() {
               </Link>
             </div>
             <div className="flex gap-[2px] mb-[20px]">
-              <div className="flex w-1/4 bg-[#F7F6F6] justify-center items-center gap-4">
-                <img
-                  src="../vecs/train_circle.svg"
-                  className="h-[35px] w-[35px]"
-                  alt="train"
-                />
-                <div className="flex flex-col text-[14px] py-3">
-                  <p className="text-[20px] font-semibold">{currVagon.name}</p>
-                  {currTrainData.departure.from.city.name} →
-                  <br />
-                  {currTrainData.departure.to.city.name}
-                </div>
-              </div>
-              <div className="flex w-1/2 justify-between items-center px-8  bg-[#F7F6F6]">
-                <div className="from w-fit text-[16px]">
-                  <div className="time text-[20px] font-bold">
-                    {formattedFromDatetime}
-                  </div>
-                  <div className="leading-none">
-                    <div className="">
-                      {currTrainData.departure.from.city.name}
-                    </div>
-                    <div className="text-[#928F94]">
-                      {currTrainData.departure.from.railway_station_name}
-                    </div>
-                  </div>
-                </div>
-                <div className="">
-                  <img
-                    src="../vecs/arrow_r_orange.svg"
-                    className="h-[30px] w-[30px]"
-                    alt="train"
-                  />
-                </div>
-                <div className="to w-fit text-[16px]">
-                  <div className="time text-[20px] font-bold">
-                    {formattedToDatetime}
-                  </div>
-                  <div className="leading-none">
-                    <div className="">
+              {currTrainData ? (
+                <>
+                  <div className="flex w-1/4 bg-[#F7F6F6] justify-center items-center gap-4">
+                    <img
+                      src="../vecs/train_circle.svg"
+                      className="h-[35px] w-[35px]"
+                      alt="train"
+                    />
+                    <div className="flex flex-col text-[14px] py-3">
+                      <p className="text-[20px] font-semibold">
+                        {currVagon.name}
+                      </p>
+                      {currTrainData.departure.from.city.name} →
+                      <br />
                       {currTrainData.departure.to.city.name}
                     </div>
-                    <div className="text-[#928F94]">
-                      {currTrainData.departure.to.railway_station_name}
+                  </div>
+                  <div className="flex w-1/2 justify-between items-center px-8  bg-[#F7F6F6]">
+                    <div className="from w-fit text-[16px]">
+                      <div className="time text-[20px] font-bold">
+                        {formattedFromDatetime}
+                      </div>
+                      <div className="leading-none">
+                        <div className="">
+                          {currTrainData.departure.from.city.name}
+                        </div>
+                        <div className="text-[#928F94]">
+                          {currTrainData.departure.from.railway_station_name}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="">
+                      <img
+                        src="../vecs/arrow_r_orange.svg"
+                        className="h-[30px] w-[30px]"
+                        alt="train"
+                      />
+                    </div>
+                    <div className="to w-fit text-[16px]">
+                      <div className="time text-[20px] font-bold">
+                        {formattedToDatetime}
+                      </div>
+                      <div className="leading-none">
+                        <div className="">
+                          {currTrainData.departure.to.city.name}
+                        </div>
+                        <div className="text-[#928F94]">
+                          {currTrainData.departure.to.railway_station_name}
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div className="flex w-1/4 items-center justify-center bg-[#F7F6F6]">
-                <div className="h-[30px] flex items-center leading-[1.2] gap-2">
-                  <img src="../../vecs/clock.svg" alt="" />
-                  <div className="flex-col">
-                    <p>{formattedTravelTime[0]}</p>
-                    <p>{formattedTravelTime[1]}</p>
+                  <div className="flex w-1/4 items-center justify-center bg-[#F7F6F6]">
+                    <div className="h-[30px] flex items-center leading-[1.2] gap-2">
+                      <img src="../../vecs/clock.svg" alt="" />
+                      <div className="flex-col">
+                        <p>{formattedTravelTime[0]}</p>
+                        <p>{formattedTravelTime[1]}</p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
+                </>
+              ) : (
+              <div className="mx-auto w-full text-center text-red-500 ">Выберите билеты на поезд</div>
+              )}
             </div>
 
             <div className="mb-[30px] ">
@@ -632,8 +716,18 @@ export default function TrainOptions() {
             </div>
 
             <SeatsOptions data={data} currTrainData={currTrainData} />
+
+            <div className="text-orange text-[20px] text-end my-3 mx-5">
+              {currVagon.totalPrice === 0 ? null : `${currVagon.totalPrice} ₽`}{" "}
+            </div>
           </div>
-          <div onClick={onSubmitTick} className="ml-auto my-5 btn-template bg-orange text-white btn-orange">Далее</div>
+          <Link
+            onClick={onSubmitTick}
+            to={"/booking/passengers"}
+            className="block ml-auto my-5 btn-template bg-orange text-white btn-orange"
+          >
+            Далее
+          </Link>
         </div>
       ) : (
         "Loading..."

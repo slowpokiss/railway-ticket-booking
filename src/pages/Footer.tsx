@@ -9,7 +9,7 @@ const pageUp = () =>
   });
 
 export default function Footer() {
-  let [trigger] = useEmailSubscriptionMutation();
+  const [trigger] = useEmailSubscriptionMutation();
   const [emailState, setEmailState] = useState(false);
 
   const onEmailSubscribe = async (ev: React.FormEvent<HTMLFormElement>) => {

@@ -1,12 +1,21 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setPaymentData, initialStateInterface } from "../redux/mainSlice";
+import { setPaymentData, initialStateInterface, setStepsIndex } from "../redux/mainSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function Payment() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const paymentData = useSelector((state: {main: initialStateInterface}) => state.main.thirdStep)
 
+  const onFormSubmit = (ev: React.FormEvent) => {
+    ev.preventDefault()
+
+    dispatch(setStepsIndex({ index: 4 }))
+    return navigate('/booking/review');
+  }
+
   return (
-    <form className="flex flex-col">
+    <form onSubmit={onFormSubmit} className="flex flex-col">
       <div className="w-full border border-[#C4C4C4]">
         <div className="">
           <div className="flex justify-between items-center text-[20px] py-5 px-6 bg-[#F9F9F9]">

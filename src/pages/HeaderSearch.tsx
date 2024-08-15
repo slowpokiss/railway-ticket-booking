@@ -27,14 +27,12 @@ export default function HeaderSearch() {
       }
     }
   }, [location]);
-
-  let [trigger, { data = [], isFetching }] = useLazyFindTicketsWithOptionsQuery();
+  const [trigger, { data = [], isFetching }] = useLazyFindTicketsWithOptionsQuery();
   const dispatch = useDispatch();
 
   const urlQuery = useSelector(
     (state: { main: initialStateInterface }) => state.main.urlQuery
   );
-
   const inputsDate = useSelector(
     (state: { main: initialStateInterface }) => state.main.firstStep.searchData
   );

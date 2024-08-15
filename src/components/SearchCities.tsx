@@ -18,7 +18,7 @@ interface searchInputProps {
 const SearchInput = forwardRef<HTMLInputElement, searchInputProps>(
   (props, inputRef) => {
     const { cityInputDirection } = props;
-    let [trigger, { data = [], error, isLoading }] = useLazyGetCitiesQuery();
+    const [trigger, { data = [] }] = useLazyGetCitiesQuery();
     const dispatch = useDispatch();
     const inputData = useSelector((state: {main: initialStateInterface}) => state.main.firstStep.searchData.departureCities);
 
@@ -94,8 +94,8 @@ export default function SearchCities() {
   const [rotate, setRotate] = useState(false);
   const dispatch = useDispatch();
 
-  let searchRef1 = useRef<HTMLInputElement>(null);
-  let searchRef2 = useRef<HTMLInputElement>(null);
+  const searchRef1 = useRef<HTMLInputElement>(null);
+  const searchRef2 = useRef<HTMLInputElement>(null);
 
   const onSwitch = () => {
     setRotate(!rotate);
