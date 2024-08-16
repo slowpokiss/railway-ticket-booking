@@ -137,11 +137,11 @@ export default function HeaderSearch() {
         </div>
       </header>
       {isFetching && (
-        <p className="text-[20px] text-center bg-[#fff3d6]">Loading...</p>
+        <img className="w-full" src="../../vecs/анимация-загрузки.gif" alt="" />
       )}
       <Steps />
-
-      <main className="">
+      
+      <main className={`${isFetching ? 'hidden': 'block'}`}>
         <div className="grid grid-cols-4 gap-4 bg-[#F7F5F9] pt-12 px-[48px]">
           <div className="col-span-1">
             <LeftForm />

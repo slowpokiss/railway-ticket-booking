@@ -2,7 +2,11 @@ import { useGetLastRoutesQuery } from "../redux/templateApi";
 import { itemsInterface } from "../intefaces/trainCardInterface";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { setParamsToUrlQuery, setStepsIndex } from "../redux/mainSlice";
+import {
+  setParamsToUrlQuery,
+  setStepsIndex,
+  setDepartureCity,
+} from "../redux/mainSlice";
 
 export default function LastTickets() {
   const { data } = useGetLastRoutesQuery({});
@@ -12,11 +16,25 @@ export default function LastTickets() {
     dispatch(
       setParamsToUrlQuery({
         from_city_id: route.departure.from.city._id,
-        to_city_id: route.departure.to.city._id
+        to_city_id: route.departure.to.city._id,
+      })
+    );
+    dispatch(
+      setDepartureCity({
+        cityInputDirection: "toCity",
+        value: route.departure.to.city.name,
+        id: route.departure.to.city._id,
+      })
+    );
+    dispatch(
+      setDepartureCity({
+        cityInputDirection: "fromCity",
+        value: route.departure.from.city.name,
+        id: route.departure.from.city._id,
       })
     );
     dispatch(setStepsIndex({ index: 1 }));
-  }
+  };
 
   return (
     <div className="lasts flex flex-col gap-5 mb-5 text-[18px] cursor-pointer">
@@ -27,7 +45,7 @@ export default function LastTickets() {
           data.map((el: itemsInterface, ind: number) => {
             return (
               <Link
-                to={'/booking'}
+                to={"/booking"}
                 onClick={() => onLastRouteClick(el)}
                 key={ind}
                 className="cursor-pointer card w-full p-3 flex flex-col gap-3 bg-white border border-[#928F94] shadow-lg"
