@@ -1,5 +1,58 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+interface finalOrderInterface {
+  user: {
+    first_name: "string";
+    last_name: "string";
+    patronymic: "string";
+    phone: "string";
+    email: "string";
+    payment_method: "cash";
+  };
+  departure: {
+    route_direction_id: "string";
+    seats: [
+      {
+        coach_id: "string";
+        person_info: {
+          is_adult: true;
+          first_name: "string";
+          last_name: "string";
+          patronymic: "string";
+          gender: true;
+          birthday: "string";
+          document_type: "string";
+          document_data: "string";
+        };
+        seat_number: 0;
+        is_child: true;
+        include_children_seat: true;
+      }
+    ];
+  };
+  arrival: {
+    route_direction_id: "string";
+    seats: [
+      {
+        coach_id: "string";
+        person_info: {
+          is_adult: true;
+          first_name: "string";
+          last_name: "string";
+          patronymic: "string";
+          gender: true;
+          birthday: "string";
+          document_type: "string";
+          document_data: "string";
+        };
+        seat_number: 0;
+        is_child: true;
+        include_children_seat: true;
+      }
+    ];
+  };
+}
+
 export const templateApi = createApi({
   reducerPath: "templateApi",
   tagTypes: ["Tickets", "Options"],
@@ -16,8 +69,16 @@ export const templateApi = createApi({
           cities.toCity.id
         }&${
           dates
-            ? `${dates.firstDate !== undefined ? `date_start=${dates.firstDate}` : ""}
-              ${dates.lastDate !== undefined ? `&date_end=${dates.lastDate}` : ""}`
+            ? `${
+                dates.firstDate !== undefined
+                  ? `date_start=${dates.firstDate}`
+                  : ""
+              }
+              ${
+                dates.lastDate !== undefined
+                  ? `&date_end=${dates.lastDate}`
+                  : ""
+              }`
             : ""
         }&${urlQuery}`,
     }),
@@ -44,14 +105,14 @@ export const templateApi = createApi({
       query: () => `routes/last`,
     }),
     emailSubscription: build.mutation({
-      query: (body: any) => ({
+      query: (body: object) => ({
         url: "subscribe",
         method: "POST",
         body,
       }),
     }),
     finalOrder: build.mutation({
-      query: (body: any) => ({
+      query: (body: finalOrderInterface) => ({
         url: "order",
         method: "POST",
         body,
