@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { fromUnixTime, addSeconds, format } from "date-fns";
 import { useFinalOrderMutation } from "../redux/templateApi";
+import { seatInfoInterface } from "../intefaces/trainCardInterface";
 
 export default function Review() {
   const currTrainData = useSelector(
@@ -38,10 +39,12 @@ export default function Review() {
   const formattedToDatetime = format(toDatetime, "HH:mm");
   const formattedTravelTime = `${travelTime.getHours()} : ${travelTime.getMinutes()}`;
 
-  const [trigger, {data}] = useFinalOrderMutation();
+  const [trigger] = useFinalOrderMutation();
   const navigate = useNavigate();
 
-  const onFinalSubmit = async() => {
+  const onFinalSubmit = async (ev: React.FormEvent) => {
+    ev.preventDefault();
+    
     if (
       firstStepData.trainOptions.currVagon.selectedSeats.length === 0 ||
       !Object.values(thirdStepData).every((value) => value !== undefined) ||
@@ -50,42 +53,46 @@ export default function Review() {
       return;
     }
 
-    await trigger({ user: {
-    first_name:  thirdStepData.name,
-    last_name:  thirdStepData.familia,
-    patronymic:  thirdStepData.surName,
-    phone:  thirdStepData.tel,
-    email:  thirdStepData.email,
-    payment_method: thirdStepData.method,
-  },
-  departure: {
-    route_direction_id: currTrainData?.departure._id,
-    seats: secondStepData.map((el, ind: number) => {
-      return {
-        coach_id: currTrainData?.departure._id,
-        person_info: {
-          is_adult: true,
-          first_name: el.name,
-          last_name: el.familia,
-          patronymic: el.surName,
-          gender: true,
-          birthday: el.birthday,
-          document_type: el.document,
-          document_data: `${el.docSeria} ${el.docNumber ?? ''}`
+    try {
+      const response = await trigger({
+        user: {
+          first_name: thirdStepData.name ?? "",
+          last_name: thirdStepData.familia ?? "",
+          patronymic: thirdStepData.surName ?? "",
+          phone: thirdStepData.tel ?? "",
+          email: thirdStepData.email ?? "",
+          payment_method: thirdStepData.method ?? "",
         },
-        seat_number: firstStepData.trainOptions.currVagon.selectedSeats[ind].seat,
-        is_child: el.age === 'child' ? true : false,
-        include_children_seat: true
+        departure: {
+          route_direction_id: currTrainData?.departure._id ?? "",
+          seats: secondStepData.map((el, ind: number): seatInfoInterface => {
+            return {
+              coach_id: currTrainData?.departure._id ?? "",
+              person_info: {
+                is_adult: true,
+                first_name: el.name ?? "",
+                last_name: el.familia ?? "",
+                patronymic: el.surName ?? "",
+                gender: true,
+                birthday: el.birthday ?? "",
+                document_type: el.document ?? "",
+                document_data: `${el.docSeria} ${el.docNumber ?? ''}`
+              },
+              seat_number: firstStepData.trainOptions.currVagon.selectedSeats[ind].seat,
+              is_child: el.age === 'child' ? true : false,
+              include_children_seat: true
+            }
+          })
+        },
+      })
+  
+      if (response.data && response.data.status === true) {
+        navigate('/final');
+      } else {
+        alert('Что-то пошло не так');
       }
-    })
-  },
-    })
-
-
-    if (data.status === true) {
-      return navigate('/final')
-    } else {
-      alert('что-то пошло не так')
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -159,16 +166,14 @@ export default function Review() {
                   <div className="flex w-fit gap-2">
                     <img
                       src="../vecs/wifi.svg"
-                      className={`h-[20px] ${
-                        currTrainData.have_wifi === true ? "block" : "hidden"
-                      }`}
+                      className={`h-[20px] ${currTrainData.have_wifi === true ? "block" : "hidden"
+                        }`}
                       alt="wifi"
                     />
                     <img
                       src="../vecs/express.svg"
-                      className={`h-[20px] ${
-                        currTrainData.is_express === true ? "block" : "hidden"
-                      }`}
+                      className={`h-[20px] ${currTrainData.is_express === true ? "block" : "hidden"
+                        }`}
                       alt="express"
                     />
                     <img
@@ -322,12 +327,12 @@ export default function Review() {
         </div>
       </div>
 
-      <div
-        onClick={onFinalSubmit}
-        className="btn-template btn-orange ml-auto bg-orange text-white"
+      <form
+        onSubmit={onFinalSubmit}
       >
-        ПОДТВЕРДИТЬ
-      </div>
+        <input type="submit" className="btn-template btn-orange ml-auto bg-orange text-white" value={'ПОДТВЕРДИТЬ'} />
+        
+      </form>
     </div>
   );
 }

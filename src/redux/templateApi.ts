@@ -1,49 +1,34 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { seatInfoInterface } from "../intefaces/trainCardInterface";
 
 interface finalOrderInterface {
   user: {
-    first_name: "string";
-    last_name: "string";
-    patronymic: "string";
-    phone: "string";
-    email: "string";
-    payment_method: "cash";
+    first_name: string;
+    last_name: string;
+    patronymic: string;
+    phone: string;
+    email: string;
+    payment_method: string;
   };
   departure: {
-    route_direction_id: "string";
-    seats: [
-      {
-        coach_id: "string";
-        person_info: {
-          is_adult: true;
-          first_name: "string";
-          last_name: "string";
-          patronymic: "string";
-          gender: true;
-          birthday: "string";
-          document_type: "string";
-          document_data: "string";
-        };
-        seat_number: 0;
-        is_child: true;
-        include_children_seat: true;
-      }
-    ];
+    route_direction_id: string;
+    seats: seatInfoInterface[]
+    ;
   };
-  arrival: {
-    route_direction_id: "string";
+  arrival?: {
+    route_direction_id: string;
     seats: [
       {
-        coach_id: "string";
+        coach_id: string;
         person_info: {
           is_adult: true;
-          first_name: "string";
-          last_name: "string";
-          patronymic: "string";
+          first_name: string;
+          last_name: string;
+          patronymic: string;
           gender: true;
-          birthday: "string";
-          document_type: "string";
-          document_data: "string";
+          birthday: string;
+          document_type: string;
+          document_data: string;
         };
         seat_number: 0;
         is_child: true;

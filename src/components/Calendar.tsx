@@ -31,7 +31,7 @@ export default function Calendar({ inputClass, past = false, onInput, dataId }: 
     actions: {
       changeToInput(e, self) {
         const date = self.selectedDates[0]
-        if (onInput && date) {
+        if (onInput && date && e) {
           onInput(date, dataId);
         } 
         if (!self.HTMLInputElement) return;
@@ -55,7 +55,6 @@ export default function Calendar({ inputClass, past = false, onInput, dataId }: 
   return (
     <>
       <input
-        //required
         ref={calendarRef}
         placeholder="ДД/ММ/ГГ"
         name="dateInput"

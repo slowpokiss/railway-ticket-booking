@@ -1,5 +1,21 @@
+export interface personInfoInterface {
+  is_adult: true;
+  first_name: string;
+  last_name: string;
+  patronymic: string;
+  gender: true;
+  birthday: string;
+  document_type: string;
+  document_data: string;
+}
 
-
+export interface seatInfoInterface {
+  coach_id: string;
+  person_info: personInfoInterface;
+  seat_number: number;
+  is_child: boolean;
+  include_children_seat: boolean;
+}
 
 export interface cityInterface {
   _id: string;

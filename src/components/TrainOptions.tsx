@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { useLazyGetTrainOptionsQuery } from "../redux/templateApi";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { trainOptionsInterface, } from "../intefaces/trainOptionsInterface";
+import { trainOptionsInterface } from "../intefaces/trainOptionsInterface";
 import { fromUnixTime, format, addSeconds } from "date-fns";
 import {
   setCurrVagonData,
@@ -49,7 +49,10 @@ export const SeatsCounter = ({ type }: SeatsCounterProps) => {
           max={10}
           value={seatCounterValue}
           onChange={(ev) => {
-            dispatch(setSelectedPassengersCount({ type: type, value: ev }));
+            const counterValue = ev ?? 0;
+            dispatch(
+              setSelectedPassengersCount({ type: type, value: counterValue })
+            );
           }}
         />
       </Space>
@@ -101,7 +104,10 @@ function SeatsOptions({ data, currTrainData }: seatsProps) {
   };
 
   function VagonPrices() {
-    const classType = currVagon.vagonData.coach.class_type;
+    type ClassType = "first" | "second" | "third" | "fourth";
+
+    const classType: ClassType = currVagon.vagonData.coach
+      .class_type as ClassType;
     const classTypePrices = currTrainData?.departure.price_info[classType];
 
     if (classTypePrices) {
@@ -471,7 +477,7 @@ function SeatsOptions({ data, currTrainData }: seatsProps) {
               Вагоны
               {allOptions[trainType].vagons.map(
                 (el: trainOptionsInterface, ind: number) => {
-                  const vagon = el.coach.name.split("-")[1];
+                  const vagon = el.coach.name?.split("-")[1];
 
                   return (
                     <p
@@ -550,9 +556,15 @@ export default function TrainOptions() {
     ];
   };
 
-  const fromDatetime = currTrainData ? fromUnixTime(currTrainData.departure.from.datetime) : 0;
-  const toDatetime = currTrainData ? fromUnixTime(currTrainData.departure.to.datetime): 0
-  const travelTime = currTrainData ? addSeconds(new Date(0, 0, 0), currTrainData.departure.duration) : new Date(0);
+  const fromDatetime = currTrainData
+    ? fromUnixTime(currTrainData.departure.from.datetime)
+    : 0;
+  const toDatetime = currTrainData
+    ? fromUnixTime(currTrainData.departure.to.datetime)
+    : 0;
+  const travelTime = currTrainData
+    ? addSeconds(new Date(0, 0, 0), currTrainData.departure.duration)
+    : new Date(0);
 
   const formattedFromDatetime = format(fromDatetime, "HH:mm");
   const formattedToDatetime = format(toDatetime, "HH:mm");
@@ -674,7 +686,9 @@ export default function TrainOptions() {
                   </div>
                 </>
               ) : (
-              <div className="mx-auto w-full text-center text-red-500 ">Выберите билеты на поезд</div>
+                <div className="mx-auto w-full text-center text-red-500 ">
+                  Выберите билеты на поезд
+                </div>
               )}
             </div>
 

@@ -16,7 +16,7 @@ interface searchInputProps {
 }
 
 const SearchInput = forwardRef<HTMLInputElement, searchInputProps>(
-  (props, inputRef) => {
+  (props, ref) => {
     const { cityInputDirection } = props;
     const [trigger, { data = [] }] = useLazyGetCitiesQuery();
     const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const SearchInput = forwardRef<HTMLInputElement, searchInputProps>(
 
     useEffect(() => {
       debouncedSearch(inputData[cityInputDirection].name);
-    }, [inputData[cityInputDirection].name])
+    }, [inputData[cityInputDirection].name]);
 
     const debouncedSearch = useCallback(
       debounce((searchTerm: string) => {
@@ -37,18 +37,19 @@ const SearchInput = forwardRef<HTMLInputElement, searchInputProps>(
     
     const onCityInput = (ev: ChangeEvent<HTMLInputElement>) => {
       const { value } = ev.target;
-      dispatch(setDepartureCity({cityInputDirection, value, id: null}))
+      dispatch(setDepartureCity({ cityInputDirection, value, id: null }));
       debouncedSearch(value);
     };
 
     const onCityClick = (value: string, id: string) => {
       if (value) {
-        dispatch(setDepartureCity({cityInputDirection, value, id}))
+        dispatch(setDepartureCity({ cityInputDirection, value, id }));
         debouncedSearch(value);
       }
     };
 
-    const [citiesListState, setCitiesListState] = useState(false)
+    const [citiesListState, setCitiesListState] = useState(false);
+
     return (
       <>
         <div className="w-full relative z-10">
@@ -56,23 +57,21 @@ const SearchInput = forwardRef<HTMLInputElement, searchInputProps>(
             value={inputData[cityInputDirection].name}
             type="text"
             name="cityInput"
-            ref={inputRef}
+            ref={ref}
             className="input-template bg-[url('../../vecs/geo_icon.svg')] appearance-none"
             onChange={onCityInput}
             onBlur={() => {
               setTimeout(() => {
-                setCitiesListState(false)
+                setCitiesListState(false);
               }, 250);
             }}
             onFocus={() => setCitiesListState(true)}
             required
           />
 
-          {/* {error && <p>Error occurred: {error.message}</p>} */}
-          
           <ul
             className={`absolute top-[55px] bg-white  w-full rounded-[5px] 
-              ${ inputRef.current && citiesListState ? "block" : "hidden"}`}
+              ${ref && typeof ref === 'object' && ref.current && citiesListState ? "block" : "hidden"}`}
           >
             {data.map((data: dataInterface, ind: number) => (
               <li
@@ -90,12 +89,13 @@ const SearchInput = forwardRef<HTMLInputElement, searchInputProps>(
   }
 );
 
+
 export default function SearchCities() {
   const [rotate, setRotate] = useState(false);
   const dispatch = useDispatch();
 
-  const searchRef1 = useRef<HTMLInputElement>(null);
-  const searchRef2 = useRef<HTMLInputElement>(null);
+  const searchRef1 = useRef<HTMLInputElement | null>(null);
+  const searchRef2 = useRef<HTMLInputElement | null>(null);
 
   const onSwitch = () => {
     setRotate(!rotate);

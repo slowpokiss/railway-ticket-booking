@@ -1,18 +1,24 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setPaymentData, initialStateInterface, setStepsIndex } from "../redux/mainSlice";
+import {
+  setPaymentData,
+  initialStateInterface,
+  setStepsIndex,
+} from "../redux/mainSlice";
 import { useNavigate } from "react-router-dom";
 
 export default function Payment() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const paymentData = useSelector((state: {main: initialStateInterface}) => state.main.thirdStep)
+  const paymentData = useSelector(
+    (state: { main: initialStateInterface }) => state.main.thirdStep
+  );
 
   const onFormSubmit = (ev: React.FormEvent) => {
-    ev.preventDefault()
+    ev.preventDefault();
 
-    dispatch(setStepsIndex({ index: 4 }))
-    return navigate('/booking/review');
-  }
+    dispatch(setStepsIndex({ index: 4 }));
+    return navigate("/booking/review");
+  };
 
   return (
     <form onSubmit={onFormSubmit} className="flex flex-col">
@@ -98,7 +104,7 @@ export default function Payment() {
                   className="passengers-input"
                   maxLength={11}
                   placeholder="+7 ___ ___ __ __"
-                  pattern="\+7\s?[\(]{0,1}9[0-9]{2}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"
+                  //pattern="\+7\s?[\(]{0,1}9[0-9]{2}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"
                 />
               </div>
               <div className="flex flex-col">
