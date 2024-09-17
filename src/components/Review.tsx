@@ -42,6 +42,8 @@ export default function Review() {
   const [trigger] = useFinalOrderMutation();
   const navigate = useNavigate();
 
+
+
   const onFinalSubmit = async (ev: React.FormEvent) => {
     ev.preventDefault();
     
@@ -95,6 +97,8 @@ export default function Review() {
       console.log(error);
     }
   };
+
+
 
   return (
     <div className="flex flex-col gap-8">
