@@ -33,7 +33,7 @@ function Passenger({ passData, onDeletePassenger, elementId }: passengerProps) {
         >
           <img
             className={`w-[20px] h-[20px] cursor-pointer`}
-            src={`../../vecs/${!openState ? "minus" : "plus"}.svg`}
+            src={`../../../tickets-booking/vecs/${!openState ? "minus" : "plus"}.svg`}
             alt=""
           />
           <p>Пассажир {elementId + 1}</p>
@@ -41,7 +41,7 @@ function Passenger({ passData, onDeletePassenger, elementId }: passengerProps) {
         <img
           onClick={() => onDeletePassenger(elementId)}
           className="cursor-pointer w-[15px] h-[15px]"
-          src="../../vecs/cross.svg"
+          src="../../../tickets-booking/vecs/cross.svg"
           alt="cross"
         />
       </div>
@@ -285,7 +285,7 @@ export default function PassengersList() {
     ev.preventDefault()
 
     dispatch(setStepsIndex({ index: 3 }))
-    return navigate('/booking/payment');
+    return navigate('/../tickets-booking/booking/payment');
   }
 
   return (
@@ -309,7 +309,7 @@ export default function PassengersList() {
           <p>Добавить пассажира</p>
           <img
             className="cursor-pointer w-[20px] h-[20px]"
-            src="../../vecs/plus.svg"
+            src="../../../tickets-booking/vecs/plus.svg"
             alt="cross"
           />
         </div>

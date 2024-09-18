@@ -23,14 +23,14 @@ function FilterTime({ direction, title }: filterTimeProps) {
       <div className="border-b border-white">
         <div className="flex p-5  justify-between">
           <div className="flex gap-2">
-            <img src={`../vecs/${direction}_icon.svg`} alt={direction} />
+            <img src={`../../tickets-booking/vecs/${direction}_icon.svg`} alt={direction} />
             <p className="font-semibold">{title}</p>
           </div>
 
           <img
             onClick={onExtendClick}
             className={`cursor-pointer`}
-            src={`../vecs/${extensionState ? "collapse" : "extend"}.svg`}
+            src={`../../tickets-booking/vecs/${extensionState ? "collapse" : "extend"}.svg`}
             alt="collapse"
           />
         </div>
@@ -114,14 +114,14 @@ function TicketsInfo({ direction, title }: filterTimeProps) {
       <div className="border-b border-white">
         <div className="flex p-5  justify-between">
           <div className="flex gap-2">
-            <img src={`../vecs/${direction}_icon.svg`} alt={direction} />
+            <img src={`../../tickets-booking/vecs/${direction}_icon.svg`} alt={direction} />
             <p className="font-semibold">{title}</p>
           </div>
 
           <img
             onClick={onExtendClick}
             className={`cursor-pointer`}
-            src={`../vecs/${extensionState ? "collapse" : "extend"}.svg`}
+            src={`../../tickets-booking/vecs/${extensionState ? "collapse" : "extend"}.svg`}
             alt="collapse"
           />
         </div>
@@ -158,7 +158,7 @@ function TicketsInfo({ direction, title }: filterTimeProps) {
               <div className="">
                 <div className="text-[14px]">{formattedTravelTime}</div>
                 <img
-                  src={`../vecs/arrow_${
+                  src={`../../tickets-booking/vecs/arrow_${
                     direction === "departure" ? "r" : "l"
                   }_orange.svg`}
                   className="h-[30px] w-[30px]"
@@ -220,7 +220,7 @@ export default function LeftForm() {
                     ? firstStep.searchData.dates.firstDate
                     : ""
                 }
-                className="text-white input-template py-1 px-3 bg-[url('../../vecs/calendar_logo.svg')]"
+                className="text-white input-template py-1 px-3 bg-[url('../../../tickets-booking/vecs/calendar_logo.svg')]"
               />
             </div>
             <div className="">
@@ -233,14 +233,14 @@ export default function LeftForm() {
                     ? firstStep.searchData.dates.lastDate
                     : ""
                 }
-                className="text-white input-template py-1 px-3 bg-[url('../../vecs/calendar_logo.svg')]"
+                className="text-white input-template py-1 px-3 bg-[url('../../../tickets-booking/vecs/calendar_logo.svg')]"
               />
             </div>
           </div>
           <ul className="flex justify-start flex-col text-[15px] gap-5 px-[10%] py-5 border-b border-white">
             <li className="flex justify-between">
               <div className="w-1/2 flex justify-between">
-                <img src="../vecs/kype.svg" alt="kype" />
+                <img src="../../tickets-booking/vecs/kype.svg" alt="kype" />
                 <p className="">Купе</p>
               </div>
               <label className="switch">
@@ -260,7 +260,7 @@ export default function LeftForm() {
 
             <li className="flex justify-between">
               <div className="w-[60%] flex justify-between">
-                <img src="../vecs/plazc.svg" alt="plazc" />
+                <img src="../../tickets-booking/vecs/plazc.svg" alt="plazc" />
                 <p className="">Плацкарт</p>
               </div>
               <label className="switch">
@@ -280,7 +280,7 @@ export default function LeftForm() {
 
             <li className="flex justify-between">
               <div className="w-1/2 flex justify-between">
-                <img src="../vecs/sitting.svg" alt="sitting" />
+                <img src="../../tickets-booking/vecs/sitting.svg" alt="sitting" />
                 <p className="">Сидячий</p>
               </div>
 
@@ -301,7 +301,7 @@ export default function LeftForm() {
 
             <li className="flex justify-between">
               <div className="w-1/2 flex justify-between">
-                <img src="../vecs/luxury.svg" alt="luxury" />
+                <img src="../../tickets-booking/vecs/luxury.svg" alt="luxury" />
                 <p className="">Люкс</p>
               </div>
               <label className="switch">
@@ -321,7 +321,7 @@ export default function LeftForm() {
 
             <li className="flex justify-between">
               <div className="w-1/2 flex justify-between">
-                <img src="../vecs/wifi.svg" alt="wifi" />
+                <img src="../../tickets-booking/vecs/wifi.svg" alt="wifi" />
                 <p className="">Wi-Fi</p>
               </div>
 
@@ -340,7 +340,7 @@ export default function LeftForm() {
 
             <li className="flex justify-between">
               <div className="w-1/2 flex justify-between">
-                <img src="../vecs/express.svg" alt="express" />
+                <img src="../../tickets-booking/vecs/express.svg" alt="express" />
                 <p className="">Экспресс</p>
               </div>
 

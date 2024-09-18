@@ -89,7 +89,7 @@ export default function Review() {
       })
   
       if (response.data && response.data.status === true) {
-        navigate('/final');
+        navigate('/tickets-booking/final');
       } else {
         alert('Что-то пошло не так');
       }
@@ -111,7 +111,7 @@ export default function Review() {
             <div className="flex flex-col gap-2 items-center justify-center bg-[#E4E0E9] p-2">
               <div className="flex flex-col items-center">
                 <img
-                  src="../vecs/train.svg"
+                  src="../../tickets-booking/vecs/train.svg"
                   className="h-[55px] w-[55px]"
                   alt="train"
                 />
@@ -143,7 +143,7 @@ export default function Review() {
                 <div className="time flex flex-col items-center ">
                   <div className="text-[#928F94]">{formattedTravelTime}</div>
                   <img
-                    src="../vecs/arrow_r_orange.svg"
+                    src="../../tickets-booking/vecs/arrow_r_orange.svg"
                     className="h-[30px] w-[30px]"
                     alt="train"
                   />
@@ -169,19 +169,19 @@ export default function Review() {
                 <div className="flex justify-between items-center text-[#928F94]">
                   <div className="flex w-fit gap-2">
                     <img
-                      src="../vecs/wifi.svg"
+                      src="../../tickets-booking/vecs/wifi.svg"
                       className={`h-[20px] ${currTrainData.have_wifi === true ? "block" : "hidden"
                         }`}
                       alt="wifi"
                     />
                     <img
-                      src="../vecs/express.svg"
+                      src="../../tickets-booking/vecs/express.svg"
                       className={`h-[20px] ${currTrainData.is_express === true ? "block" : "hidden"
                         }`}
                       alt="express"
                     />
                     <img
-                      src="../vecs/cup.svg"
+                      src="../../tickets-booking/vecs/cup.svg"
                       className={`h-[20px]`}
                       alt="cup"
                     />
@@ -189,7 +189,7 @@ export default function Review() {
                 </div>
                 <Link
                   onClick={() => onStepClick(1)}
-                  to={"/booking"}
+                  to={"/tickets-booking/booking"}
                   className="btn-template border-black px-9 py-1 m-auto"
                 >
                   Изменить
@@ -246,7 +246,7 @@ export default function Review() {
                     <div className="flex flex-col gap-2 justify-center items-center">
                       <img
                         className="w-[50px]"
-                        src="../../vecs/passenger_icon.svg"
+                        src="../../tickets-booking/vecs/passenger_icon.svg"
                         alt=""
                       />
                       <p>{el.age === "adult" ? "Взрослый" : "Ребенок"}</p>
@@ -296,7 +296,7 @@ export default function Review() {
               </div>
               <Link
                 onClick={() => onStepClick(2)}
-                to={"/booking/passengers"}
+                to={"/tickets-booking/booking/passengers"}
                 className="btn-template border-black px-9 py-1 m-auto"
               >
                 Изменить
@@ -322,7 +322,7 @@ export default function Review() {
           <div className="w-[30%] mb-4 flex ">
             <Link
               onClick={() => onStepClick(3)}
-              to={"/booking/payment"}
+              to={"/tickets-booking/booking/payment"}
               className="btn-template border-black px-9 py-1 m-auto"
             >
               Изменить

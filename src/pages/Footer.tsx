@@ -34,7 +34,7 @@ export default function Footer() {
             </div>
             <div className="flex gap-5">
               <img
-                src="../vecs/tel_icon.svg"
+                src="../../tickets-booking/vecs/tel_icon.svg"
                 alt="tel"
                 className="contact-img"
               />
@@ -42,7 +42,7 @@ export default function Footer() {
             </div>
             <div className="flex gap-5">
               <img
-                src="../vecs/mail_icon.svg"
+                src="../../tickets-booking/vecs/mail_icon.svg"
                 alt="mail"
                 className="contact-img"
               />
@@ -50,7 +50,7 @@ export default function Footer() {
             </div>
             <div className="flex gap-5">
               <img
-                src="../vecs/skype_icon.svg"
+                src="../../tickets-booking/vecs/skype_icon.svg"
                 alt="skype"
                 className="contact-img"
               />
@@ -58,7 +58,7 @@ export default function Footer() {
             </div>
             <div className="flex gap-5">
               <img
-                src="../vecs/geo_icon.svg"
+                src="../../tickets-booking/vecs/geo_icon.svg"
                 alt="geo"
                 className="contact-img"
               />
@@ -180,7 +180,7 @@ export default function Footer() {
         <div className="info flex pt-[15px] pb-[15px] px-[120px] justify-between items-center border-t border-solid border-white">
           <div className="info-elem contats-title">Лого</div>
           <img
-            src="../vecs/arrow_up.svg"
+            src="../../tickets-booking/vecs/arrow_up.svg"
             alt="arrow_up"
             className="cursor-pointer"
             onClick={pageUp}

@@ -19,8 +19,8 @@ export default {
         }
       },
       backgroundImage: {
-        'train-main': "url('../../public/img/train_main.png')",
-        'road-main': "url('../../public/img/road_main.png')"
+        'train-main': "url('../../tickets-booking/public/img/train_main.png')",
+        'road-main': "url('../../tickets-booking/public/img/road_main.png')"
       },
     },
   },

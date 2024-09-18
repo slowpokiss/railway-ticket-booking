@@ -58,7 +58,7 @@ const SearchInput = forwardRef<HTMLInputElement, searchInputProps>(
             type="text"
             name="cityInput"
             ref={ref}
-            className="input-template bg-[url('../../vecs/geo_icon.svg')] appearance-none"
+            className="input-template bg-[url('../../tickets-booking/vecs/geo_icon.svg')] appearance-none"
             onChange={onCityInput}
             onBlur={() => {
               setTimeout(() => {
@@ -110,7 +110,7 @@ export default function SearchCities() {
       />
       <img
         onClick={onSwitch}
-        src="../vecs/switch_icon.svg"
+        src="../../../tickets-booking/vecs/switch_icon.svg"
         alt="switch"
         className={`switch-cities cursor-pointer ${rotate ? "animate" : ""}`}
       />

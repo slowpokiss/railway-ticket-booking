@@ -105,7 +105,7 @@ export default function TrainsList() {
                   <div className="flex flex-col gap-2 items-center justify-center bg-[#E4E0E9] p-2">
                     <div className="flex flex-col items-center">
                       <img
-                        src="../vecs/train.svg"
+                        src="../../tickets-booking/vecs/train.svg"
                         className="h-[55px] w-[55px]"
                         alt="train"
                       />
@@ -139,7 +139,7 @@ export default function TrainsList() {
                           {formattedTravelTime}
                         </div>
                         <img
-                          src="../vecs/arrow_r_orange.svg"
+                          src="../../tickets-booking/vecs/arrow_r_orange.svg"
                           className="h-[30px] w-[30px]"
                           alt="train"
                         />
@@ -189,21 +189,21 @@ export default function TrainsList() {
                       <div className="flex justify-between items-center text-[#928F94]">
                         <div className="flex w-fit gap-2">
                           <img
-                            src="../vecs/wifi.svg"
+                            src="../../tickets-booking/vecs/wifi.svg"
                             className={`h-[20px] ${
                               item.departure.have_wifi === true ? "block" : "hidden"
                             }`}
                             alt="wifi"
                           />
                           <img
-                            src="../vecs/express.svg"
+                            src="../../tickets-booking/vecs/express.svg"
                             className={`h-[20px] ${
                               item.departure.is_express === true ? "block" : "hidden"
                             }`}
                             alt="express"
                           />
                           <img
-                            src="../vecs/cup.svg"
+                            src="../../tickets-booking/vecs/cup.svg"
                             className={`h-[20px]`}
                             alt="cup"
                           />
@@ -213,7 +213,7 @@ export default function TrainsList() {
                         onClick={() => {
                           dispatch(setCurrTrainCardData(item));
                         }}
-                        to={`/booking/${item.departure._id}`}
+                        to={`/../tickets-booking/booking/${item.departure._id}`}
                         className="btn-template btn-orange text-white border-orange bg-orange py-[2px] px-5"
                       >
                         Выбрать места

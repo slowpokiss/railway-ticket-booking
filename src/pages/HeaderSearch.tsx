@@ -62,23 +62,23 @@ export default function HeaderSearch() {
 
   return (
     <>
-      <header className="flex flex-col justify-around w-full h-full bg-no-repeat bg-center bg-cover bg-[url('../../img/tickets_back.png')] bg-[rgba(0,0,0,0.7)]">
+      <header className="flex flex-col justify-around w-full h-full bg-no-repeat bg-center bg-cover bg-[url('../../tickets-booking/img/tickets_back.png')] bg-[rgba(0,0,0,0.7)]">
         <div className="head-first">
           <div className="w-full text-[1.31rem] font-bold text-white py-[6px] px-44 bg-[rgba(0,0,0,0.5)] ">
             Лого
           </div>
           <nav className="w-full h-auto bg-[rgba(41,41,41,1)]">
             <ul className="flex gap-10 w-auto h-fit mx-44 py-4">
-              <Link to={"/#about"} className="text-white text-[1.31rem]">
+              <Link to={"/tickets-booking/#about"} className="text-white text-[1.31rem]">
                 О нас
               </Link>
-              <Link to={"/#how-it-works"} className="text-white text-[1.31rem]">
+              <Link to={"/tickets-booking/#how-it-works"} className="text-white text-[1.31rem]">
                 Как это работает
               </Link>
-              <Link to={"/#reviews"} className="text-white text-[1.31rem]">
+              <Link to={"/tickets-booking/#reviews"} className="text-white text-[1.31rem]">
                 Отзывы
               </Link>
-              <Link to={"/#contacts"} className="text-white text-[1.31rem]">
+              <Link to={"/tickets-booking/#contacts"} className="text-white text-[1.31rem]">
                 Контакты
               </Link>
             </ul>
@@ -137,7 +137,7 @@ export default function HeaderSearch() {
         </div>
       </header>
       {isFetching && (
-        <img className="w-full" src="../../vecs/анимация-загрузки.gif" alt="" />
+        <img className="w-full" src="../../tickets-booking/vecs/анимация-загрузки.gif" alt="" />
       )}
       <Steps />
       

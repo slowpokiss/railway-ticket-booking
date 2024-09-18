@@ -611,12 +611,12 @@ export default function TrainOptions() {
           <div className="w-full bg-white border border-[#928F94] shadow-lg ">
             <div className="flex gap-2 h-24 px-3 py-6 items-stretch">
               <img
-                src="../../vecs/departure_icon.svg"
+                src="../../../tickets-booking/vecs/departure_icon.svg"
                 className=""
                 alt="forward-icon"
               />
               <Link
-                to={"/booking"}
+                to={"/tickets-booking/booking"}
                 className="btn-template border-[#000000] px-5 py-1 cursor-pointer flex items-center"
               >
                 Выбрать другой поезд
@@ -627,7 +627,7 @@ export default function TrainOptions() {
                 <>
                   <div className="flex w-1/4 bg-[#F7F6F6] justify-center items-center gap-4">
                     <img
-                      src="../vecs/train_circle.svg"
+                      src="../../../tickets-booking/vecs/train_circle.svg"
                       className="h-[35px] w-[35px]"
                       alt="train"
                     />
@@ -656,7 +656,7 @@ export default function TrainOptions() {
                     </div>
                     <div className="">
                       <img
-                        src="../vecs/arrow_r_orange.svg"
+                        src="../../../tickets-booking/vecs/arrow_r_orange.svg"
                         className="h-[30px] w-[30px]"
                         alt="train"
                       />
@@ -677,7 +677,7 @@ export default function TrainOptions() {
                   </div>
                   <div className="flex w-1/4 items-center justify-center bg-[#F7F6F6]">
                     <div className="h-[30px] flex items-center leading-[1.2] gap-2">
-                      <img src="../../vecs/clock.svg" alt="" />
+                      <img src="../../../tickets-booking/vecs/clock.svg" alt="" />
                       <div className="flex-col">
                         <p>{formattedTravelTime[0]}</p>
                         <p>{formattedTravelTime[1]}</p>
@@ -737,7 +737,7 @@ export default function TrainOptions() {
           </div>
           <Link
             onClick={onSubmitTick}
-            to={"/booking/passengers"}
+            to={"/tickets-booking/booking/passengers"}
             className="block ml-auto my-5 btn-template bg-orange text-white btn-orange"
           >
             Далее

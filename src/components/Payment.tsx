@@ -17,7 +17,7 @@ export default function Payment() {
     ev.preventDefault();
 
     dispatch(setStepsIndex({ index: 4 }));
-    return navigate("/booking/review");
+    return navigate("/../tickets-booking/booking/review");
   };
 
   return (
@@ -104,7 +104,6 @@ export default function Payment() {
                   className="passengers-input"
                   maxLength={11}
                   placeholder="+7 ___ ___ __ __"
-                  //pattern="\+7\s?[\(]{0,1}9[0-9]{2}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"
                 />
               </div>
               <div className="flex flex-col">

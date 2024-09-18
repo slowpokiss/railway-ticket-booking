@@ -33,7 +33,7 @@ function LuxuryTemplate({ seatsData, setCurrSeatsCB }: TemplateInterface) {
   return (
     <div className="h-[148px] w-[948px]">
       <div
-        className={`absolute top-0 left-0 w-[948px] h-[148px] bg-[url('../../vecs/bg_lux-kype.svg')]`}
+        className={`absolute top-0 left-0 w-[948px] h-[148px] bg-[url('../../../tickets-booking/vecs/bg_lux-kype.svg')]`}
       ></div>
 
       {seatsData.seats.map((el: Seats) => {
@@ -207,7 +207,7 @@ function KypeTemplate({ seatsData, setCurrSeatsCB }: TemplateInterface) {
   return (
     <div className="h-[148px] w-[948px]">
       <div
-        className={`absolute top-0 left-0 w-[948px] h-[148px] bg-[url('../../vecs/bg_lux-kype.svg')]`}
+        className={`absolute top-0 left-0 w-[948px] h-[148px] bg-[url('../../../tickets-booking/vecs/bg_lux-kype.svg')]`}
       ></div>
 
       {seatsData.seats.map((el: { index: number; available: boolean }) => {
@@ -408,7 +408,7 @@ function PlazCartTemplate({ seatsData, setCurrSeatsCB }: TemplateInterface) {
     <>
       <div className="h-[160px] w-[910px]">
         <div
-          className={`absolute top-0 left-0 w-[910px] h-[160px] bg-[url('../../vecs/bg-plazc.svg')]`}
+          className={`absolute top-0 left-0 w-[910px] h-[160px] bg-[url('../../../tickets-booking/vecs/bg-plazc.svg')]`}
         ></div>
 
         {seatsData.seats.map((el: Seats) => {
@@ -625,7 +625,7 @@ function SeatTemplate({ seatsData, setCurrSeatsCB }: TemplateInterface) {
     <>
       <div className="h-[200px] w-[948px]">
         <div
-          className={`absolute top-0 left-0 w-[948px] h-[200px] bg-[url('../../vecs/bg-seat-948.svg')]`}
+          className={`absolute top-0 left-0 w-[948px] h-[200px] bg-[url('../../../tickets-booking/vecs/bg-seat-948.svg')]`}
         ></div>
 
         {seatsData.seats.map((el: Seats) => {

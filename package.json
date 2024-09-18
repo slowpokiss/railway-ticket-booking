@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://slowpokiss.github.io/railway-ticket-booking",
+  "homepage": "https://slowpokiss.github.io/tickets-booking/",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

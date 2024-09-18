@@ -58,7 +58,7 @@ export default function Calendar({ inputClass, past = false, onInput, dataId }: 
         ref={calendarRef}
         placeholder="ДД/ММ/ГГ"
         name="dateInput"
-        className={`${inputClass} bg-[url('../../vecs/calendar_logo.svg')]`}
+        className={`${inputClass} bg-[url('../../tickets-booking/vecs/calendar_logo.svg')]`}
         type="text"
       />
     </>

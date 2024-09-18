@@ -25,20 +25,20 @@ export default function MainPage() {
       <header className="flex flex-col justify-around overflow-hidden w-full h-full border-b-[7px] border-orange bg-no-repeat bg-center bg-cover bg-train-main bg-[rgba(0,0,0,0.7)]">
         <div className="head-first">
           <div className="w-full text-[1.31rem] font-bold text-white py-[6px] px-44 bg-[rgba(0,0,0,0.5)] ">
-            <Link to={"/"}>Лого</Link>
+            <Link to={"/tickets-booking"}>Лого</Link>
           </div>
           <nav className="w-full h-auto bg-[rgba(41,41,41,1)]">
             <ul className="flex gap-10 w-auto h-fit mx-44 py-4">
-              <Link to={"/#about"} className="text-white text-[1.31rem]">
+              <Link to={"/tickets-booking/#about"} className="text-white text-[1.31rem]">
                 О нас
               </Link>
-              <Link to={"/#how-it-works"} className="text-white text-[1.31rem]">
+              <Link to={"/tickets-booking/#how-it-works"} className="text-white text-[1.31rem]">
                 Как это работает
               </Link>
-              <Link to={"/#reviews"} className="text-white text-[1.31rem]">
+              <Link to={"/tickets-booking/#reviews"} className="text-white text-[1.31rem]">
                 Отзывы
               </Link>
-              <Link to={"/#contacts"} className="text-white text-[1.31rem]">
+              <Link to={"/tickets-booking/#contacts"} className="text-white text-[1.31rem]">
                 Контакты
               </Link>
             </ul>
@@ -87,7 +87,7 @@ export default function MainPage() {
                   </div>
                 </div>
                 <input
-                  onClick={() => navigate("/booking")}
+                  onClick={() => navigate("/tickets-booking/booking")}
                   type="submit"
                   value="НАЙТИ БИЛЕТЫ"
                   className="btn-template btn-orange bg-orange border-orange text-black "
@@ -138,7 +138,7 @@ export default function MainPage() {
             <div className="flex flex-col justify-center items-center">
               <img
                 className="w-[100px]"
-                src="../img/advantage_1.png"
+                src="../tickets-booking/img/advantage_1.png"
                 alt="advantage_1"
               />
               <div className="step-title text-[1rem] text-white">
@@ -148,7 +148,7 @@ export default function MainPage() {
             <div className="flex flex-col justify-center items-center">
               <img
                 className="w-[100px]"
-                src="../img/advantage_2.png"
+                src="../tickets-booking/img/advantage_2.png"
                 alt="advantage_2"
               />
               <div className="text-[1rem] text-white">
@@ -158,7 +158,7 @@ export default function MainPage() {
             <div className="flex flex-col justify-center items-center">
               <img
                 className="w-[100px]"
-                src="../img/advantage_3.png"
+                src="../tickets-booking/img/advantage_3.png"
                 alt="advantage_3"
               />
               <div className="text-[1rem] text-white">
@@ -174,7 +174,7 @@ export default function MainPage() {
           <div className="flex gap-[70px]">
             <div className="flex gap-[30px]">
               <img
-                src="../img/rewiev_person_1.png"
+                src="../tickets-booking/img/rewiev_person_1.png"
                 alt="rewiev_person_1.png"
                 className="w-[160px] h-[160px]"
               />
@@ -189,7 +189,7 @@ export default function MainPage() {
             </div>
             <div className="flex gap-[30px]">
               <img
-                src="../img/rewiev_person_2.png"
+                src="../tickets-booking/img/rewiev_person_2.png"
                 alt="rewiev_person_2.png"
                 className="w-[160px] h-[160px]"
               />
@@ -204,7 +204,7 @@ export default function MainPage() {
             </div>
           </div>
           <img
-            src="../img/toremove_1.png"
+            src="../tickets-booking/img/toremove_1.png"
             alt="rewiev_person_2.png"
             className="remove-img"
           />

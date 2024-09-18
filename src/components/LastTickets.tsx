@@ -45,7 +45,7 @@ export default function LastTickets() {
           data.map((el: itemsInterface, ind: number) => {
             return (
               <Link
-                to={"/booking"}
+                to={"/tickets-booking/booking"}
                 onClick={() => onLastRouteClick(el)}
                 key={ind}
                 className="cursor-pointer card w-full p-3 flex flex-col gap-3 bg-white border border-[#928F94] shadow-lg"
@@ -73,21 +73,21 @@ export default function LastTickets() {
                 <div className="flex justify-between items-center text-[#928F94]">
                   <div className="flex w-fit gap-2">
                     <img
-                      src="../vecs/wifi.svg"
+                      src="../../tickets-booking/vecs/wifi.svg"
                       className={`h-[20px] ${
                         el.departure.have_wifi === true ? "block" : "hidden"
                       }`}
                       alt="wifi"
                     />
                     <img
-                      src="../vecs/express.svg"
+                      src="../../tickets-booking/vecs/express.svg"
                       className={`h-[20px] ${
                         el.departure.is_express === true ? "block" : "hidden"
                       }`}
                       alt="express"
                     />
                     <img
-                      src="../vecs/cup.svg"
+                      src="../../tickets-booking/vecs/cup.svg"
                       className={`h-[20px]`}
                       alt="cup"
                     />

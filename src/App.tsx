@@ -18,19 +18,19 @@ import Final from "./pages/Final";
 const routerProv = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" element={<Footer />}>
-        <Route path="/" element={<MainPage />}></Route>
-        <Route path="/booking" element={<HeaderSearch />}>
-          <Route path="/booking" element={<TrainsList />}></Route>
-          <Route path="/booking/:trainId" element={<TrainOptions />}></Route>
+      <Route path="/tickets-booking/" element={<Footer />}>
+        <Route path="/tickets-booking/" element={<MainPage />}></Route>
+        <Route path="/tickets-booking/booking" element={<HeaderSearch />}>
+          <Route path="/tickets-booking/booking" element={<TrainsList />}></Route>
+          <Route path="/tickets-booking/booking/:trainId" element={<TrainOptions />}></Route>
           <Route
-            path="/booking/passengers"
+            path="/tickets-booking/booking/passengers"
             element={<PassengersList />}
           ></Route>
-          <Route path="/booking/payment" element={<Payment />}></Route>
-          <Route path="/booking/review" element={<Review />}></Route>
+          <Route path="/tickets-booking/booking/payment" element={<Payment />}></Route>
+          <Route path="/tickets-booking/booking/review" element={<Review />}></Route>
         </Route>
-        <Route path="/final" element={<Final />}></Route>
+        <Route path="/tickets-booking/final" element={<Final />}></Route>
       </Route>
     </>
   )

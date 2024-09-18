@@ -38,23 +38,23 @@ export default function Final() {
 
   return (
     <>
-      <header className="relative mb-70 min-h-[350px] flex flex-col justify-around overflow-hidden w-full h-full bg-no-repeat bg-center bg-cover bg-[url('../../public/img/final.png')] bg-[rgba(0,0,0,0.7)]">
+      <header className="relative mb-70 min-h-[350px] flex flex-col justify-around overflow-hidden w-full h-full bg-no-repeat bg-center bg-cover bg-[url('../../../tickets-booking/img/final.png')] bg-[rgba(0,0,0,0.7)]">
         <div className="head-first">
           <div className="w-full text-[1.31rem] font-bold text-white py-[6px] px-44 bg-[rgba(0,0,0,0.5)] ">
-            <Link to={"/"}>Лого</Link>
+            <Link to={"/tickets-booking"}>Лого</Link>
           </div>
           <nav className="w-full h-auto bg-[rgba(41,41,41,1)]">
             <ul className="flex gap-10 w-auto h-fit mx-44 py-4">
-              <Link to={"/#about"} className="text-white text-[1.31rem]">
+              <Link to={"/tickets-booking/#about"} className="text-white text-[1.31rem]">
                 О нас
               </Link>
-              <Link to={"/#how-it-works"} className="text-white text-[1.31rem]">
+              <Link to={"/tickets-booking/#how-it-works"} className="text-white text-[1.31rem]">
                 Как это работает
               </Link>
-              <Link to={"/#reviews"} className="text-white text-[1.31rem]">
+              <Link to={"/tickets-booking/#reviews"} className="text-white text-[1.31rem]">
                 Отзывы
               </Link>
-              <Link to={"/#contacts"} className="text-white text-[1.31rem]">
+              <Link to={"/tickets-booking/#contacts"} className="text-white text-[1.31rem]">
                 Контакты
               </Link>
             </ul>
@@ -79,7 +79,7 @@ export default function Final() {
                 <div className="flex flex-col break-words text-center w-[150px]">
                   <img
                     className="w-[150px] h-[150px]"
-                    src="../../vecs/tickets_komp.svg"
+                    src="../../tickets-booking/vecs/tickets_komp.svg"
                     alt=""
                   />
                   <div className="">
@@ -91,7 +91,7 @@ export default function Final() {
                 <div className="w-[150px] flex flex-col text-center break-words">
                   <img
                     className="w-[150px] h-[150px]"
-                    src="../../vecs/tickets_cirle.svg"
+                    src="../../tickets-booking/vecs/tickets_cirle.svg"
                     alt=""
                   />
                   <div>
@@ -103,7 +103,7 @@ export default function Final() {
                 <div className="w-[150px] flex flex-col text-center break-words">
                   <img
                     className="w-[150px] h-[150px]"
-                    src="../../vecs/man_circle.svg"
+                    src="../../tickets-booking/vecs/man_circle.svg"
                     alt=""
                   />
                   <div className="">
@@ -137,7 +137,7 @@ export default function Final() {
                 </div>
               </div>
               <Link
-                to={"/"}
+                to={"/tickets-booking"}
                 className="btn-template px-5 border-[black] active:text-[orange] active:border-[black] active:bg-[black]"
               >
                 ВЕРНУТЬСЯ НА ГЛАВНУЮ
